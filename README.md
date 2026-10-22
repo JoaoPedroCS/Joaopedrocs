@@ -11,7 +11,7 @@ Gosto de unir a lógica da computação de alto desempenho (C/C++, CUDA, OpenMP)
 ### 🚀 Sobre mim
 
 - 🎓 Graduando em **Ciência da Computação** e **Ciência e Tecnologia** pela UFABC (Previsão: 2027).
-- 💼 Experiência anterior como **Estagiário de Eficiência Operacional na Shopper**, onde desenvolvi um motor de simulação (*Warehouse Slotting*) que gerou um **ganho projetado de 20% em eficiência** de layout.
+- 💼 Experiência anterior como **Estagiário de Eficiência Operacional na Shopper**, onde desenvolvi um motor de simulação (*Warehouse Slotting*) que gerou um **ganho projetado de 20% em eficiência** no Galpão em Brasília.
 - 🌐 Idiomas: Português (Nativo), Inglês (Fluente - C1), Espanhol (Intermediário), e estudando Mandarim e Francês.
 
 ---
@@ -31,12 +31,11 @@ Este repositório também hospeda o meu site de portfólio pessoal, construído 
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=JoaoPedroCS&layout=compact&theme=dracula&hide_border=true" height="150" alt="Top Languages" />
 </div>
 
-*(Lembre-se de trocar `JoaoPedroCS` pelo seu nome de usuário real do GitHub nos links das imagens acima)*
 
 ---
 
 ### 📫 Como me encontrar
 
-- <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" width="80" /> **[Seu LinkedIn](#)** *(Substitua o # pelo seu link)*
+- <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" width="80" /> **[Seu LinkedIn](https://www.linkedin.com/in/joao-pedro-cs)** *(Substitua o # pelo seu link)*
 - ✉️ **joaopedrocorreasilva0@gmail.com**
 - 📍 Santo André, SP - Brasil
