@@ -20,7 +20,7 @@ Gosto de unir a lógica da computação de alto desempenho (C/C++, CUDA, OpenMP)
 
 Este repositório também hospeda o meu site de portfólio pessoal, construído do zero utilizando **HTML5, CSS3 e JavaScript Vanilla**. Nele, você pode ver mais detalhes sobre meus projetos, certificações completas e trajetória profissional.
 
-🔗 **[Acesse o meu Portfólio aqui](#)** *(Coloque o link do seu site hospedado aqui)*
+🔗 **[Acesse o meu Portfólio aqui](#)**
 
 ---
 
