@@ -443,10 +443,14 @@ main {
   line-height: 1.6;
 }
 
-.testimonials { margin-bottom: 30px; }
-.testimonials-title { margin-bottom: 20px; }
+/**
+ * #CERTIFICAÇÕES 
+ */
 
-.testimonials-list {
+.certificates { margin-bottom: 30px; }
+.certificates-title { margin-bottom: 20px; }
+
+.certificates-list {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -460,139 +464,57 @@ main {
   scroll-snap-type: inline mandatory;
 }
 
-.testimonials-item {
-  min-width: 100%;
+.certificates-item {
+  min-width: 240px; /* Largura padronizada menor para os cards ficarem justos e responsivos */
   scroll-snap-align: center;
 }
 
-.testimonials-avatar-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(15px, -25px);
-  background: var(--bg-gradient-onyx);
-  border-radius: 14px;
-  box-shadow: var(--shadow-1);
+.certificates-item .content-card {
+  padding: 20px;
 }
 
-.testimonials-item-title { margin-bottom: 7px; }
-
-.testimonials-text {
-  color: var(--light-gray);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
-  line-height: 1.6;
-  display: -webkit-box;
-  line-clamp: 4;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+.certificate-img-box {
+  border-radius: 12px;
   overflow: hidden;
+  margin-bottom: 15px;
+  background: var(--jet);
+  height: 160px; /* Define uma altura padrão e menor para todos os certificados */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
+.certificate-img-box img {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  z-index: 20;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-.modal-container::-webkit-scrollbar { display: none; }
-
-.modal-container.active {
-  pointer-events: all;
-  visibility: visible;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: hsl(0, 0%, 5%);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  z-index: 1;
+  object-fit: contain; /* Garante que a imagem se ajuste à caixa sem cortar, baseando-se na altura e largura */
   transition: var(--transition-1);
 }
 
-.overlay.active {
-  opacity: 0.8;
-  visibility: visible;
-  pointer-events: all;
+.certificates-item a:hover .certificate-img-box img {
+  transform: scale(1.05);
 }
 
-.testimonials-modal {
-  background: var(--eerie-black-2);
-  position: relative;
-  padding: 15px;
-  margin: 15px 12px;
-  border: 1px solid var(--jet);
-  border-radius: 14px;
-  box-shadow: var(--shadow-5);
-  transform: scale(1.2);
-  opacity: 0;
+.certificates-item-title { 
+  margin-bottom: 7px; 
+  color: var(--white-2); 
   transition: var(--transition-1);
-  z-index: 2;
 }
 
-.modal-container.active .testimonials-modal {
-  transform: scale(1);
-  opacity: 1;
+.certificates-item a:hover .certificates-item-title { 
+  color: var(--orange-yellow-crayola);
 }
 
-.modal-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: var(--onyx);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--white-2);
-  font-size: 18px;
-  opacity: 0.7;
-}
-
-.modal-close-btn:hover, .modal-close-btn:focus { opacity: 1; }
-.modal-close-btn ion-icon { --ionicon-stroke-width: 50px; }
-
-.modal-avatar-box {
-  background: var(--bg-gradient-onyx);
-  width: max-content;
-  border-radius: 14px;
-  margin-bottom: 15px;
-  box-shadow: var(--shadow-2);
-}
-
-.modal-img-wrapper > img { display: none; }
-.modal-title { margin-bottom: 4px; }
-
-.modal-content time {
-  font-size: var(--fs-6);
-  color: var(--light-gray-70);
-  font-weight: var(--fw-300);
-  margin-bottom: 10px;
-}
-
-.modal-content p {
+.certificates-text {
   color: var(--light-gray);
   font-size: var(--fs-6);
   font-weight: var(--fw-300);
   line-height: 1.6;
+}
+
+/* Responsividade adicional opcional (mantida para organizar melhor em telas grandes) */
+@media (min-width: 1024px) {
+  .certificates-item { min-width: calc(33.33% - 15px); } /* Fica em um grid de 3 para telas largas, respeitando a altura do card */
 }
 
 .tech { margin-bottom: 15px; }
@@ -874,7 +796,7 @@ main {
 
 /* Nova seção de artigos/relacionados (Antigo Blog) */
 .posts-section {
-  margin-top: 45px; /* Separa da galeria principal */
+  margin-top: 45px; 
   margin-bottom: 10px;
 }
 
@@ -1117,33 +1039,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   .service-icon-box { margin-bottom: 0; margin-top: 5px; }
   .service-content-box { text-align: left; }
 
-  .testimonials-title { margin-bottom: 25px; }
-  .testimonials-list {
-    gap: 30px;
-    margin: 0 -30px;
-    padding: 30px;
-    padding-bottom: 35px;
-  }
-  .content-card { padding: 30px; padding-top: 25px; }
-  .testimonials-avatar-box { transform: translate(30px, -30px); border-radius: 20px; }
-  .testimonials-avatar-box img { width: 80px; }
-  .testimonials-item-title { margin-bottom: 10px; margin-left: 95px; }
-  .testimonials-text { line-clamp: 2; -webkit-line-clamp: 2; }
-
-  .modal-container { padding: 20px; }
-  .testimonials-modal {
-    display: flex;
-    justify-content: flex-start;
-    align-items: stretch;
-    gap: 25px;
-    padding: 30px;
-    border-radius: 20px;
-  }
-  .modal-img-wrapper { display: flex; flex-direction: column; align-items: center; }
-  .modal-avatar-box { border-radius: 18px; margin-bottom: 0; }
-  .modal-avatar-box img { width: 65px; }
-  .modal-img-wrapper > img { display: block; flex-grow: 1; width: 35px; }
-
   .timeline-list { margin-left: 65px; }
   .timeline-item:not(:last-child)::before { left: -40px; }
   .timeline-item::after { height: 8px; width: 8px; left: -43px; }
@@ -1167,9 +1062,6 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .contacts-list { grid-template-columns: 1fr 1fr; gap: 30px 15px; }
   .navbar-link { --fs-8: 15px; }
-
-  .testimonials-modal { gap: 35px; max-width: 680px; }
-  .modal-avatar-box img { width: 80px; }
 
   .article-title { padding-bottom: 20px; }
   .filter-select-box { display: none; }
@@ -1217,7 +1109,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   .navbar-link { font-weight: var(--fw-500); }
 
   .service-list { grid-template-columns: 1fr 1fr; gap: 20px 25px; }
-  .testimonials-item { min-width: calc(50% - 15px); }
 
   .project-list { grid-template-columns: repeat(3, 1fr); }
   .post-banner-box { height: 230px; }
