@@ -1,15 +1,3 @@
-/*-----------------------------------*\
-  #style.css
-\*-----------------------------------*/
-
-
-/**
- * copyright 2022 @codewithsadee
- */
-
-
-
-
 
 /*-----------------------------------*\
   #CUSTOM PROPERTY
@@ -433,14 +421,28 @@ main {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   padding-bottom: 4px;
   padding-left: 7px;
 }
 
 .social-item .social-link {
   color: var(--light-gray-70);
-  font-size: 18px;
+  font-size: 20px; /* Aumentei um pouquinho o ícone para destacar mais nesse formato */
+  display: flex;
+  flex-direction: column; /* Essa é a regra que joga o texto para baixo do ícone */
+  align-items: center; /* Centraliza o ícone e o texto perfeitamente */
+  gap: 0px; /* Espaço entre o ícone e o texto */
+  transition: var(--transition-1);
+}
+
+.social-item .social-link span {
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+}
+
+.social-item .social-link:hover { 
+  color: var(--light-gray); 
 }
 
 
