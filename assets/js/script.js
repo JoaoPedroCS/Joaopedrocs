@@ -153,6 +153,128 @@ const modalImage = projectModal.querySelector("img");
 const modalDescription = projectModal.querySelector("[data-modal-description]");
 const modalDetails = projectModal.querySelector("[data-modal-details]");
 
+// =========================================
+// DEMO INTERATIVA NO MODAL (ex.: Pokédex)
+// =========================================
+const modalDemo = projectModal.querySelector("[data-modal-demo]");
+
+const POKE_TYPE_COLORS = {
+  normal: "#a8a878", fire: "#f08030", water: "#6890f0", electric: "#f8d030",
+  grass: "#78c850", ice: "#98d8d8", fighting: "#c03028", poison: "#a040a0",
+  ground: "#e0c068", flying: "#a890f0", psychic: "#f85888", bug: "#a8b820",
+  rock: "#b8a038", ghost: "#705898", dragon: "#7038f8", dark: "#705848",
+  steel: "#b8b8d0", fairy: "#ee99ac"
+};
+
+const POKE_STAT_LABELS = {
+  "hp": "HP", "attack": "Attack", "defense": "Defense",
+  "special-attack": "Sp. Atk", "special-defense": "Sp. Def", "speed": "Speed"
+};
+
+const POKE_DEMO_MARKUP = `
+  <div class="poke-demo">
+    <form class="poke-demo-form" data-poke-form>
+      <input class="poke-demo-input" type="text" placeholder="Nome ou ID (ex: pikachu, 6)"
+        aria-label="Nome ou ID do Pokémon" autocomplete="off" data-poke-input>
+      <button class="poke-demo-btn" type="submit">Buscar</button>
+    </form>
+    <div class="poke-demo-status" data-poke-status>Digite o nome ou o número de um Pokémon.</div>
+    <div class="poke-demo-result" data-poke-result></div>
+  </div>`;
+
+// Consulta a PokeAPI e diferencia "não encontrado" de falha de rede
+const fetchPokemon = async function (query) {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + encodeURIComponent(query));
+  if (response.status === 404) throw new Error("not-found");
+  if (!response.ok) throw new Error("api-error");
+  return response.json();
+};
+
+// Transforma o JSON da API em HTML (peso vem em hectogramas e altura em decímetros)
+const buildPokemonCard = function (data) {
+  const sprite = data.sprites.front_default || data.sprites.other["official-artwork"].front_default;
+  const weightKg = (data.weight / 10).toLocaleString("pt-BR");
+  const heightM = (data.height / 10).toLocaleString("pt-BR");
+
+  const typesHTML = data.types.map(function (entry) {
+    const typeName = entry.type.name;
+    const color = POKE_TYPE_COLORS[typeName] || "#68a090";
+    return `<div class="poke-type" style="background:${color}">${typeName}</div>`;
+  }).join("");
+
+  const statsHTML = data.stats.map(function (entry) {
+    const label = POKE_STAT_LABELS[entry.stat.name] || entry.stat.name;
+    const percent = Math.min(100, Math.round((entry.base_stat / 255) * 100));
+    return `
+      <div class="poke-stat">
+        <div class="poke-stat-name">${label}</div>
+        <div class="poke-stat-value">${entry.base_stat}</div>
+        <div class="poke-stat-bar"><div class="poke-stat-fill" style="width:${percent}%"></div></div>
+      </div>`;
+  }).join("");
+
+  return `
+    <div class="poke-card">
+      <img class="poke-sprite" src="${sprite}" alt="${data.name}">
+      <div class="poke-info">
+        <div class="poke-name">${data.name} <span class="poke-id">#${data.id}</span></div>
+        <div class="poke-meta">Peso: ${weightKg} kg · Altura: ${heightM} m</div>
+        <div class="poke-types">${typesHTML}</div>
+      </div>
+    </div>
+    <div class="poke-stats-list">${statsHTML}</div>`;
+};
+
+const setupPokeDemo = function () {
+  modalDemo.innerHTML = POKE_DEMO_MARKUP;
+
+  const form = modalDemo.querySelector("[data-poke-form]");
+  const input = modalDemo.querySelector("[data-poke-input]");
+  const status = modalDemo.querySelector("[data-poke-status]");
+  const result = modalDemo.querySelector("[data-poke-result]");
+  let lastRequest = 0; // ignora respostas antigas se o usuário buscar de novo rápido
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const query = input.value.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!query) return;
+
+    const requestId = ++lastRequest;
+    status.className = "poke-demo-status";
+    status.innerText = "Buscando...";
+
+    try {
+      const data = await fetchPokemon(query);
+      if (requestId !== lastRequest) return;
+      result.innerHTML = buildPokemonCard(data);
+      status.innerText = "";
+    } catch (error) {
+      if (requestId !== lastRequest) return;
+      result.innerHTML = "";
+      status.classList.add("error");
+      status.innerText = error.message === "not-found"
+        ? "Pokémon não encontrado. Tente outro nome ou ID."
+        : "Não foi possível consultar a PokeAPI agora. Tente novamente.";
+    }
+  });
+};
+
+// Cada projeto com data-demo="nome" abre a demo correspondente acima do texto
+const PROJECT_DEMOS = { pokesearch: setupPokeDemo };
+
+const openProjectDemo = function (demoName) {
+  modalDemo.classList.remove("active");
+  modalDemo.innerHTML = "";
+  modalImage.style.display = "";
+
+  if (PROJECT_DEMOS[demoName]) {
+    PROJECT_DEMOS[demoName]();
+    modalDemo.classList.add("active");
+    modalImage.style.display = "none"; // a demo já ocupa o lugar da imagem
+  }
+};
+
+
 const toggleProjectModal = function (isOpen) {
   projectModal.classList.toggle("active", isOpen);
   projectModal.setAttribute("aria-hidden", String(!isOpen));
@@ -172,6 +294,7 @@ for (let i = 0; i < projectTriggers.length; i++) {
     modalImage.alt = image.alt;
     modalDescription.innerText = projectItem.dataset.description;
     modalDetails.innerText = projectItem.dataset.details;
+    openProjectDemo(projectItem.dataset.demo);
     toggleProjectModal(true);
   });
 }

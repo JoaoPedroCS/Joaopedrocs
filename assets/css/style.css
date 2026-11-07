@@ -1,8 +1,4 @@
-/*-----------------------------------*\
-  #CUSTOM PROPERTY
-\*-----------------------------------*/
 :root {
-  /* gradient */
   --bg-gradient-onyx: linear-gradient(to bottom right, #111823 3%, #0b1018 97%);
   --bg-gradient-jet: linear-gradient(to bottom right, rgba(17, 24, 35, 0.5) 0%, rgba(17, 24, 35, 0) 100%), #111823;
   --bg-gradient-yellow-1: linear-gradient(to bottom right, #ff4654 0%, rgba(255, 70, 84, 0) 50%);
@@ -10,7 +6,6 @@
   --border-gradient-onyx: linear-gradient(to bottom right, #1f2937 0%, rgba(31, 41, 55, 0) 50%);
   --text-gradient-yellow: linear-gradient(to right, #ff4654, #ba3a46);
 
-  /* solid */
   --jet: #1f2937;
   --onyx: #111823;
   --eerie-black-1: #111823;
@@ -24,7 +19,6 @@
   --light-gray-70: hsla(0, 0%, 84%, 0.7);
   --bittersweet-shimmer: hsl(0, 43%, 51%);
 
-  /* typography */
   --ff-poppins: 'Poppins', sans-serif;
   --fs-1: 24px;
   --fs-2: 18px;
@@ -39,21 +33,16 @@
   --fw-500: 500;
   --fw-600: 600;
 
-  /* shadow */
   --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
   --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
   --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.25);
   --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
   --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
 
-  /* transition */
   --transition-1: 0.25s ease;
   --transition-2: 0.5s ease-in-out;
 }
 
-/*-----------------------------------*\
-  #RESET
-\*-----------------------------------*/
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -88,9 +77,6 @@ input, textarea {
 html { font-family: var(--ff-poppins); }
 body { background: var(--smoky-black); }
 
-/*-----------------------------------*\
-  #REUSED STYLE
-\*-----------------------------------*/
 .sidebar, article {
   background: var(--eerie-black-2);
   border: 1px solid var(--jet);
@@ -207,18 +193,12 @@ article.active {
   z-index: -1;
 }
 
-/*-----------------------------------*\
-  #MAIN
-\*-----------------------------------*/
 main {
   margin: 15px 12px;
   margin-bottom: 75px;
   min-width: 259px;
 }
 
-/*-----------------------------------*\
-  #SIDEBAR
-\*-----------------------------------*/
 .sidebar {
   margin-bottom: 15px;
   max-height: 112px;
@@ -356,9 +336,6 @@ main {
 
 .social-item .social-link:hover { color: var(--light-gray); }
 
-/*-----------------------------------*\
-  #NAVBAR
-\*-----------------------------------*/
 .navbar {
   position: fixed;
   bottom: 0;
@@ -390,9 +367,6 @@ main {
 .navbar-link:hover, .navbar-link:focus { color: var(--light-gray-70); }
 .navbar-link.active { color: var(--orange-yellow-crayola); }
 
-/*-----------------------------------*\
-  #ABOUT
-\*-----------------------------------*/
 .about .article-title { margin-bottom: 15px; }
 
 .about-text {
@@ -445,9 +419,6 @@ main {
   line-height: 1.6;
 }
 
-/**
- * #CERTIFICAÇÕES 
- */
 
 .certificates { margin-bottom: 30px; }
 .certificates-title { margin-bottom: 20px; }
@@ -467,7 +438,7 @@ main {
 }
 
 .certificates-item {
-  min-width: 240px; /* Largura padronizada menor para os cards ficarem justos e responsivos */
+  min-width: 240px;
   scroll-snap-align: center;
 }
 
@@ -480,7 +451,7 @@ main {
   overflow: hidden;
   margin-bottom: 15px;
   background: var(--jet);
-  height: 160px; /* Define uma altura padrão e menor para todos os certificados */
+  height: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -489,7 +460,7 @@ main {
 .certificate-img-box img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Garante que a imagem se ajuste à caixa sem cortar, baseando-se na altura e largura */
+  object-fit: contain;
   transition: var(--transition-1);
 }
 
@@ -514,9 +485,8 @@ main {
   line-height: 1.6;
 }
 
-/* Responsividade adicional opcional (mantida para organizar melhor em telas grandes) */
 @media (min-width: 1024px) {
-  .certificates-item { min-width: calc(33.33% - 15px); } /* Fica em um grid de 3 para telas largas, respeitando a altura do card */
+  .certificates-item { min-width: calc(33.33% - 15px); }
 }
 
 .tech { margin-bottom: 15px; }
@@ -554,9 +524,6 @@ main {
   transform: scale(1.15); 
 }
 
-/*-----------------------------------*\
-  #RESUME
-\*-----------------------------------*/
 .article-title { margin-bottom: 30px; }
 
 .timeline { margin-bottom: 30px; }
@@ -646,9 +613,6 @@ main {
   border-radius: inherit;
 }
 
-/*-----------------------------------*\
-  #PROJETOS UNIFICADOS
-\*-----------------------------------*/
 .filter-list { display: none; }
 
 .filter-select-box {
@@ -729,7 +693,7 @@ main {
 .project-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;   /* mesma proporção para todos os cards */
+  aspect-ratio: 4 / 3;
   height: auto;
   border-radius: 16px;
   overflow: hidden;
@@ -778,7 +742,7 @@ main {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;     /* recorta em vez de esticar */
+  object-fit: cover;
   object-position: center;
   transition: var(--transition-1);
 }
@@ -800,7 +764,6 @@ main {
   font-weight: var(--fw-300);
 }
 
-/* Nova seção de artigos/relacionados (Antigo Blog) */
 .posts-section {
   margin-top: 45px; 
   margin-bottom: 10px;
@@ -883,9 +846,6 @@ main {
   line-height: 1.6;
 }
 
-/*-----------------------------------*\
-  #CONTACT
-\*-----------------------------------*/
 .mapbox {
   position: relative;
   height: 250px;
@@ -979,9 +939,6 @@ textarea.form-input::-webkit-resizer { display: none; }
 .form-btn:disabled:hover { background: var(--border-gradient-onyx); }
 .form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
 
-/*-----------------------------------*\
-  #RESPONSIVE
-\*-----------------------------------*/
 
 @media (min-width: 450px) {
   .project-img, .post-banner-box { height: auto; }
@@ -1176,11 +1133,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   .timeline-text { max-width: 700px; }
 }
 
-/* =========================================
-   MODAL DE PROJETOS
-   ========================================= */
 
-/* 1. Container fixo que cobre toda a tela, invisível por padrão (opacity 0, visibility hidden), z-index alto (ex: 100) */
 .project-modal {
   position: fixed;
   top: 0;
@@ -1197,7 +1150,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   transition: opacity var(--transition-1), visibility var(--transition-1);
 }
 
-/* 2. Overlay escuro com fundo preto translúcido, cobrindo 100% da tela */
 .modal-overlay {
   content: "";
   position: absolute;
@@ -1208,7 +1160,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* 3. Caixa principal do modal: centralizada, fundo var(--eerie-black-2), borda var(--jet), border-radius 20px, max-width 700px, padding 30px */
 .modal-content {
   position: relative;
   background: var(--eerie-black-2);
@@ -1217,18 +1168,16 @@ textarea.form-input::-webkit-resizer { display: none; }
   max-width: 700px;
   width: 90%;
   padding: 30px;
-  z-index: 10000; /* Certifique-se de que o conteúdo do modal esteja acima do overlay */
+  z-index: 10000;
   max-height: 90vh;
   overflow-y: auto;
 }
 
-/* 4. Estilo para quando o modal ganha a classe .active (opacity 1, visibility visible) */
 .project-modal.active {
   opacity: 1;
   visibility: visible;
 }
 
-/* 5. Botão de fechar absoluto no canto superior direito, cor var(--orange-yellow-crayola) */
 .modal-close-btn {
   position: absolute;
   top: 15px;
@@ -1263,3 +1212,84 @@ body.modal-open { overflow: hidden; }
   line-height: 1.6;
   margin-bottom: 12px;
 }
+
+/* =========================================
+   DEMO INTERATIVA NO MODAL (POKÉDEX)
+   ========================================= */
+.modal-demo { display: none; margin-bottom: 20px; }
+.modal-demo.active { display: block; }
+
+.poke-demo {
+  background: var(--eerie-black-1);
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.poke-demo-form { display: flex; gap: 8px; }
+
+.poke-demo-input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--jet);
+  background: var(--eerie-black-2);
+  color: var(--white-2);
+  font-family: inherit;
+  font-size: var(--fs-6);
+}
+.poke-demo-input:focus { outline: none; border-color: var(--orange-yellow-crayola); }
+
+.poke-demo-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: var(--orange-yellow-crayola);
+  color: var(--white-1);
+  font-family: inherit;
+  font-size: var(--fs-6);
+  font-weight: var(--fw-500);
+  cursor: pointer;
+  transition: var(--transition-1);
+}
+.poke-demo-btn:hover { background: var(--vegas-gold); }
+
+.poke-demo-status { margin-top: 12px; color: var(--light-gray-70); font-size: var(--fs-7); }
+.poke-demo-status:empty { display: none; }
+.poke-demo-status.error { color: var(--bittersweet-shimmer); }
+
+.poke-card { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+
+.modal-content .poke-sprite {
+  width: 96px;
+  height: 96px;
+  max-height: none;
+  margin: 0;
+  flex-shrink: 0;
+  object-fit: contain;
+  background: var(--eerie-black-2);
+  border: 1px solid var(--jet);
+  border-radius: 12px;
+}
+
+.poke-name { color: var(--white-2); font-size: var(--fs-3); font-weight: var(--fw-500); text-transform: capitalize; }
+.poke-id { display: inline; color: var(--light-gray-70); font-weight: var(--fw-300); }
+.poke-meta { color: var(--light-gray-70); font-size: var(--fs-7); margin: 4px 0 8px; }
+
+.poke-types { display: flex; flex-wrap: wrap; gap: 6px; }
+.poke-type {
+  padding: 2px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-transform: capitalize;
+  text-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.4);
+}
+
+.poke-stats-list { display: grid; gap: 8px; margin-top: 14px; }
+.poke-stat { display: grid; grid-template-columns: 56px 34px 1fr; align-items: center; gap: 8px; }
+.poke-stat-name { color: var(--light-gray-70); font-size: var(--fs-8); text-transform: uppercase; }
+.poke-stat-value { color: var(--white-2); font-size: var(--fs-7); font-weight: var(--fw-500); text-align: right; }
+.poke-stat-bar { height: 8px; background: var(--eerie-black-2); border-radius: 4px; overflow: hidden; }
+.poke-stat-fill { height: 100%; background: var(--orange-yellow-crayola); border-radius: 4px; }

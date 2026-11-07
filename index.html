@@ -1,33 +1,4 @@
 <!DOCTYPE html>
-<!-- 
-Sidebar:✅
-Minha Foto✅
--------------------------------------------
-Pagina Sobre mim:✅
-Texto✅
-Certificados com links✅
-Fazer algo com "What im I Doing"✅
-Fix o que eu estou fazendo imagens descentral✅
-Tecnologias mais importantes✅
--------------------------------------------
-Pagina Curriculo:✅
-Atualizar Timeline e textos✅
-Colocar Fluencia em linguas com Bandeiras✅
-Atualizar skills✅
--------------------------------------------
-Pagina Projetos:❌
-colocar projetos meus reais
-colocar uma tela popup com texto e explicações sobre projeto quando clica nele 
-Colocar Categorias reais
-Tirar a parte de blog abaixo✅
--------------------------------------------
-Pagina Contato:✅
-Colocar Form Funcionavel✅
-Tirar pagina do formspree ao enviar✅
--------------------------------------------
-Outros:✅
-Novo README✅
--->
 <html lang="en">
 
 <head>
@@ -48,7 +19,6 @@ Novo README✅
 <body>
 
   <main>
-    <!-- #SIDEBAR -->
     <aside class="sidebar" data-sidebar>
       <div class="sidebar-info">
         <figure class="avatar-box">
@@ -125,10 +95,8 @@ Novo README✅
       </div>
     </aside>
 
-    <!-- #MAIN CONTENT -->
     <div class="main-content">
 
-      <!-- #NAVBAR -->
       <nav class="navbar">
         <ul class="navbar-list">
           <li class="navbar-item">
@@ -137,7 +105,6 @@ Novo README✅
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Curriculo</button>
           </li>
-          <!-- Aba unificada de Projetos -->
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Projetos</button>
           </li>
@@ -147,7 +114,6 @@ Novo README✅
         </ul>
       </nav>
 
-      <!-- #SOBRE MIM -->
       <article class="about active" data-page="sobre mim">
         <header>
           <h2 class="h2 article-title">Sobre mim</h2>
@@ -165,7 +131,6 @@ Novo README✅
           
           <ul class="service-list">
             
-            <!-- Item 1: Cloud e Certificações -->
             <li class="service-item">
               <div class="service-icon-box">
                 <img src="./assets/images/icon-cloud.svg" alt="Cloud icon" width="40">
@@ -176,7 +141,6 @@ Novo README✅
               </div>
             </li>
 
-            <!-- Item 2: Bacharelado -->
             <li class="service-item">
               <div class="service-icon-box">
                 <img src="./assets/images/icon-dev.svg" alt="Degree icon" width="40">
@@ -187,7 +151,6 @@ Novo README✅
               </div>
             </li>
 
-            <!-- Item 3: Mandarim -->
             <li class="service-item">
               <div class="service-icon-box">
                 <img src="./assets/images/icon-mandarin.svg" alt="Mandarin icon" width="40">
@@ -198,7 +161,6 @@ Novo README✅
               </div>
             </li>
 
-            <!-- Item 4: Investimentos e Riqueza -->
             <li class="service-item">
               <div class="service-icon-box">
                 <img src="./assets/images/icon-wealth.svg" alt="Wealth icon" width="40">
@@ -212,7 +174,6 @@ Novo README✅
           </ul>
         </section>
 
-        <!-- #CERTIFICAÇÕES -->
         <section class="certificates">
           <h3 class="h3 certificates-title">Certificações</h3>
           <ul class="certificates-list has-scrollbar">
@@ -280,14 +241,11 @@ Novo README✅
         </section>
       </article>
 
-      <!-- #CURRICULO -->
-      <!-- #CURRICULO -->
       <article class="resume" data-page="curriculo">
         <header>
           <h2 class="h2 article-title">Currículo</h2>
         </header>
 
-        <!-- Educação -->
         <section class="timeline">
           <div class="title-wrapper">
             <div class="icon-box">
@@ -308,7 +266,6 @@ Novo README✅
           </ol>
         </section>
 
-        <!-- Experiência -->
         <section class="timeline">
           <div class="title-wrapper">
             <div class="icon-box">
@@ -331,7 +288,6 @@ Novo README✅
           </ol>
         </section>
 
-        <!-- Idiomas -->
         <section class="timeline">
           <div class="title-wrapper">
             <div class="icon-box">
@@ -352,12 +308,10 @@ Novo README✅
           </ol>
         </section>
 
-        <!-- Skills -->
         <section class="skill">
           <h3 class="h3 skills-title">Minhas Skills</h3>
           <ul class="skills-list content-card">
             
-            <!-- Skills Principais de Mercado (Pareto - 50%) -->
             <li class="skills-item">
               <div class="title-wrapper">
                 <h5 class="h5">Python</h5>
@@ -417,13 +371,11 @@ Novo README✅
         </section>
       </article>
 
-      <!-- #PROJETOS (Unificado) -->
       <article class="projects-section" data-page="projetos">
         <header>
           <h2 class="h2 article-title">Projetos</h2>
         </header>
 
-        <!-- Galeria de Projetos -->
         <section class="projects">
           <ul class="filter-list">
             <li class="filter-item">
@@ -499,17 +451,17 @@ Novo README✅
                 <p class="project-category">Universidade</p>
               </a>
             </li>
-            <li class="project-item active" data-filter-item data-category="pessoal"
-              data-description="Projeto pessoal criado para explorar desenvolvimento de software, lógica e interação com usuários."
-              data-details="O projeto foi desenvolvido como laboratório para experimentar novas ideias, melhorar a experiência de uso e consolidar boas práticas.">
+            <li class="project-item active" data-filter-item data-category="pessoal" data-demo="pokesearch"
+              data-description="Pokédex interativa que consulta a PokeAPI em tempo real. Digite o nome ou o número de um Pokémon na busca acima e veja sprite, tipos e atributos base."
+              data-details="Feita com HTML, CSS e JavaScript puros. Ao enviar a busca, o JavaScript monta a URL da PokeAPI com o nome ou ID digitado e faz uma requisição assíncrona com fetch. A API devolve um JSON, do qual extraio nome, ID, peso, altura, sprite, tipos e os seis atributos base. Os dados são convertidos para unidades legíveis (kg e metros) e renderizados dinamicamente no DOM: cada tipo vira uma etiqueta colorida e cada atributo, uma barra proporcional ao valor. Se o Pokémon não existir ou a API falhar, a interface mostra uma mensagem de erro em vez de quebrar.">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="./assets/images/project-4.png" alt="brawlhalla" loading="lazy">
+                  <img src="./assets/images/poke.png" alt="Pokédex" loading="lazy">
                 </figure>
-                <h3 class="project-title">Brawlhalla</h3>
+                <h3 class="project-title">Pokédex com PokeAPI</h3>
                 <p class="project-category">Pessoal</p>
               </a>
             </li>
@@ -518,7 +470,6 @@ Novo README✅
 
       </article>
 
-      <!-- #CONTATO -->
       <article class="contact" data-page="contato">
         <header>
           <h2 class="h2 article-title">Contact</h2>
@@ -562,6 +513,7 @@ Novo README✅
         <ion-icon name="close-outline"></ion-icon>
       </button>
       <h3 id="modal-title">Título do projeto</h3>
+      <div class="modal-demo" data-modal-demo></div>
       <img src="./assets/images/project-1.jpg" alt="Imagem do projeto" loading="lazy">
       <p data-modal-description></p>
       <p data-modal-details></p>
