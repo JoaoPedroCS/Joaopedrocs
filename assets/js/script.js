@@ -19,7 +19,7 @@ select.addEventListener("click", function () { elementToggleFunc(this); });
 
 const filterFunc = function (selectedValue) {
   for (let i = 0; i < filterItems.length; i++) {
-    if (selectedValue === "all" || selectedValue === filterItems[i].dataset.category) {
+    if (selectedValue === "todos" || selectedValue === filterItems[i].dataset.category) {
       filterItems[i].classList.add("active");
     } else {
       filterItems[i].classList.remove("active");
@@ -124,5 +124,68 @@ form.addEventListener("submit", async function (event) {
     }
   } catch (error) {
     alert("Ops! Ocorreu um problema na sua conexão.");
+  }
+});
+
+// =========================================
+// LÓGICA DO MODAL DE PROJETOS
+// =========================================
+
+// 1. Selecionar todos os cards de projetos (elementos com data-filter-item)
+// 2. Selecionar os elementos do Modal: container do modal, overlay, botão de fechar, título, imagem, texto e bloco de código
+// 3. Criar uma função genérica para alternar (toggle) a classe "active" no modalContainer e no overlay
+
+// 4. Fazer um loop (for) em todos os cards de projetos:
+//    - Adicionar um evento de "click" em cada card
+//    - Prevenir o comportamento padrão do link (preventDefault)
+//    - Atualizar o Título, Imagem e Texto do modal baseado no conteúdo do card clicado
+//    - Chamar a função que abre o modal
+
+// 5. Adicionar evento de "click" no botão de fechar para chamar a função de toggle
+// 6. Adicionar evento de "click" no overlay para fechar o modal ao clicar fora
+
+const projectTriggers = document.querySelectorAll("[data-project-trigger]");
+const projectModal = document.querySelector("[data-project-modal]");
+const modalOverlay = document.querySelector("[data-modal-overlay]");
+const modalCloseButton = document.querySelector("[data-modal-close]");
+const modalTitle = projectModal.querySelector("#modal-title");
+const modalImage = projectModal.querySelector("img");
+const modalDescription = projectModal.querySelector("[data-modal-description]");
+const modalDetails = projectModal.querySelector("[data-modal-details]");
+
+const toggleProjectModal = function (isOpen) {
+  projectModal.classList.toggle("active", isOpen);
+  projectModal.setAttribute("aria-hidden", String(!isOpen));
+  document.body.classList.toggle("modal-open", isOpen);
+};
+
+for (let i = 0; i < projectTriggers.length; i++) {
+  projectTriggers[i].addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const projectItem = this.closest("[data-filter-item]");
+    const title = projectItem.querySelector(".project-title").innerText;
+    const image = this.querySelector(".project-img img");
+
+    modalTitle.innerText = title;
+    modalImage.src = image.src;
+    modalImage.alt = image.alt;
+    modalDescription.innerText = projectItem.dataset.description;
+    modalDetails.innerText = projectItem.dataset.details;
+    toggleProjectModal(true);
+  });
+}
+
+modalCloseButton.addEventListener("click", function () {
+  toggleProjectModal(false);
+});
+
+modalOverlay.addEventListener("click", function () {
+  toggleProjectModal(false);
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && projectModal.classList.contains("active")) {
+    toggleProjectModal(false);
   }
 });
