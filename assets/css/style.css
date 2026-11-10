@@ -617,7 +617,7 @@ main {
 
 .filter-select-box {
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
 .filter-select {
@@ -1034,7 +1034,7 @@ textarea.form-input::-webkit-resizer { display: none; }
     align-items: center;
     gap: 25px;
     padding-left: 5px;
-    margin-bottom: 30px;
+    margin-bottom: 18px;
   }
   .filter-item button { color: var(--light-gray); font-size: var(--fs-5); transition: var(--transition-1); }
   .filter-item button:hover { color: var(--light-gray-70); }
@@ -1293,3 +1293,128 @@ body.modal-open { overflow: hidden; }
 .poke-stat-value { color: var(--white-2); font-size: var(--fs-7); font-weight: var(--fw-500); text-align: right; }
 .poke-stat-bar { height: 8px; background: var(--eerie-black-2); border-radius: 4px; overflow: hidden; }
 .poke-stat-fill { height: 100%; background: var(--orange-yellow-crayola); border-radius: 4px; }
+
+/* =========================================
+   TAGS SECUNDÁRIAS DOS PROJETOS
+   ========================================= */
+.tag-chip {
+  --tag-color: var(--light-gray);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--tag-color) 35%, transparent);
+  background: color-mix(in srgb, var(--tag-color) 10%, transparent);
+  color: var(--tag-color);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-400);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.tag-chip ion-icon { font-size: 12px; flex-shrink: 0; }
+
+/* chips nos cards */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0 10px;
+}
+
+/* menu de filtro por tag */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding-left: 5px;
+  margin-bottom: 30px;
+}
+.tag-filter[hidden] { display: none; }
+
+.tag-filter-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+}
+
+.tag-filter-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tag-chip-btn {
+  font-size: var(--fs-7);
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: var(--transition-1);
+}
+.tag-chip-btn:hover { background: color-mix(in srgb, var(--tag-color) 22%, transparent); }
+.tag-chip-btn:focus-visible { outline: 2px solid var(--tag-color); outline-offset: 2px; }
+.tag-chip-btn[aria-pressed="true"] {
+  background: var(--tag-color);
+  border-color: var(--tag-color);
+  color: var(--smoky-black);
+}
+
+.tag-count { font-size: var(--fs-8); opacity: 0.7; }
+
+.tag-filter-clear {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+  transition: var(--transition-1);
+}
+.tag-filter-clear:hover { color: var(--vegas-gold); }
+.tag-filter-clear[hidden] { display: none; }
+
+.projects-empty {
+  color: var(--light-gray-70);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  text-align: center;
+  padding: 30px 0;
+}
+.projects-empty[hidden] { display: none; }
+
+/* tags dentro do modal */
+.modal-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.modal-tags[hidden] { display: none; }
+
+.modal-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.modal-tag-desc {
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+}
+
+.modal-repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--jet);
+  border-radius: 12px;
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-6);
+  transition: var(--transition-1);
+}
+.modal-repo-link:hover { background: var(--jet); }
+.modal-repo-link[hidden] { display: none; }

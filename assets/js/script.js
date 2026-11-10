@@ -8,6 +8,19 @@ const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
 
+// =========================================
+// TAGS SECUNDÁRIAS DOS PROJETOS
+// =========================================
+// Para criar uma tag nova: adicione uma entrada aqui e use a chave em data-tags="..." no <li> do projeto.
+// Projetos com data-demo recebem a tag "demo" automaticamente.
+const PROJECT_TAGS = {
+  ai:     { label: "AI",       icon: "sparkles-outline",    color: "#b794f6", description: "IA usada para agilizar o desenvolvimento e testar o projeto" },
+  github: { label: "GitHub",   icon: "logo-github",         color: "#e6edf3", description: "Tem repositório no GitHub" },
+  demo:   { label: "Demo",     icon: "play-circle-outline", color: "#4ade80", description: "Tem demo interativa aqui no portfólio" },
+  paralelo: { label: "Paralelo", icon: "git-network-outline", color: "#7aa2f7", description: "Usa programação paralela" },
+  dados:  { label: "Dados",    icon: "bar-chart-outline",   color: "#fbbf24", description: "Análise ou simulação sobre dados reais" }
+};
+
 // Filter & Category selection
 const select = document.querySelector("[data-select]");
 const selectItems = document.querySelectorAll("[data-select-item]");
@@ -15,17 +28,92 @@ const selectValue = document.querySelector("[data-selecct-value]");
 const filterBtn = document.querySelectorAll("[data-filter-btn]");
 const filterItems = document.querySelectorAll("[data-filter-item]");
 
+const tagFilter = document.querySelector("[data-tag-filter]");
+const tagFilterList = document.querySelector("[data-tag-filter-list]");
+const tagClearBtn = document.querySelector("[data-tag-clear]");
+const projectsEmpty = document.querySelector("[data-projects-empty]");
+
 select.addEventListener("click", function () { elementToggleFunc(this); });
 
-const filterFunc = function (selectedValue) {
+let activeCategory = "todos";
+const activeTags = new Set();
+const projectTagMap = new Map(); // <li> do projeto -> Set com as chaves das tags
+
+// Lê data-tags do projeto (mantendo a ordem definida em PROJECT_TAGS)
+const getProjectTags = function (item) {
+  const found = new Set((item.dataset.tags || "").split(/\s+/).filter(Boolean));
+  if (item.dataset.demo) found.add("demo");
+  return Object.keys(PROJECT_TAGS).filter(function (key) { return found.has(key); });
+};
+
+const tagChipHTML = function (key) {
+  const tag = PROJECT_TAGS[key];
+  return `<span class="tag-chip" style="--tag-color:${tag.color}" title="${tag.description}"><ion-icon name="${tag.icon}"></ion-icon>${tag.label}</span>`;
+};
+
+// Aplica categoria (botões principais) + tags (menu secundário) ao mesmo tempo.
+// Com mais de uma tag marcada, o projeto precisa ter TODAS (ex.: AI + GitHub).
+const applyFilters = function () {
+  let visibleCount = 0;
   for (let i = 0; i < filterItems.length; i++) {
-    if (selectedValue === "todos" || selectedValue === filterItems[i].dataset.category) {
-      filterItems[i].classList.add("active");
-    } else {
-      filterItems[i].classList.remove("active");
-    }
+    const item = filterItems[i];
+    const projectTags = projectTagMap.get(item);
+    const categoryOk = activeCategory === "todos" || activeCategory === item.dataset.category;
+    const tagsOk = Array.from(activeTags).every(function (key) { return projectTags.has(key); });
+    const show = categoryOk && tagsOk;
+    item.classList.toggle("active", show);
+    if (show) visibleCount++;
+  }
+  projectsEmpty.hidden = visibleCount !== 0;
+  tagClearBtn.hidden = activeTags.size === 0;
+};
+
+const filterFunc = function (selectedValue) {
+  activeCategory = selectedValue;
+  applyFilters();
+};
+
+// Tags nos cards + contagem por tag
+const tagCounts = {};
+for (let i = 0; i < filterItems.length; i++) {
+  const tags = getProjectTags(filterItems[i]);
+  projectTagMap.set(filterItems[i], new Set(tags));
+  tags.forEach(function (key) { tagCounts[key] = (tagCounts[key] || 0) + 1; });
+
+  if (tags.length) {
+    filterItems[i].querySelector("[data-project-trigger]").insertAdjacentHTML(
+      "beforeend",
+      `<div class="project-tags">${tags.map(tagChipHTML).join("")}</div>`
+    );
   }
 }
+
+// Menu de tags: só aparecem as tags que algum projeto usa
+Object.keys(PROJECT_TAGS).forEach(function (key) {
+  if (!tagCounts[key]) return;
+  const tag = PROJECT_TAGS[key];
+  const li = document.createElement("li");
+  li.innerHTML = `<button type="button" class="tag-chip tag-chip-btn" style="--tag-color:${tag.color}" data-tag-key="${key}" aria-pressed="false" title="${tag.description}"><ion-icon name="${tag.icon}"></ion-icon>${tag.label}<span class="tag-count">${tagCounts[key]}</span></button>`;
+  tagFilterList.appendChild(li);
+});
+if (!tagFilterList.children.length) tagFilter.hidden = true;
+
+tagFilterList.addEventListener("click", function (event) {
+  const btn = event.target.closest("[data-tag-key]");
+  if (!btn) return;
+  const key = btn.dataset.tagKey;
+  const isOn = !activeTags.has(key);
+  if (isOn) { activeTags.add(key); } else { activeTags.delete(key); }
+  btn.setAttribute("aria-pressed", String(isOn));
+  applyFilters();
+});
+
+tagClearBtn.addEventListener("click", function () {
+  activeTags.clear();
+  const pressed = tagFilterList.querySelectorAll("[aria-pressed='true']");
+  for (let i = 0; i < pressed.length; i++) pressed[i].setAttribute("aria-pressed", "false");
+  applyFilters();
+});
 
 for (let i = 0; i < selectItems.length; i++) {
   selectItems[i].addEventListener("click", function () {
@@ -152,6 +240,24 @@ const modalTitle = projectModal.querySelector("#modal-title");
 const modalImage = projectModal.querySelector("img");
 const modalDescription = projectModal.querySelector("[data-modal-description]");
 const modalDetails = projectModal.querySelector("[data-modal-details]");
+const modalTags = projectModal.querySelector("[data-modal-tags]");
+const modalRepo = projectModal.querySelector("[data-modal-repo]");
+
+// Tags + descrição de cada uma, e link do repositório (data-repo no <li>) quando existir
+const renderModalTags = function (item) {
+  const tags = Array.from(projectTagMap.get(item) || []);
+  modalTags.innerHTML = tags.map(function (key) {
+    return `<li class="modal-tag-row">${tagChipHTML(key)}<span class="modal-tag-desc">${PROJECT_TAGS[key].description}</span></li>`;
+  }).join("");
+  modalTags.hidden = tags.length === 0;
+
+  if (item.dataset.repo) {
+    modalRepo.href = item.dataset.repo;
+    modalRepo.hidden = false;
+  } else {
+    modalRepo.hidden = true;
+  }
+};
 
 // =========================================
 // DEMO INTERATIVA NO MODAL (ex.: Pokédex)
@@ -294,6 +400,7 @@ for (let i = 0; i < projectTriggers.length; i++) {
     modalImage.alt = image.alt;
     modalDescription.innerText = projectItem.dataset.description;
     modalDetails.innerText = projectItem.dataset.details;
+    renderModalTags(projectItem);
     openProjectDemo(projectItem.dataset.demo);
     toggleProjectModal(true);
   });
