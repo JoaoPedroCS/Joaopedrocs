@@ -242,6 +242,7 @@ const modalDescription = projectModal.querySelector("[data-modal-description]");
 const modalDetails = projectModal.querySelector("[data-modal-details]");
 const modalTags = projectModal.querySelector("[data-modal-tags]");
 const modalRepo = projectModal.querySelector("[data-modal-repo]");
+const modalSite = projectModal.querySelector("[data-modal-site]");
 
 // Tags + descrição de cada uma, e link do repositório (data-repo no <li>) quando existir
 const renderModalTags = function (item) {
@@ -256,6 +257,13 @@ const renderModalTags = function (item) {
     modalRepo.hidden = false;
   } else {
     modalRepo.hidden = true;
+  }
+
+  if (item.dataset.site) {
+    modalSite.href = item.dataset.site;
+    modalSite.hidden = false;
+  } else {
+    modalSite.hidden = true;
   }
 };
 

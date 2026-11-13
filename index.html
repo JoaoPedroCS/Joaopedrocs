@@ -424,7 +424,7 @@
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="./assets/images/warehouse.png" alt="Warehouse Slotting" loading="lazy">
+                  <img src="./assets/images/warehouse.svg" alt="Warehouse Slotting" loading="lazy">
                 </figure>
                 <h3 class="project-title">Warehouse Slotting</h3>
                 <p class="project-category">Shopper</p>
@@ -438,7 +438,7 @@
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="./assets/images/supply.png" alt="Supply Chain Analytics" loading="lazy">
+                  <img src="./assets/images/supply.svg" alt="Supply Chain Analytics" loading="lazy">
                 </figure>
                 <h3 class="project-title">Supply Chain Analytics</h3>
                 <p class="project-category">Shopper</p>
@@ -453,7 +453,7 @@
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="./assets/images/eternityII.png" alt="Eternity II Solver" loading="lazy">
+                  <img src="./assets/images/eternity.svg" alt="Eternity II Solver" loading="lazy">
                 </figure>
                 <h3 class="project-title">Eternity II Solver (MPI)</h3>
                 <p class="project-category">Universidade</p>
@@ -467,10 +467,24 @@
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="./assets/images/poke.png" alt="Pokédex" loading="lazy">
+                  <img src="./assets/images/pokedex.svg" alt="Pokédex" loading="lazy">
                 </figure>
                 <h3 class="project-title">Pokédex com PokeAPI</h3>
                 <p class="project-category">Pessoal</p>
+              </a>
+            </li>
+            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="github" data-repo="https://github.com/JoaoPedroCS/BolaoDaCopa" data-site="https://joaopedrocs.github.io/BolaoDaCopa/"
+              data-description="Site estático que gerenciou um bolão da Copa do Mundo 2026 entre amigos: cada palpiteiro tinha um perfil com seus palpites, o site buscava os placares reais sozinho e recalculava o ranking ao vivo no navegador, na fase de grupos e no mata-mata. Foi um bolão ativo, para uso meu e dos amigos, e chegou à versão final com a gravação de palpites mais segura, via Worker; hoje está aposentado, e o site segue no ar como projeto de portfólio, com apelidos genéricos e sem fotos."
+              data-details="O site alterna entre dois modos. No modo Grupos: Ranking (com filtro por Rodada 1, 2, 3 ou Total), Jogos (agrupados por rodada, cada jogo abre a lista de palpites de todos), Tabela (classificação de cada grupo) e Palpiteiros. No modo Mata-mata: Ranking, Partidas (em ordem de data, com vencedor em destaque e pênaltis), Chaveamento (bracket completo até a final, com zoom e arrasto, em que os times avançam conforme os resultados reais) e Meus Palpites. Há ainda uma página de evolução, com um gráfico dos pontos acumulados de cada pessoa ao longo dos jogos. Os perfis eram fixos, sem cadastro: a identidade ficava salva no localStorage, só para personalizar a visão, sem login com senha.&#10;&#10;Pontuação na fase de grupos: placar exato 5 pontos, empate certo (placar diferente) 3, acertar só o vencedor 2,5 e errar 0; o desempate vai para quem tiver mais placares exatos, depois mais empates certos. No mata-mata, os 16-avos pedem o placar dos 90 minutos (exato 5, empate 3, só o vencedor 2,5, mais 5 de bônus por acertar quem se classifica) e as demais fases pedem só quem avança: oitavas 10, quartas 20, semifinal 40, 3º lugar 60 e final 80.&#10;&#10;Por baixo, tudo é calculado no navegador, em HTML, CSS e JavaScript puros, sem framework e sem build. Um Cloudflare Worker consulta a football-data.org, junta fase de grupos, mata-mata e placar ao vivo numa única resposta JSON em cache, e o site rebusca a cada 60 s com a aba aberta. Uma semente local com os 72 jogos de grupo (ids estáveis) serve de fallback, e um script com GitHub Action a regenera a partir da API. Jogos finalizados são congelados para o placar não zerar por falha da fonte, mas o app ainda adota dados tardios, como pênaltis e quem avançou. Na versão final, mais segura, os palpites passam por uma rota /palpites do próprio Worker, que guarda a chave do JsonBin como secret: o navegador nunca vê a chave, já que uma chave embutida em site estático é pública e, com permissão de escrita, deixaria qualquer um apagar o bolão. A rota devolve o registro no GET e, no PUT, só aceita gravação da origem do site (e localhost no desenvolvimento), valida formato e tamanho, não deixa criar, apagar ou renomear perfis e preserva o bloco de dados ao vivo. Sem a rota configurada, o site lê um arquivo de palpites local. O limite honesto desse modelo: os perfis não têm login, então um PUT válido forjado por fora do navegador ainda poderia editar palpites; a proteção real exigiria um PIN por perfil validado no Worker. A página de evolução usa Chart.js, a hospedagem é o GitHub Pages, e o repositório público usa apelidos genéricos e deixa de fora os palpites reais e a configuração privada do Worker.">
+              <a href="#" data-project-trigger>
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/images/bolao.svg" alt="Bolão da Copa 2026" loading="lazy">
+                </figure>
+                <h3 class="project-title">Bolão da Copa 2026</h3>
+                <p class="project-category">Pessoal · Aposentado</p>
               </a>
             </li>
           </ul>
@@ -522,15 +536,21 @@
         <ion-icon name="close-outline"></ion-icon>
       </button>
       <h3 id="modal-title">Título do projeto</h3>
+      <div class="modal-links">
+      <a class="modal-repo-link" data-modal-site href="#" target="_blank" rel="noopener" hidden>
+        <ion-icon name="globe-outline"></ion-icon>
+        <span>Acessar o site</span>
+      </a>
+      <a class="modal-repo-link" data-modal-repo href="#" target="_blank" rel="noopener" hidden>
+        <ion-icon name="logo-github"></ion-icon>
+        <span>Ver repositório no GitHub</span>
+      </a>
+      </div>
       <ul class="modal-tags" data-modal-tags hidden></ul>
       <div class="modal-demo" data-modal-demo></div>
       <img src="./assets/images/project-1.jpg" alt="Imagem do projeto" loading="lazy">
       <p data-modal-description></p>
       <p data-modal-details></p>
-      <a class="modal-repo-link" data-modal-repo href="#" target="_blank" rel="noopener" hidden>
-        <ion-icon name="logo-github"></ion-icon>
-        <span>Ver repositório no GitHub</span>
-      </a>
     </div>
   </div>
 
