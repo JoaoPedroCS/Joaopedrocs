@@ -213,7 +213,27 @@ const projectModal = document.querySelector("[data-project-modal]");
 const modalOverlay = document.querySelector("[data-modal-overlay]");
 const modalCloseButton = document.querySelector("[data-modal-close]");
 const modalTitle = projectModal.querySelector("#modal-title");
-const modalImage = projectModal.querySelector("img");
+const modalImage = projectModal.querySelector("[data-modal-img]");
+const modalCover = projectModal.querySelector("[data-modal-cover]");
+
+// Foto do projeto (se houver <img> no card) ou a capa ilustrada
+const renderModalMedia = function (trigger) {
+  const image = trigger.querySelector(".project-img img");
+  const cover = trigger.querySelector(".project-cover");
+
+  if (image) {
+    modalImage.src = image.src;
+    modalImage.alt = image.alt;
+    modalImage.hidden = false;
+    modalCover.hidden = true;
+  } else {
+    modalImage.hidden = true;
+    modalImage.removeAttribute("src");
+    modalCover.className = "modal-cover " + (cover ? cover.className.replace("project-cover", "").trim() : "");
+    modalCover.innerHTML = cover ? cover.innerHTML : "";
+    modalCover.hidden = !cover;
+  }
+};
 const modalDescription = projectModal.querySelector("[data-modal-description]");
 const modalDetails = projectModal.querySelector("[data-modal-details]");
 const modalTags = projectModal.querySelector("[data-modal-tags]");
@@ -349,11 +369,13 @@ const openProjectDemo = function (demoName) {
   modalDemo.classList.remove("active");
   modalDemo.innerHTML = "";
   modalImage.style.display = "";
+  modalCover.style.display = "";
 
   if (PROJECT_DEMOS[demoName]) {
     PROJECT_DEMOS[demoName]();
     modalDemo.classList.add("active");
     modalImage.style.display = "none";
+    modalCover.style.display = "none";
   }
 };
 
@@ -370,11 +392,9 @@ for (let i = 0; i < projectTriggers.length; i++) {
 
     const projectItem = this.closest("[data-filter-item]");
     const title = projectItem.querySelector(".project-title").innerText;
-    const image = this.querySelector(".project-img img");
 
     modalTitle.innerText = title;
-    modalImage.src = image.src;
-    modalImage.alt = image.alt;
+    renderModalMedia(this);
     modalDescription.innerText = projectItem.dataset.description;
     modalDetails.innerText = projectItem.dataset.details;
     renderModalTags(projectItem);
