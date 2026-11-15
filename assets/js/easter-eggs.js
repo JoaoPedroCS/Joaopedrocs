@@ -26,11 +26,11 @@
     return {
       starwars: saved.starwars === true,
       dino: saved.dino === true,
-      dig: saved.dig === true,
+      dig: false,
       cinema: saved.cinema === true,
-      cine: saved.cine === true,
+      cine: false,
       terminal: saved.terminal === true,
-      sky: saved.sky === true
+      sky: false
     };
   })();
   const saveState = function () {
@@ -99,6 +99,7 @@
     toast(html + '<br><span class="egg-muted">easter eggs: <b>' + foundCount() + "/4</b> encontrados</span>", { group: "found" });
   };
 
+  let skyUsed = false;
   const sw = (function () {
     let wrap = null;
     let canvas = null;
@@ -509,6 +510,7 @@
       isOn: function () { return state.sky; },
       isBusy: function () { return busy; },
       on: function (withJump, done) {
+        skyUsed = true;
         state.sky = true;
         saveState();
         start();
@@ -532,6 +534,205 @@
       }
     };
   })();
+
+  const GROGU_SVG =
+    '<svg viewBox="0 0 80 60" focusable="false" aria-hidden="true">' +
+    '<g class="g-ears">' +
+      '<path d="M28 26C20 21 10 17 1 16C5 22 14 30 28 36Z" fill="#9cb87c" stroke="#6f8a55" stroke-width=".8"/>' +
+      '<path d="M26 27.5C19 24 12 21 6 19.8C10 24 16 29 26 32.6Z" fill="#d9a99a" opacity=".75"/>' +
+      '<path d="M52 26C60 21 70 17 79 16C75 22 66 30 52 36Z" fill="#9cb87c" stroke="#6f8a55" stroke-width=".8"/>' +
+      '<path d="M54 27.5C61 24 68 21 74 19.8C70 24 64 29 54 32.6Z" fill="#d9a99a" opacity=".75"/>' +
+    "</g>" +
+    '<path d="M24 46Q40 39 56 46L61 60H19Z" fill="#b99467" stroke="#7d6040" stroke-width=".8"/>' +
+    '<path d="M26 45.5Q40 40.5 54 45.5Q40 49 26 45.5Z" fill="#d6bb8c"/>' +
+    '<ellipse cx="40" cy="31" rx="14" ry="13" fill="#a3bf84" stroke="#6f8a55" stroke-width=".8"/>' +
+    '<path d="M33 22.5q7-3 14 0M35 19.5q5-2 10 0" fill="none" stroke="#7f9a62" stroke-width=".7"/>' +
+    '<path d="M38.5 18.5q-2-5-5-7M41.5 18.5q2-6 6-7M40 18q0-5 1-8" fill="none" stroke="#efeadf" stroke-width=".5" opacity=".75"/>' +
+    '<g class="g-eyes">' +
+      '<ellipse cx="34" cy="31" rx="4.2" ry="4.7" fill="#1b120b"/><ellipse cx="46" cy="31" rx="4.2" ry="4.7" fill="#1b120b"/>' +
+      '<circle cx="35.5" cy="29.3" r="1.3" fill="#fff"/><circle cx="47.5" cy="29.3" r="1.3" fill="#fff"/>' +
+    "</g>" +
+    '<path d="M39 35.6q1 .8 2 0M37 38.6q3 1.5 6 0" fill="none" stroke="#5b7344" stroke-width=".7" stroke-linecap="round"/>' +
+    '<g class="g-hand">' +
+      '<path d="M53 49l8-5 4 6-8 5z" fill="#b99467" stroke="#7d6040" stroke-width=".7"/>' +
+      '<circle cx="63.5" cy="44.5" r="3" fill="#a3bf84" stroke="#6f8a55" stroke-width=".6"/>' +
+      '<path d="M62 41.8l-.6-2.6M64 41.6l.2-2.8M65.8 42.4l1.2-2.2" stroke="#a3bf84" stroke-width="1.5" stroke-linecap="round"/>' +
+    "</g>" +
+    "</svg>";
+
+  const GROGU_MS = 50000;
+  let groguBusy = false;
+
+  const groguSpot = function () {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const size = vw < 580 ? 50 : 58;
+    const fits = function (el) {
+      if (!el || !el.getClientRects().length) return null;
+      const r = el.getBoundingClientRect();
+      if (r.top < 60 || r.top > vh * 0.8 || r.width < 160) return null;
+      return { edge: r.top, x: r.left + r.width * rand(0.55, 0.78) - size / 2 };
+    };
+    const navbar = document.querySelector(".navbar");
+    const navFixed = navbar && getComputedStyle(navbar).position === "fixed";
+    const spot =
+      fits(document.querySelector("main article.active")) ||
+      fits(document.querySelector(".sidebar")) ||
+      (navFixed ? { edge: navbar.getBoundingClientRect().top, x: vw * rand(0.55, 0.75) - size / 2 } : null) ||
+      { edge: vh, x: vw * 0.7 - size / 2 };
+    spot.size = size;
+    return spot;
+  };
+
+  const runGrogu = function () {
+    const star = document.querySelector("[data-egg-starwars]");
+    if (!star || groguBusy || state.sky || sw.isBusy()) return;
+    if (reducedMotion() || typeof star.animate !== "function") { star.click(); return; }
+    groguBusy = true;
+    document.body.classList.add("egg-grogu-on");
+
+    const spot = groguSpot();
+    const h = spot.size * 0.75;
+    const shown = h * 0.8;
+    const peek = document.createElement("div");
+    peek.className = "egg-grogu-peek";
+    peek.setAttribute("aria-hidden", "true");
+    peek.style.cssText = "left:" + Math.round(spot.x) + "px;top:" + Math.round(spot.edge - shown) + "px;width:" + spot.size + "px;height:" + Math.round(shown) + "px;";
+    peek.innerHTML = '<div class="egg-grogu">' + GROGU_SVG + "</div>";
+    const force = document.createElement("div");
+    force.className = "egg-force";
+    force.setAttribute("aria-hidden", "true");
+    document.body.appendChild(force);
+    document.body.appendChild(peek);
+    const body = peek.firstElementChild;
+    const later = function (ms, fn) { setTimeout(fn, ms); };
+
+    body.animate([
+      { transform: "translateY(" + Math.round(shown + 4) + "px)" },
+      { transform: "translateY(-2px) rotate(-4deg)", offset: 0.75 },
+      { transform: "translateY(0) rotate(0)" }
+    ], { duration: 950, easing: "cubic-bezier(.2,.8,.3,1)", fill: "forwards" });
+    later(1150, function () { peek.classList.add("is-blink"); });
+    later(1550, function () { peek.classList.add("is-force"); });
+
+    const handAt = function () {
+      const r = peek.getBoundingClientRect();
+      return { x: r.left + r.width * 0.8, y: r.top + r.height * 0.55 };
+    };
+    const ripple = function () {
+      const p = handAt();
+      const ring = document.createElement("i");
+      ring.className = "egg-force-ring";
+      ring.style.left = p.x + "px";
+      ring.style.top = p.y + "px";
+      force.appendChild(ring);
+      setTimeout(function () { ring.remove(); }, 1000);
+    };
+    const ripples = [];
+    later(1600, function () {
+      ripple();
+      ripples.push(setInterval(ripple, 420));
+    });
+
+    const sr = star.getBoundingClientRect();
+    const sx = sr.left + sr.width / 2;
+    const sy = sr.top + sr.height / 2;
+    const dx = window.innerWidth / 2 - sx;
+    const dy = window.innerHeight / 2 - sy;
+    const cxp = dx * 0.85;
+    const cyp = dy * 0.08;
+
+    later(1700, function () {
+      star.classList.add("is-forced");
+      const frames = [
+        { transform: "translate(0px, 0px) rotate(0deg) scale(1)", offset: 0 },
+        { transform: "translate(2px, -3px) rotate(-10deg) scale(1.1)", offset: 0.05 },
+        { transform: "translate(-2px, 1px) rotate(9deg) scale(1.15)", offset: 0.1 },
+        { transform: "translate(1px, -2px) rotate(-5deg) scale(1.2)", offset: 0.15 }
+      ];
+      for (let i = 1; i <= 16; i++) {
+        const t0 = i / 16;
+        const t = t0 * t0 * (3 - 2 * t0);
+        const x = 2 * (1 - t) * t * cxp + t * t * dx;
+        const y = 2 * (1 - t) * t * cyp + t * t * dy + Math.sin(t0 * Math.PI * 3) * 6 * (1 - t0);
+        frames.push({
+          transform: "translate(" + x.toFixed(1) + "px, " + y.toFixed(1) + "px) rotate(" + (t0 * 360).toFixed(0) + "deg) scale(" + (1.2 + t * 1.8).toFixed(2) + ")",
+          offset: 0.15 + 0.85 * t0
+        });
+      }
+      star.animate(frames, { duration: 2800, easing: "linear", fill: "forwards" });
+
+      const trailStart = performance.now();
+      const trail = function (now) {
+        if (now - trailStart > 2800 || !force.isConnected) return;
+        const r = star.getBoundingClientRect();
+        const dot = document.createElement("i");
+        dot.className = "egg-force-dot";
+        dot.style.left = (r.left + r.width / 2 + rand(-6, 6)) + "px";
+        dot.style.top = (r.top + r.height / 2 + rand(-6, 6)) + "px";
+        force.appendChild(dot);
+        setTimeout(function () { dot.remove(); }, 900);
+        setTimeout(function () { requestAnimationFrame(trail); }, 55);
+      };
+      requestAnimationFrame(trail);
+    });
+
+    const center = "translate(" + dx.toFixed(1) + "px, " + dy.toFixed(1) + "px) rotate(360deg)";
+    later(4500, function () {
+      star.animate([
+        { transform: center + " scale(3)" },
+        { transform: center + " scale(3.6)", offset: 0.5 },
+        { transform: center + " scale(3)" }
+      ], { duration: 650, easing: "ease-in-out", fill: "forwards" });
+    });
+    later(4700, function () {
+      ripples.forEach(clearInterval);
+      peek.classList.remove("is-force");
+      body.animate([
+        { transform: "translateY(0)" },
+        { transform: "translateY(-3px)", offset: 0.25 },
+        { transform: "translateY(" + Math.round(shown + 4) + "px)" }
+      ], { duration: 550, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" });
+    });
+    later(5150, function () {
+      star.animate([
+        { transform: center + " scale(3)", opacity: 1 },
+        { transform: center + " scale(7)", opacity: 0 }
+      ], { duration: 380, easing: "ease-out", fill: "forwards" });
+    });
+    later(5450, function () {
+      peek.remove();
+      star.getAnimations().forEach(function (a) { a.cancel(); });
+      star.classList.remove("is-forced");
+      star.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 1600, easing: "ease-out" });
+      document.body.classList.remove("egg-grogu-on");
+      groguBusy = false;
+      if (!state.sky) star.click();
+      setTimeout(function () {
+        force.remove();
+        toast("🟢 <b>Alguém bem pequenininho usou a Força</b> e acendeu a estrela para você.", { group: "grogu", duration: 7000 });
+      }, 5200);
+    });
+  };
+
+  const watchGrogu = function () {
+    if (skyUsed) return;
+    let visible = 0;
+    let last = Date.now();
+    const timer = setInterval(function () {
+      const now = Date.now();
+      if (!document.hidden) visible += Math.min(now - last, 2000);
+      last = now;
+      if (skyUsed) { clearInterval(timer); return; }
+      if (visible < GROGU_MS || reducedMotion()) return;
+      const blocked = document.body.classList.contains("modal-open") ||
+        document.body.classList.contains("egg-term-open") ||
+        document.querySelector(".egg-cine, .egg-slate-wrap, .egg-meteor");
+      if (blocked || sw.isBusy()) return;
+      clearInterval(timer);
+      runGrogu();
+    }, 1000);
+  };
 
   const setupStarButton = function () {
     const btn = document.querySelector("[data-egg-starwars]");
@@ -1454,6 +1655,13 @@
 
     fortune: function () { termPrint(escapeHTML(pick(FORTUNES))); },
 
+    grogu: function () {
+      termPrint('🟢 algo bem pequeno se mexe atrás de um card… <b class="t-muted">fechando o terminal</b>');
+      closeThen(function () {
+        if (state.sky) { sw.off(); setTimeout(runGrogu, 900); } else runGrogu();
+      }, 700);
+    },
+
     starwars: function () {
       const turnOn = !sw.isOn();
       termPrint(turnOn ? "✨ engatando o hiperespaço… <b class=\"t-muted\">fechando o terminal</b>" : "🌌 apagando as estrelas…");
@@ -1526,6 +1734,7 @@
     dir: "ls", ll: "ls",
     projects: "projetos", project: "projetos",
     assembly: "asm", nasm: "asm",
+    yoda: "grogu", "baby-yoda": "grogu", babyyoda: "grogu", mando: "grogu",
     "star-wars": "starwars", force: "starwars", forca: "starwars", sky: "starwars", ceu: "starwars",
     dinos: "dino", dinossauro: "dino", dinossauros: "dino", trex: "dino", "t-rex": "dino", rawr: "dino",
     filme: "cinema", filmes: "cinema", movie: "cinema", movies: "cinema",
@@ -1698,6 +1907,7 @@
   });
 
   setupStarButton();
+  watchGrogu();
   document.querySelectorAll("[data-egg-dino]").forEach(function (btn) {
     btn.addEventListener("click", runDinos);
   });
@@ -1712,9 +1922,7 @@
   syncFound();
   document.addEventListener("click", function () { setTimeout(syncFound, 50); });
 
-  if (state.sky) sw.on(false);
-  if (state.dig) dig.on(false);
-  if (state.cine) { document.body.classList.add("egg-cine-mode"); syncClaps(); }
+  saveState();
 
   const pageTitle = document.title;
   const AWAY_TITLES = [

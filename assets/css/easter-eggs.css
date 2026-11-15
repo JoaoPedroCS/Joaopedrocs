@@ -775,6 +775,55 @@ body.egg-term-open { overflow: hidden; }
 .service-item:hover .egg-candles .down rect, .service-item:hover .egg-candles .down path { animation-delay: 0.08s; }
 @keyframes egg-candle { from { transform: scaleY(0.15); } }
 
+.egg-grogu-peek {
+  position: fixed;
+  z-index: 45;
+  overflow: hidden;
+  pointer-events: none;
+}
+.egg-grogu { width: 100%; transform: translateY(110%); }
+.egg-grogu svg { display: block; width: 100%; height: auto; overflow: visible; }
+.egg-grogu .g-eyes { transform-box: fill-box; transform-origin: center; }
+.egg-grogu-peek.is-blink .g-eyes { animation: egg-grogu-blink 0.32s ease-in-out 2; }
+@keyframes egg-grogu-blink { 50% { transform: scaleY(0.1); } }
+.egg-grogu .g-ears { transform-box: view-box; transform-origin: 40px 30px; transition: transform 0.4s ease; }
+.egg-grogu-peek.is-force .g-ears { transform: scaleX(1.05) translateY(-0.8px); }
+.egg-grogu .g-hand { transition: transform 0.45s cubic-bezier(.2,.8,.3,1.2); }
+.egg-grogu-peek.is-force .g-hand { transform: translate(-1px, -13px) rotate(-12deg); }
+.egg-grogu-peek.is-force .egg-grogu { filter: drop-shadow(0 0 4px rgba(158, 197, 255, 0.55)); }
+
+.egg-force { position: fixed; inset: 0; z-index: 46; pointer-events: none; }
+.egg-force-ring {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(170, 205, 255, 0.85);
+  animation: egg-force-ring 1s ease-out forwards;
+}
+@keyframes egg-force-ring { from { transform: scale(0.4); opacity: 0.9; } to { transform: scale(4.2); opacity: 0; } }
+.egg-force-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: #dbe9ff;
+  box-shadow: 0 0 8px 2px rgba(150, 190, 255, 0.8);
+  animation: egg-force-dot 0.9s ease-out forwards;
+}
+@keyframes egg-force-dot { to { transform: scale(0.2) translateY(6px); opacity: 0; } }
+
+.egg-starwars.is-forced {
+  animation: none;
+  opacity: 1;
+  color: #cfe2ff;
+  z-index: 47;
+  filter: drop-shadow(0 0 6px #9ec5ff) drop-shadow(0 0 14px rgba(120, 170, 255, 0.7));
+}
+body.egg-grogu-on .egg-starwars { pointer-events: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .egg-starwars, .egg-toast, .egg-cine-grain, .egg-term, .egg-cine, .article-title .egg-clap, .article-title .egg-clap .clap-arm, .article-title .egg-clap::after, .egg-caret, .egg-candles rect, .egg-candles path { animation: none !important; }
   body.egg-cine-mode .project-modal.active .modal-content { animation: none; }
