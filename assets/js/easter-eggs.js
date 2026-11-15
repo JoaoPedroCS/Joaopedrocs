@@ -428,6 +428,9 @@
     };
 
     const AWAY = [1, 0.82, 0.45, 0.17, 0.03];
+    const stopAnims = function (el) {
+      if (typeof el.getAnimations === "function") el.getAnimations().forEach(function (a) { a.cancel(); });
+    };
 
     const jump = function (done) {
       busy = true;
@@ -450,7 +453,7 @@
 
       const ship = shipEl();
       ship.classList.remove("is-open", "is-burn");
-      ship.getAnimations().forEach(function (a) { a.cancel(); });
+      stopAnims(ship);
       const restY = Math.round(vh * 0.16);
       const at = function (y, sc, rot) { return "translate(0px, " + y + "px) scale(" + sc + ") rotate(" + (rot || 0) + "deg)"; };
 
@@ -488,7 +491,7 @@
         });
       });
       later(SEQ.arrive + SEQ.settle + 150, function () {
-        ship.getAnimations().forEach(function (a) { a.cancel(); });
+        stopAnims(ship);
         ship.classList.remove("is-open", "is-burn");
         if (hyperLayer) hyperLayer.remove();
         document.body.classList.remove("egg-hyper-busy");
