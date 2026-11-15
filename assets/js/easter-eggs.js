@@ -28,6 +28,7 @@
       dino: saved.dino === true,
       dig: saved.dig === true,
       cinema: saved.cinema === true,
+      cine: saved.cine === true,
       terminal: saved.terminal === true,
       sky: saved.sky === true
     };
@@ -135,7 +136,7 @@
         return '<g class="xw-wing ' + cls + '">' +
           ring(17, 'class="xw-glow" fill="url(#egg-xw-glow)"') +
           '<path d="M' + X(24) + " " + Y(oy) + "L" + X(42) + " " + Y(oy) + "L" + X(39) + " " + Y(ey) + "L" + X(27) + " " + Y(ey) + 'Z" fill="#7f8792"/>' +
-          '<path d="' + quad(18, 4.5, 137, 2) + '" fill="url(#egg-xw-hull)" stroke="#5d6571" stroke-width="1"/>' +
+          '<path d="' + quad(18, 5.5, 137, 2.2) + '" fill="url(#egg-xw-hull)" stroke="#5d6571" stroke-width="1"/>' +
           '<path d="' + quad(100, 2.9, 116, 2.6) + '" fill="#c9473c"/>' +
           '<path d="M' + X(30) + " " + Y(oy) + "L" + X(132) + " " + Y(oy) + '" stroke="#6b7380" stroke-width=".6" opacity=".6"/>' +
           ring(13, 'fill="#4b525d" stroke="#a3aab4" stroke-width="1.3"') +
@@ -151,6 +152,10 @@
         '<radialGradient id="egg-xw-glow"><stop offset="0" stop-color="#ff9a80" stop-opacity=".95"/><stop offset=".45" stop-color="#ff5038" stop-opacity=".4"/><stop offset="1" stop-color="#ff3020" stop-opacity="0"/></radialGradient>' +
         "</defs>" +
         wing(-1, 1, "xw-ll") + wing(1, 1, "xw-lr") + wing(-1, -1, "xw-ul") + wing(1, -1, "xw-ur") +
+        '<path d="M144 96L176 96L167.5 62L152.5 62Z" fill="url(#egg-xw-hull)" stroke="#5d6571" stroke-width="1"/>' +
+        '<path d="M152.5 62L167.5 62L165 55L155 55Z" fill="#b9bfc7" stroke="#5d6571" stroke-width=".8"/>' +
+        '<path d="M151.5 81L168.5 81L165.6 67L154.4 67Z" fill="#26303d" stroke="#5d6571" stroke-width=".9"/>' +
+        '<path d="M156 70L158.5 70L157.6 78L155 78Z" fill="#7d93b5" opacity=".55"/>' +
         '<path d="M150 92a10 10 0 0 1 20 0z" fill="#eceff3" stroke="#5d6571" stroke-width="1"/>' +
         '<rect x="155" y="85.5" width="5" height="3" rx=".8" fill="#3d6cc0"/><circle cx="164" cy="88" r="1.4" fill="#20252c"/>' +
         '<rect x="141" y="91" width="38" height="34" rx="7" fill="url(#egg-xw-hull)" stroke="#5d6571" stroke-width="1.2"/>' +
@@ -174,7 +179,7 @@
       wrap.innerHTML =
         '<canvas class="egg-sky-canvas"></canvas>' +
         '<i class="egg-sky-flash"></i>' +
-        '<div class="egg-tie">' + TIE_SVG + "</div>";
+        '<div class="egg-tie" hidden>' + TIE_SVG + "</div>";
       document.body.insertBefore(wrap, document.body.firstChild);
       canvas = wrap.querySelector("canvas");
       ctx = canvas.getContext("2d");
@@ -1133,20 +1138,11 @@
     });
   };
 
-  const MOVIES = [
-    ["2001: Uma Odisseia no Espaço", "1968 · Stanley Kubrick"],
-    ["Blade Runner", "1982 · Ridley Scott"],
-    ["Cinema Paradiso", "1988 · Giuseppe Tornatore"],
-    ["Parque dos Dinossauros", "1993 · Steven Spielberg"],
-    ["Cidade de Deus", "2002 · Fernando Meirelles"],
-    ["Interestelar", "2014 · Christopher Nolan"],
-    ["Os Sete Samurais", "1954 · Akira Kurosawa"],
-    ["Star Wars: Uma Nova Esperança", "1977 · George Lucas"],
-    ["Matrix", "1999 · Lana e Lilly Wachowski"]
-  ];
   let cineEl = null;
   let cineTimers = [];
-  let movieIndex = Math.floor(Math.random() * MOVIES.length);
+  let slateEl = null;
+  let takeCount = 0;
+  let cineBypass = false;
 
   const stopCinema = function () {
     cineTimers.forEach(clearTimeout);
@@ -1162,48 +1158,133 @@
     if (event.key === "Escape") { event.stopPropagation(); stopCinema(); }
   };
 
-  const runCinema = function () {
-    if (cineEl) return;
-    const movie = MOVIES[movieIndex];
-    movieIndex = (movieIndex + 1) % MOVIES.length;
+  const syncClaps = function () {
+    document.querySelectorAll("[data-egg-cinema]").forEach(function (b) {
+      b.classList.toggle("is-on", state.cine);
+      b.setAttribute("aria-pressed", String(state.cine));
+    });
+  };
 
+  const goToProjects = function () {
+    const page = document.querySelector('[data-page="projetos"]');
+    if (page && page.classList.contains("active")) return;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-nav-link]"), function (link) {
+      if (normalize(link.textContent) === "projetos") link.click();
+    });
+  };
+
+  const playIntro = function () {
+    if (cineEl || reducedMotion()) return;
     cineEl = document.createElement("div");
-    cineEl.className = "egg-cine";
+    cineEl.className = "egg-cine is-intro";
     cineEl.setAttribute("role", "dialog");
-    cineEl.setAttribute("aria-label", "Sessão de cinema (clique para pular)");
+    cineEl.setAttribute("aria-label", "Contagem do filme (clique para pular)");
     cineEl.innerHTML =
       '<div class="egg-cine-leader" data-leader>' +
         '<div class="egg-cine-reticle"><span data-count>3</span></div>' +
-      "</div>" +
-      '<i class="egg-cine-grain"></i><i class="egg-cine-vignette"></i>' +
-      '<i class="egg-cine-bar egg-cine-bar-top"></i><i class="egg-cine-bar egg-cine-bar-bottom"></i>' +
-      '<div class="egg-cine-title" data-title>' +
-        "<small>Sessão da noite</small>" +
-        "<strong>" + escapeHTML(movie[0]) + "</strong>" +
-        "<em>" + escapeHTML(movie[1]) + "</em>" +
-        '<span class="egg-cine-hint">clique ou Esc para sair</span>' +
       "</div>";
     document.body.appendChild(cineEl);
     cineEl.addEventListener("click", stopCinema);
     document.addEventListener("keydown", onCinemaKey, true);
-    discover("cinema", "🎬 <b>Luzes, câmera, ação!</b>");
 
-    const count = cineEl.querySelector("[data-count]");
-    const leader = cineEl.querySelector("[data-leader]");
-    if (reducedMotion()) {
-      leader.hidden = true;
-      cineEl.classList.add("is-playing");
-    } else {
-      [["2", 700], ["1", 1400]].forEach(function (step) {
-        cineTimers.push(setTimeout(function () { count.textContent = step[0]; }, step[1]));
-      });
-      cineTimers.push(setTimeout(function () {
-        leader.classList.add("is-done");
-        cineEl.classList.add("is-playing");
-      }, 2100));
-    }
-    cineTimers.push(setTimeout(stopCinema, reducedMotion() ? 8000 : 10500));
+    const counter = cineEl.querySelector("[data-count]");
+    [["2", 700], ["1", 1400]].forEach(function (step) {
+      cineTimers.push(setTimeout(function () { counter.textContent = step[0]; }, step[1]));
+    });
+    cineTimers.push(setTimeout(stopCinema, 2100));
   };
+
+  const cinemaOn = function (withIntro) {
+    state.cine = true;
+    saveState();
+    document.body.classList.add("egg-cine-mode");
+    syncClaps();
+    if (withIntro) {
+      goToProjects();
+      playIntro();
+    }
+    discover("cinema", "🎬 <b>Luzes, câmera, ação!</b><br>Agora cada projeto abre como uma cena de filme.");
+  };
+
+  const cinemaOff = function () {
+    state.cine = false;
+    saveState();
+    stopCinema();
+    document.body.classList.remove("egg-cine-mode");
+    syncClaps();
+    toast("💡 Fim da sessão: as luzes acenderam. A claquete continua no título de Projetos.", { group: "cine", duration: 4000 });
+  };
+
+  const runCinema = function () {
+    if (state.cine) cinemaOff();
+    else cinemaOn(true);
+  };
+
+  const today = function () {
+    const d = new Date();
+    const two = function (n) { return (n < 10 ? "0" : "") + n; };
+    return two(d.getDate()) + "/" + two(d.getMonth() + 1) + "/" + String(d.getFullYear()).slice(2);
+  };
+
+  const playSlate = function (title, scene, then) {
+    if (slateEl) slateEl.remove();
+    takeCount += 1;
+    const wrap = document.createElement("div");
+    wrap.className = "egg-slate-wrap";
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.innerHTML =
+      '<i class="egg-cine-grain"></i><i class="egg-slate-flash"></i>' +
+      '<div class="egg-slate">' +
+        '<div class="egg-slate-stick egg-slate-arm"></div>' +
+        '<div class="egg-slate-stick egg-slate-base"></div>' +
+        '<div class="egg-slate-board">' +
+          '<div class="egg-slate-head">Portfólio · JP</div>' +
+          '<div class="egg-slate-row egg-slate-scene"><span>Cena</span><b>' + escapeHTML(title) + "</b></div>" +
+          '<div class="egg-slate-grid">' +
+            "<div><span>Rolo</span><b>" + escapeHTML(scene) + "</b></div>" +
+            "<div><span>Take</span><b>" + takeCount + "</b></div>" +
+            "<div><span>Direção</span><b>João Pedro</b></div>" +
+            "<div><span>Data</span><b>" + today() + "</b></div>" +
+          "</div>" +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(wrap);
+    slateEl = wrap;
+    const timers = [];
+    const skip = function () {
+      timers.forEach(clearTimeout);
+      finish();
+    };
+    let done = false;
+    const finish = function () {
+      if (done) return;
+      done = true;
+      wrap.removeEventListener("click", skip);
+      wrap.classList.add("is-out");
+      setTimeout(function () { wrap.remove(); if (slateEl === wrap) slateEl = null; }, 450);
+      then();
+    };
+    wrap.addEventListener("click", skip);
+    requestAnimationFrame(function () { wrap.classList.add("is-in"); });
+    timers.push(setTimeout(function () { wrap.classList.add("is-clap"); }, 720));
+    timers.push(setTimeout(finish, 1250));
+  };
+
+  document.addEventListener("click", function (event) {
+    if (!state.cine || cineBypass) return;
+    const trigger = event.target && event.target.closest ? event.target.closest("[data-project-trigger]") : null;
+    if (!trigger) return;
+    const item = trigger.closest("[data-filter-item]");
+    const titleEl = item && item.querySelector(".project-title");
+    const sceneEl = item && item.querySelector(".project-category");
+    if (!titleEl || reducedMotion()) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    playSlate(titleEl.textContent.trim(), sceneEl ? sceneEl.textContent.trim() : "", function () {
+      cineBypass = true;
+      try { trigger.click(); } finally { cineBypass = false; }
+    });
+  }, true);
 
   let term = null;
   let termOut = null;
@@ -1232,7 +1313,7 @@
     const rows = [
       [state.starwars, "star wars", "uma estrela ✦ cintila no canto superior do céu"],
       [state.dino, "dinossauros", "algo fossilizado se esconde em “Sobre mim”"],
-      [state.cinema, "cinema", "uma claquete espera na aba “Contato”"],
+      [state.cinema, "cinema", "uma claquete espera no título de “Projetos”"],
       [state.terminal, "terminal", "você está aqui 😉"]
     ];
     termPrint(
@@ -1279,7 +1360,7 @@
         row("fortune", "uma frase aleatória"),
         row("starwars", "liga/desliga o céu estrelado ✨"),
         row("dino", "liga/desliga a escavação 🦴"),
-        row("cinema", "começa a sessão 🎬"),
+        row("cinema", "liga/desliga o modo cinema nos projetos 🎬"),
         row("segredos", "easter eggs que você já achou"),
         '  <b class="t-accent">clear</b> · <b class="t-accent">exit</b> <b class="t-muted">· Tab completa, ↑↓ navega no histórico</b>'
       ].join("\n"));
@@ -1393,7 +1474,9 @@
     },
 
     cinema: function () {
-      termPrint('🎬 silêncio no set… <b class="t-muted">fechando o terminal</b>');
+      termPrint(state.cine
+        ? '💡 acendendo as luzes da sala… <b class="t-muted">fechando o terminal</b>'
+        : '🎬 silêncio no set… <b class="t-muted">fechando o terminal</b>');
       closeThen(runCinema, 700);
     },
 
@@ -1631,6 +1714,31 @@
 
   if (state.sky) sw.on(false);
   if (state.dig) dig.on(false);
+  if (state.cine) { document.body.classList.add("egg-cine-mode"); syncClaps(); }
+
+  const pageTitle = document.title;
+  const AWAY_TITLES = [
+    "🦖 Volte antes da extinção…",
+    "✨ Volte, a Força ainda está aqui",
+    "🎬 Pausamos o filme para você",
+    "$ fg · volte para o portfólio",
+    "学无止境 · volte logo",
+    "📈 Volte, o mercado já abriu"
+  ];
+  document.addEventListener("visibilitychange", function () {
+    document.title = document.hidden ? pick(AWAY_TITLES) : pageTitle;
+  });
+
+  const now = new Date();
+  if (now.getMonth() === 4 && now.getDate() === 4) {
+    let seenToday = false;
+    try { seenToday = sessionStorage.getItem("jp-may4") === "1"; sessionStorage.setItem("jp-may4", "1"); } catch (e) { seenToday = false; }
+    if (!seenToday) {
+      setTimeout(function () {
+        toast("✨ <b>Hoje é 4 de maio.</b> Que a Força esteja com você.<br><span class=\"egg-muted\">a estrela no canto da tela sabe o que fazer</span>", { group: "may4", duration: 9000 });
+      }, 2500);
+    }
+  }
 
   const HINT_KEY = "jp-egg-hint-seen";
   let hintSeen = false;

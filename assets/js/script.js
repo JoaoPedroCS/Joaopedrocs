@@ -2,6 +2,15 @@
 
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
 
+const BIRTH = { year: 2003, month: 11, day: 11 };
+const currentAge = function () {
+  const today = new Date();
+  const hadBirthday = today.getMonth() + 1 > BIRTH.month ||
+    (today.getMonth() + 1 === BIRTH.month && today.getDate() >= BIRTH.day);
+  return today.getFullYear() - BIRTH.year - (hadBirthday ? 0 : 1);
+};
+document.querySelectorAll("[data-age]").forEach(function (el) { el.textContent = currentAge(); });
+
 const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
