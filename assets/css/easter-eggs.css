@@ -225,15 +225,22 @@ body.egg-dig-on .sidebar > :not(.egg-dig) { position: relative; z-index: 1; }
   pointer-events: none;
   color: #f1e4c3;
   background:
-    radial-gradient(ellipse at 25% 8%, rgba(255, 228, 180, 0.22), transparent 55%),
-    radial-gradient(ellipse at 80% 92%, rgba(30, 18, 8, 0.35), transparent 60%),
-    repeating-linear-gradient(174deg,
-      transparent 0 52px,
-      rgba(50, 30, 14, 0.22) 52px 56px,
-      transparent 56px 98px,
-      rgba(255, 222, 170, 0.07) 98px 101px),
-    linear-gradient(180deg, #8f6d43 0%, #7c5c37 38%, #66492b 72%, #4e361e 100%);
+    radial-gradient(ellipse at 28% 6%, rgba(255, 226, 170, 0.26), transparent 58%),
+    linear-gradient(180deg, #8a673d 0%, #765531 36%, #5c4024 70%, #402b15 100%);
 }
+.egg-dig-strata { position: absolute; inset: 0; width: 100%; height: 100%; }
+.egg-dig-strata .seam { fill: none; stroke: rgba(28, 15, 5, 0.5); stroke-width: 1.4px; vector-effect: non-scaling-stroke; }
+.egg-dig-strata .seam path { vector-effect: non-scaling-stroke; }
+.egg-dig-grain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(20, 11, 4, 0.5) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .05 0 0 0 0 .01 0 0 0 1.1 -.42'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .05' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .87 0 0 0 0 .66 0 0 0 1.2 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02 .11' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .06 0 0 0 0 .02 0 0 0 1.6 -.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body.egg-dig-on .sidebar { text-shadow: 0 1px 3px rgba(20, 11, 4, 0.8); }
 .egg-dig.is-entering { animation: egg-dig-in 0.7s ease backwards; }
 .egg-dig.is-entering.is-impact { animation: egg-dig-reveal 1.1s cubic-bezier(.2, .7, .2, 1) backwards; }
 .egg-dig.is-leaving { animation: egg-dig-out 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.35s forwards; }
@@ -280,15 +287,17 @@ body.egg-dig-on .sidebar > :not(.egg-dig) { position: relative; z-index: 1; }
 .egg-fossil-bone {
   position: absolute;
   display: block;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 .egg-fossil-bone svg { display: block; width: 100%; height: auto; overflow: visible; }
 .egg-fossil-bone g {
-  fill: currentColor;
-  filter: drop-shadow(0 1px 0 rgba(38, 22, 9, 0.75)) drop-shadow(0 -0.5px 0 rgba(255, 240, 210, 0.25));
+  stroke: #3a2410;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  filter: drop-shadow(0 1.5px 1px rgba(22, 11, 3, 0.85)) drop-shadow(0 0 6px rgba(22, 11, 3, 0.5));
 }
-.egg-fossil-bone .far { opacity: 0.5; }
-.egg-fossil-bone .ln { fill: none; stroke: rgba(70, 44, 20, 0.7); stroke-width: 0.8; }
+.egg-fossil-bone .ln { fill: none; stroke: rgba(70, 44, 20, 0.75); stroke-width: 0.8; paint-order: normal; }
 .egg-fossil-bone.is-trex  { top: 21%; left: -12%; width: 106%; transform: rotate(-17deg); }
 .egg-fossil-bone.is-sauro { top: 47%; left: -26%; width: 108%; transform: rotate(11deg) scaleX(-1); }
 .egg-fossil-bone.is-spino { bottom: 4%; left: -20%; width: 112%; transform: rotate(14deg); }
@@ -788,8 +797,8 @@ body.egg-term-open { overflow: hidden; }
 @keyframes egg-grogu-blink { 50% { transform: scaleY(0.1); } }
 .egg-grogu .g-ears { transform-box: view-box; transform-origin: 40px 30px; transition: transform 0.4s ease; }
 .egg-grogu-peek.is-force .g-ears { transform: scaleX(1.05) translateY(-0.8px); }
-.egg-grogu .g-hand { transition: transform 0.45s cubic-bezier(.2,.8,.3,1.2); }
-.egg-grogu-peek.is-force .g-hand { transform: translate(-1px, -13px) rotate(-12deg); }
+.egg-grogu .g-hand { transform-box: view-box; transform-origin: 55px 51px; transition: transform 0.45s cubic-bezier(.2,.8,.3,1.2); }
+.egg-grogu-peek.is-force .g-hand { transform: translate(3px, -9px) rotate(-38deg); }
 .egg-grogu-peek.is-force .egg-grogu { filter: drop-shadow(0 0 4px rgba(158, 197, 255, 0.55)); }
 
 .egg-force { position: fixed; inset: 0; z-index: 46; pointer-events: none; }

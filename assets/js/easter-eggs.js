@@ -537,26 +537,41 @@
 
   const GROGU_SVG =
     '<svg viewBox="0 0 80 60" focusable="false" aria-hidden="true">' +
+    "<defs>" +
+      '<radialGradient id="gg-skin" cx=".42" cy=".3" r=".8"><stop offset="0" stop-color="#c3dba2"/><stop offset=".55" stop-color="#a3c183"/><stop offset="1" stop-color="#7d9c60"/></radialGradient>' +
+      '<linearGradient id="gg-ear" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9c688"/><stop offset="1" stop-color="#84a366"/></linearGradient>' +
+      '<linearGradient id="gg-inner" x1="1" y1="0" x2="0" y2=".6"><stop offset="0" stop-color="#c98f84"/><stop offset="1" stop-color="#ecc1b2"/></linearGradient>' +
+      '<radialGradient id="gg-eye" cx=".45" cy=".4" r=".65"><stop offset="0" stop-color="#4a2f1a"/><stop offset=".6" stop-color="#1d120a"/><stop offset="1" stop-color="#0a0604"/></radialGradient>' +
+      '<linearGradient id="gg-robe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9ad80"/><stop offset="1" stop-color="#8d7049"/></linearGradient>' +
+      '<linearGradient id="gg-collar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1e6c8"/><stop offset="1" stop-color="#cdb88c"/></linearGradient>' +
+    "</defs>" +
     '<g class="g-ears">' +
-      '<path d="M28 26C20 21 10 17 1 16C5 22 14 30 28 36Z" fill="#9cb87c" stroke="#6f8a55" stroke-width=".8"/>' +
-      '<path d="M26 27.5C19 24 12 21 6 19.8C10 24 16 29 26 32.6Z" fill="#d9a99a" opacity=".75"/>' +
-      '<path d="M52 26C60 21 70 17 79 16C75 22 66 30 52 36Z" fill="#9cb87c" stroke="#6f8a55" stroke-width=".8"/>' +
-      '<path d="M54 27.5C61 24 68 21 74 19.8C70 24 64 29 54 32.6Z" fill="#d9a99a" opacity=".75"/>' +
+      '<g><path d="M29 24.2C22.5 21.6 12.5 18.8 1.2 20.2C3.6 26.4 12.6 34.2 28 37Z" fill="url(#gg-ear)" stroke="#55703f" stroke-width=".7" stroke-linejoin="round"/><path d="M27 26.6C20.6 24.6 13.4 23 5.6 22.8C8.8 27.2 16 32 27 34.2Z" fill="url(#gg-inner)"/><path d="M25.5 28.4C19.5 26.6 13.5 25.2 8.4 24.6" fill="none" stroke="#b9796f" stroke-width=".5" stroke-linecap="round" opacity=".7"/></g>' +
+      '<g transform="matrix(-1 0 0 1 80 0)"><path d="M29 24.2C22.5 21.6 12.5 18.8 1.2 20.2C3.6 26.4 12.6 34.2 28 37Z" fill="url(#gg-ear)" stroke="#55703f" stroke-width=".7" stroke-linejoin="round"/><path d="M27 26.6C20.6 24.6 13.4 23 5.6 22.8C8.8 27.2 16 32 27 34.2Z" fill="url(#gg-inner)"/><path d="M25.5 28.4C19.5 26.6 13.5 25.2 8.4 24.6" fill="none" stroke="#b9796f" stroke-width=".5" stroke-linecap="round" opacity=".7"/></g>' +
     "</g>" +
-    '<path d="M24 46Q40 39 56 46L61 60H19Z" fill="#b99467" stroke="#7d6040" stroke-width=".8"/>' +
-    '<path d="M26 45.5Q40 40.5 54 45.5Q40 49 26 45.5Z" fill="#d6bb8c"/>' +
-    '<ellipse cx="40" cy="31" rx="14" ry="13" fill="#a3bf84" stroke="#6f8a55" stroke-width=".8"/>' +
-    '<path d="M33 22.5q7-3 14 0M35 19.5q5-2 10 0" fill="none" stroke="#7f9a62" stroke-width=".7"/>' +
-    '<path d="M38.5 18.5q-2-5-5-7M41.5 18.5q2-6 6-7M40 18q0-5 1-8" fill="none" stroke="#efeadf" stroke-width=".5" opacity=".75"/>' +
+    '<path d="M21.5 60L24.6 47.4Q40 40.5 55.4 47.4L58.5 60Z" fill="url(#gg-robe)" stroke="#6f5636" stroke-width=".7" stroke-linejoin="round"/>' +
+    '<path d="M31 51.5L29.6 60M40 52.4V60M49 51.5L50.4 60" fill="none" stroke="#7a6040" stroke-width=".55" stroke-linecap="round" opacity=".7"/>' +
+    '<path d="M23.6 47.6C26.6 42.4 33.6 40.6 40 40.6C46.4 40.6 53.4 42.4 56.4 47.6C52.6 51 46.4 52.2 40 52.2C33.6 52.2 27.4 51 23.6 47.6Z" fill="url(#gg-collar)" stroke="#9c8358" stroke-width=".6" stroke-linejoin="round"/>' +
+    '<path d="M27 47.6Q40 51.6 53 47.6" fill="none" stroke="#b39a6c" stroke-width=".55" stroke-linecap="round"/>' +
+    '<path d="M26.4 30.2C26.4 21.6 32.4 16.8 40 16.8C47.6 16.8 53.6 21.6 53.6 30.2C53.6 37.6 48 43 40 43C32 43 26.4 37.6 26.4 30.2Z" fill="url(#gg-skin)" stroke="#55703f" stroke-width=".7"/>' +
+    '<path d="M33.4 22.4Q40 20 46.6 22.4M35.6 19.8Q40 18.4 44.4 19.8" fill="none" stroke="#7b9a5e" stroke-width=".55" stroke-linecap="round"/>' +
+    '<path d="M37.6 17.4Q36.4 13.4 33.6 11.6M40 16.8Q39.8 12.6 41 9.8M42.4 17.4Q43.6 13.2 46.8 11.4M35.4 18.2Q33.4 15.8 31 15.2M44.6 18.2Q46.6 15.8 49 15.4" fill="none" stroke="#f3eee2" stroke-width=".4" stroke-linecap="round" opacity=".8"/>' +
+    '<ellipse cx="30.4" cy="36.2" rx="2.6" ry="1.7" fill="#e79c8c" opacity=".3"/><ellipse cx="49.6" cy="36.2" rx="2.6" ry="1.7" fill="#e79c8c" opacity=".3"/>' +
     '<g class="g-eyes">' +
-      '<ellipse cx="34" cy="31" rx="4.2" ry="4.7" fill="#1b120b"/><ellipse cx="46" cy="31" rx="4.2" ry="4.7" fill="#1b120b"/>' +
-      '<circle cx="35.5" cy="29.3" r="1.3" fill="#fff"/><circle cx="47.5" cy="29.3" r="1.3" fill="#fff"/>' +
+      '<ellipse cx="33.5" cy="30.8" rx="4.5" ry="4.9" fill="url(#gg-eye)"/><ellipse cx="46.5" cy="30.8" rx="4.5" ry="4.9" fill="url(#gg-eye)"/>' +
+      '<circle cx="35.1" cy="28.9" r="1.35" fill="#fff"/><circle cx="48.1" cy="28.9" r="1.35" fill="#fff"/>' +
+      '<circle cx="32" cy="33" r=".6" fill="#fff" opacity=".6"/><circle cx="45" cy="33" r=".6" fill="#fff" opacity=".6"/>' +
     "</g>" +
-    '<path d="M39 35.6q1 .8 2 0M37 38.6q3 1.5 6 0" fill="none" stroke="#5b7344" stroke-width=".7" stroke-linecap="round"/>' +
+    '<path d="M28.8 28.4Q33.4 24 38.2 28.2M41.8 28.2Q46.6 24 51.2 28.4" fill="none" stroke="#6d8a52" stroke-width=".7" stroke-linecap="round"/>' +
+    '<path d="M30.4 35.6Q33.6 37.2 36.8 35.8M43.2 35.8Q46.4 37.2 49.6 35.6" fill="none" stroke="#7b9a5e" stroke-width=".4" stroke-linecap="round" opacity=".8"/>' +
+    '<path d="M38.9 36.3Q40 37.2 41.1 36.3" fill="none" stroke="#587240" stroke-width=".7" stroke-linecap="round"/>' +
+    '<path d="M37 39.3Q40 41 43 39.3" fill="none" stroke="#587240" stroke-width=".7" stroke-linecap="round"/>' +
     '<g class="g-hand">' +
-      '<path d="M53 49l8-5 4 6-8 5z" fill="#b99467" stroke="#7d6040" stroke-width=".7"/>' +
-      '<circle cx="63.5" cy="44.5" r="3" fill="#a3bf84" stroke="#6f8a55" stroke-width=".6"/>' +
-      '<path d="M62 41.8l-.6-2.6M64 41.6l.2-2.8M65.8 42.4l1.2-2.2" stroke="#a3bf84" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<path d="M51.6 50.4L60.4 44.2Q63.6 46 64.6 49.6L56.6 56Z" fill="url(#gg-robe)" stroke="#6f5636" stroke-width=".65" stroke-linejoin="round"/>' +
+      '<path d="M60.6 44.4Q63.2 46.2 64.2 49.4" fill="none" stroke="#e6d6b0" stroke-width="1.1" stroke-linecap="round"/>' +
+      '<path d="M61.6 42.6L60.6 39.4M63.9 42L64.1 38.6M66 43.2L67.6 40.4" fill="none" stroke="#55703f" stroke-width="2.3" stroke-linecap="round"/>' +
+      '<circle cx="63.6" cy="45" r="3" fill="#9fbd7f" stroke="#55703f" stroke-width=".65"/>' +
+      '<path d="M61.6 42.6L60.6 39.4M63.9 42L64.1 38.6M66 43.2L67.6 40.4" fill="none" stroke="#a9c688" stroke-width="1.25" stroke-linecap="round"/>' +
     "</g>" +
     "</svg>";
 
@@ -566,7 +581,7 @@
   const groguSpot = function () {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const size = vw < 580 ? 50 : 58;
+    const size = vw < 580 ? 62 : 76;
     const fits = function (el) {
       if (!el || !el.getClientRects().length) return null;
       const r = el.getBoundingClientRect();
@@ -617,7 +632,7 @@
 
     const handAt = function () {
       const r = peek.getBoundingClientRect();
-      return { x: r.left + r.width * 0.8, y: r.top + r.height * 0.55 };
+      return { x: r.left + r.width * 0.76, y: r.top + r.height * 0.62 };
     };
     const ripple = function () {
       const p = handAt();
@@ -903,13 +918,25 @@
       return d;
     };
 
+    const DEFS = "<defs>" +
+      '<linearGradient id="egg-bone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf5dc"/><stop offset=".5" stop-color="#ecd9ae"/><stop offset="1" stop-color="#c7a672"/></linearGradient>' +
+      '<linearGradient id="egg-bone-far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b79a6a"/><stop offset="1" stop-color="#8a6b42"/></linearGradient>' +
+      "</defs>";
     const svg = function (vb, out, extra) {
-      return '<svg viewBox="' + vb + '"><g>' +
-        (out.far.length ? '<path class="far" d="' + out.far.join("") + '"/>' : "") +
+      return '<svg viewBox="' + vb + '">' + DEFS + '<g fill="url(#egg-bone)">' +
+        (out.far.length ? '<path class="far" fill="url(#egg-bone-far)" d="' + out.far.join("") + '"/>' : "") +
         '<path d="' + out.ribs.join("") + '"/>' +
         '<path d="' + out.spine.join("") + '"/>' +
         '<path d="' + out.near.join("") + '"/>' +
         (extra || "") + "</g></svg>";
+    };
+    const ilium = function (hx, hy, up, dn) {
+      const q = function (x, y) { return P([hx + x, hy + y]); };
+      return "M" + q(-31, 2) + "C" + q(-32, -up * 0.7) + " " + q(-16, -up) + " " + q(0, -up) +
+        "C" + q(18, -up) + " " + q(34, -up * 0.5) + " " + q(36, 0) +
+        "C" + q(28, 4) + " " + q(16, 3) + " " + q(10, dn * 0.8) +
+        "C" + q(7, dn) + " " + q(-4, dn) + " " + q(-6, dn * 0.8) +
+        "C" + q(-12, 4) + " " + q(-22, 6) + " " + q(-31, 2) + "Z";
     };
     const fresh = function () { return { far: [], ribs: [], spine: [], near: [] }; };
 
@@ -939,13 +966,10 @@
       const sh = sp.at(neck + 8).p;
       o.near.push(taper([sh[0] + 20, sh[1] + 4], [sh[0] + 10, sh[1] + 18], [sh[0] + 1, sh[1] + 36], 4.6, 7.4));
       o.near.push(ellipse([sh[0] - 1, sh[1] + 39], 5.4, 4.2));
-      const hum0 = [sh[0] - 2, sh[1] + 44], hum1 = [sh[0] + 6, sh[1] + 58], fa1 = [sh[0] - 3, sh[1] + 66];
+      const hum0 = [sh[0] - 2, sh[1] + 44], hum1 = [sh[0] + 4, sh[1] + 54], fa1 = [sh[0] - 3, sh[1] + 60];
       o.near.push(bone(hum0, hum1, 3.4, 3.2, 3), bone(hum1, fa1, 2.6, 2.6, 2.2));
       o.near.push(toe(fa1, [-1, 0.4], [3, 2.5], 4, 1.8, 2.5), toe(add(fa1, [0, 1], 1.5), [-0.8, 0.8], [3, 2.2], 3.5, 1.6, 2.5));
-      o.near.push("M" + P([hx - 30, hy + 7]) + "C" + P([hx - 34, hy - 6]) + " " + P([hx - 18, hy - 12]) + " " + P([hx, hy - 11]) +
-        "C" + P([hx + 18, hy - 11]) + " " + P([hx + 34, hy - 7]) + " " + P([hx + 32, hy + 3]) +
-        "C" + P([hx + 20, hy + 9]) + " " + P([hx - 14, hy + 13]) + " " + P([hx - 30, hy + 7]) + "Z" +
-        circle([hx + 2, hy + 8], 4.2));
+      o.near.push(ilium(hx, hy, 9, 8));
       o.near.push(taper([hx - 6, hy + 11], [hx - 12, hy + 32], [hx - 18, hy + 54], 7, 4.4));
       o.near.push("M" + P([hx - 32, hy + 57]) + "C" + P([hx - 32, hy + 51]) + " " + P([hx - 16, hy + 49]) + " " + P([hx - 10, hy + 53]) +
         "C" + P([hx - 6, hy + 57]) + " " + P([hx - 10, hy + 61]) + " " + P([hx - 20, hy + 61]) + "C" + P([hx - 26, hy + 61]) + " " + P([hx - 32, hy + 60]) + " " + P([hx - 32, hy + 57]) + "Z");
@@ -964,10 +988,10 @@
       const jaw = "M5 36C4 41 8 45 16 46L60 49C75 51 88 49 96 42L92 38L70 38C50 37 25 37 5 36Z" + ellipse([79, 43.5], 7, 2.2);
       const upperT = teeth([7, 30.5], [66, 33.5], 13, function (t) { return 4 + 4 * Math.sin(Math.min(1, t * 1.6) * Math.PI * 0.5) - t * 2; }, 1, 1.4, 3);
       const lowerT = teeth([10, 37.5], [60, 38], 12, function (t) { return 3.5 + 2.5 * (1 - Math.abs(t - 0.35)); }, -1, 1.2, 2.6);
-      const head = '<g class="skull" transform="translate(6 34) scale(.62)">' +
-        '<g transform="rotate(-10 92 40)"><path d="' + lowerT + '"/><path fill-rule="evenodd" d="' + jaw + '"/></g>' +
+      const head = '<g class="skull" transform="translate(-9 29) scale(.78)">' +
+        '<g transform="rotate(-12 92 40)"><path d="' + lowerT + '"/><path fill-rule="evenodd" d="' + jaw + '"/></g>' +
         '<path d="' + upperT + '"/><path fill-rule="evenodd" d="' + skull + '"/></g>';
-      return svg("0 0 400 210", o, head);
+      return svg("-12 0 412 210", o, head);
     };
 
     const sauro = function () {
@@ -997,9 +1021,7 @@
       o.near.push(taper([E[0] + 6, E[1] + 4], [E[0] + 7, E[1] + 18], [W[0] + 5, W[1] - 3], 3, 2.4));
       for (let i = 0; i < 4; i++) o.near.push(stadium([W[0] - 4 + i * 3, W[1] + 3], [W[0] - 4 + i * 3.4, W[1] + 15], 1.5));
       o.near.push(taper([W[0] - 5, W[1] + 15], [W[0] - 9, W[1] + 16], [W[0] - 10, W[1] + 20], 2.6, 0.3));
-      o.near.push("M" + P([hx - 30, hy + 6]) + "C" + P([hx - 32, hy - 16]) + " " + P([hx - 12, hy - 22]) + " " + P([hx + 4, hy - 20]) +
-        "C" + P([hx + 22, hy - 18]) + " " + P([hx + 34, hy - 8]) + " " + P([hx + 30, hy + 6]) +
-        "C" + P([hx + 16, hy + 14]) + " " + P([hx - 16, hy + 16]) + " " + P([hx - 30, hy + 6]) + "Z" + circle([hx, hy + 9], 5.4));
+      o.near.push(ilium(hx, hy, 13, 10));
       o.near.push(taper([hx - 6, hy + 11], [hx - 13, hy + 24], [hx - 20, hy + 36], 8, 6), ellipse([hx - 21, hy + 37], 5, 3.4));
       o.near.push(taper([hx + 9, hy + 11], [hx + 18, hy + 24], [hx + 28, hy + 34], 6.5, 3), circle([hx + 28, hy + 34], 1.9));
       const A = [hx, hy + 14], K = [A[0] - 2, A[1] + 50], T = [K[0] + 4, K[1] + 32];
@@ -1008,12 +1030,15 @@
       o.near.push(stadium([T[0] + 1, T[1] + 3], [T[0] - 2, T[1] + 10], 3.2));
       o.near.push(toe([T[0] - 3, T[1] + 10], [-1, 0.25], [5, 3], 5, 2.8, 2.5), toe([T[0] - 1, T[1] + 12], [-0.6, 0.6], [4, 3], 4, 2.4, 2), toe([T[0] + 2, T[1] + 12], [-0.2, 1], [3], 3, 2.2, 1.5));
       const skull =
-        "M2 22C2 18 4 15 9 14L16 12C16 5 20 1 26 1C32 1 35 5 35 10C40 12 44 16 43 22L40 26L8 26C4 26 2 24 2 22Z" +
-        ellipse([25.5, 7], 5.6, 3.6) + circle([36, 15.5], 2.7) + "M18 18C20 15 26 14 30 16C28 19 22 21 18 18Z" + ellipse([41, 21.5], 1.4, 2.3);
-      const jaw = "M4 26C4 30 8 32 14 32L36 31C40 30 42 28 41 26Z";
-      const up = teeth([5, 25.5], [24, 26], 8, 3, 1, 0.2, 2.2);
-      const head = '<g class="skull" transform="translate(22 30) rotate(8) scale(1.1)">' +
-        '<path d="' + up + '"/><path d="' + jaw + '"/><path fill-rule="evenodd" d="' + skull + '"/></g>';
+        "M2 21C2 17 5 14.6 9 13.6C12 12.6 14 9 17 5C20 1 27 0 31 3C34 5.5 37 8 39 11C43 13 45 17 44 22L41 27.4C36 26.8 30 26.2 24 26.2L8 26.6C4 26.6 2 24 2 21Z" +
+        "M18.5 11.6C19.4 8 23 5.2 27 6.4C27.6 9.4 25.4 11.8 21.6 12.6C20 12.9 18.9 12.5 18.5 11.6Z" +
+        circle([36, 15.5], 3.3) + ellipse([28.5, 17.5], 2.4, 1.6) + ellipse([41, 21.5], 1.3, 2.6);
+      const jaw = "M4 27.6C4 31 8 33 14 33L34 32C39 31.5 42 29.6 41.6 27.8L24 27.3Z";
+      const up = teeth([3.5, 25.6], [22, 26], 8, 3.8, 1, -0.5, 2.3);
+      const lo = teeth([6, 28.4], [21, 28], 7, 3, -1, -0.4, 2);
+      const head = '<g class="skull" transform="translate(6 12) rotate(10) scale(1.3)">' +
+        '<g transform="rotate(-9 41 28) translate(0 1.2)"><path d="' + lo + '"/><path d="' + jaw + '"/></g>' +
+        '<path d="' + up + '"/><path fill-rule="evenodd" d="' + skull + '"/></g>';
       return svg("0 0 400 290", o, head);
     };
 
@@ -1041,9 +1066,7 @@
       const H0 = [sh[0] - 2, sh[1] + 36], H1 = [sh[0] + 6, sh[1] + 54], F1 = [sh[0] - 6, sh[1] + 64];
       o.near.push(bone(H0, H1, 4.4, 4, 3.8), bone(H1, F1, 3.6, 3.4, 3));
       o.near.push(toe(F1, [-1, 0.5], [3.5, 3], 7, 2.2, 4), toe(add(F1, [0, 1], 2), [-0.7, 0.9], [3, 2.5], 4.5, 1.8, 2.5));
-      o.near.push("M" + P([hx - 30, hy + 6]) + "C" + P([hx - 32, hy - 8]) + " " + P([hx - 14, hy - 12]) + " " + P([hx, hy - 11]) +
-        "C" + P([hx + 18, hy - 11]) + " " + P([hx + 32, hy - 6]) + " " + P([hx + 30, hy + 4]) +
-        "C" + P([hx + 18, hy + 10]) + " " + P([hx - 14, hy + 12]) + " " + P([hx - 30, hy + 6]) + "Z" + circle([hx + 1, hy + 7], 4));
+      o.near.push(ilium(hx, hy, 8, 7));
       o.near.push(taper([hx - 6, hy + 10], [hx - 12, hy + 24], [hx - 18, hy + 38], 6, 4));
       o.near.push(ellipse([hx - 22, hy + 40], 8, 3));
       o.near.push(taper([hx + 10, hy + 9], [hx + 18, hy + 22], [hx + 26, hy + 32], 5.5, 2.6));
@@ -1057,7 +1080,7 @@
       const jaw = "M3 22C2 26 6 27 12 27L60 27C76 28 90 27 97 24L94 22L60 23C40 23 20 22 3 22Z" + ellipse([80, 25], 6, 1);
       const up = teeth([3, 21], [56, 22.5], 14, function (t) { return t < 0.2 ? 5 : 3.6; }, 1, 0.3, 2);
       const lo = teeth([5, 22.5], [52, 23.5], 13, function (t) { return t < 0.2 ? 4.6 : 3.2; }, -1, 0.3, 1.8);
-      const head = '<g class="skull" transform="translate(12 88) scale(.7)">' +
+      const head = '<g class="skull" transform="translate(-2 83) scale(.8)">' +
         '<g transform="rotate(-6 96 24)"><path d="' + lo + '"/><path fill-rule="evenodd" d="' + jaw + '"/></g>' +
         '<path d="' + up + '"/><path fill-rule="evenodd" d="' + skull + '"/></g>';
       return svg("0 0 420 200", o, head);
@@ -1082,10 +1105,28 @@
         if (ro - ri < 1.6) break;
         ribs += "M" + P(pt(th, ri + (ro - ri) * 0.12)) + "Q" + P(pt(th + 0.05, (ro + ri) / 2)) + " " + P(pt(th - 0.06, ro - (ro - ri) * 0.08));
       }
-      return '<svg viewBox="0 0 60 60"><g><path d="' + shell + '"/><path class="ln" d="' + ribs + '"/></g></svg>';
+      return '<svg viewBox="0 0 60 60">' + DEFS + '<g fill="url(#egg-bone)"><path d="' + shell + '"/><path class="ln" d="' + ribs + '"/></g></svg>';
     };
 
-    return { trex: trex(), sauro: sauro(), spino: spino(), ammonite: ammonite() };
+    const strata = function () {
+      const tones = ["#d1a367", "#3a2311", "#b0683a", "#2c1a0c", "#d8b47a", "#4a2c14", "#96592e", "#24150a"];
+      const edge = function (i) {
+        const base = 5 + i * 12.5, pts = [];
+        for (let x = 0; x <= 100; x += 5) {
+          pts.push([x, base + x * (i % 2 ? 0.03 : 0.05) + 1.5 * Math.sin(x * 0.07 + i * 1.9) + 0.6 * Math.sin(x * 0.19 + i * 0.7)]);
+        }
+        return pts;
+      };
+      let bands = "", seams = "";
+      for (let i = 0; i < 8; i++) {
+        const top = edge(i), bottom = edge(i + 1).reverse();
+        bands += '<path fill="' + tones[i] + '" opacity="' + (i % 2 ? 0.26 : 0.15) + '" d="M' + top.map(P).join("L") + "L" + bottom.map(P).join("L") + 'Z"/>';
+        seams += '<path d="M' + top.map(P).join("L") + '"/>';
+      }
+      return '<svg class="egg-dig-strata" viewBox="0 0 100 100" preserveAspectRatio="none">' + bands + '<g class="seam">' + seams + "</g></svg>";
+    };
+
+    return { trex: trex(), sauro: sauro(), spino: spino(), ammonite: ammonite(), strata: strata() };
   };
   let fossilArt = null;
   const fossils = function () { return fossilArt || (fossilArt = buildFossils()); };
@@ -1110,6 +1151,7 @@
         layer.style.setProperty("--oy", Math.round(origin.y) + "px");
       }
       layer.innerHTML =
+        art.strata + '<i class="egg-dig-grain"></i>' +
         (origin ? '<i class="egg-dig-crater"></i>' : "") +
         '<span class="egg-fossil-bone is-trex">' + art.trex + "</span>" +
         '<span class="egg-fossil-bone is-sauro">' + art.sauro + "</span>" +
