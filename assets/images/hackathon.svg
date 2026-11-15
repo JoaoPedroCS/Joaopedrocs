@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2b2c"/><stop offset="1" stop-color="#171718"/></linearGradient></defs><rect width="640" height="400" fill="url(#g)"/>
+<g fill="#3c3c3d"><rect x="90" y="210" width="90" height="120" rx="4"/><rect x="190" y="150" width="70" height="180" rx="4"/><rect x="270" y="240" width="110" height="90" rx="4"/></g>
+<g fill="#ffdb70" opacity=".9"><rect x="105" y="235" width="22" height="22" rx="2"/><rect x="141" y="235" width="22" height="22" rx="2"/><rect x="205" y="175" width="18" height="18" rx="2"/><rect x="230" y="175" width="18" height="18" rx="2"/></g>
+<g stroke="#5a5a5c" stroke-width="6" stroke-linejoin="round"><path d="M60 330H590" fill="none"/><path d="M420 330V180l50-30v30l50-30v30l50-30v180z" fill="#3c3c3d"/></g>
+<g fill="#4ade80"><circle cx="455" cy="270" r="9"/><circle cx="500" cy="270" r="9"/><circle cx="545" cy="270" r="9"/></g>
+<path d="M300 90l12 24 26 4-19 18 5 26-24-13-24 13 5-26-19-18 26-4z" fill="#ffdb70"/>
+</svg>

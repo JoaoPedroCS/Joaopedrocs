@@ -1,16 +1,11 @@
 'use strict';
 
-// Toggle functionality
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
 
-// Sidebar interactions
 const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
 
-// =========================================
-// TAGS SECUNDÁRIAS DOS PROJETOS
-// =========================================
 // Para criar uma tag nova: adicione uma entrada aqui e use a chave em data-tags="..." no <li> do projeto.
 // Projetos com data-demo recebem a tag "demo" automaticamente.
 const PROJECT_TAGS = {
@@ -18,10 +13,10 @@ const PROJECT_TAGS = {
   github: { label: "GitHub",   icon: "logo-github",         color: "#e6edf3", description: "Tem repositório no GitHub" },
   demo:   { label: "Demo",     icon: "play-circle-outline", color: "#4ade80", description: "Tem demo interativa aqui no portfólio" },
   paralelo: { label: "Paralelo", icon: "git-network-outline", color: "#7aa2f7", description: "Usa programação paralela" },
+  hackathon: { label: "Hackathon", icon: "trophy-outline", color: "#f472b6", description: "Projeto feito em hackathon" },
   dados:  { label: "Dados",    icon: "bar-chart-outline",   color: "#fbbf24", description: "Análise ou simulação sobre dados reais" }
 };
 
-// Filter & Category selection
 const select = document.querySelector("[data-select]");
 const selectItems = document.querySelectorAll("[data-select-item]");
 const selectValue = document.querySelector("[data-selecct-value]");
@@ -37,9 +32,8 @@ select.addEventListener("click", function () { elementToggleFunc(this); });
 
 let activeCategory = "todos";
 const activeTags = new Set();
-const projectTagMap = new Map(); // <li> do projeto -> Set com as chaves das tags
+const projectTagMap = new Map();
 
-// Lê data-tags do projeto (mantendo a ordem definida em PROJECT_TAGS)
 const getProjectTags = function (item) {
   const found = new Set((item.dataset.tags || "").split(/\s+/).filter(Boolean));
   if (item.dataset.demo) found.add("demo");
@@ -51,8 +45,6 @@ const tagChipHTML = function (key) {
   return `<span class="tag-chip" style="--tag-color:${tag.color}" title="${tag.description}"><ion-icon name="${tag.icon}"></ion-icon>${tag.label}</span>`;
 };
 
-// Aplica categoria (botões principais) + tags (menu secundário) ao mesmo tempo.
-// Com mais de uma tag marcada, o projeto precisa ter TODAS (ex.: AI + GitHub).
 const applyFilters = function () {
   let visibleCount = 0;
   for (let i = 0; i < filterItems.length; i++) {
@@ -73,7 +65,6 @@ const filterFunc = function (selectedValue) {
   applyFilters();
 };
 
-// Tags nos cards + contagem por tag
 const tagCounts = {};
 for (let i = 0; i < filterItems.length; i++) {
   const tags = getProjectTags(filterItems[i]);
@@ -88,7 +79,6 @@ for (let i = 0; i < filterItems.length; i++) {
   }
 }
 
-// Menu de tags: só aparecem as tags que algum projeto usa
 Object.keys(PROJECT_TAGS).forEach(function (key) {
   if (!tagCounts[key]) return;
   const tag = PROJECT_TAGS[key];
@@ -137,11 +127,9 @@ for (let i = 0; i < filterBtn.length; i++) {
   });
 }
 
-// Page navigation logic
 const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
-// add event to all nav link
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
 
@@ -159,7 +147,6 @@ for (let i = 0; i < navigationLinks.length; i++) {
   });
 }
 
-// Form validation & Submission (Unificado)
 const form = document.querySelector("[data-form]");
 const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
@@ -174,16 +161,12 @@ for (let i = 0; i < formInputs.length; i++) {
   });
 }
 
-// Envio em segundo plano (AJAX) para não sair da página
 form.addEventListener("submit", async function (event) {
-  // Impede que o navegador redirecione para a página do Formspree
   event.preventDefault();
 
-  // Coleta os dados que foram preenchidos
   const data = new FormData(event.target);
 
   try {
-    // Envia os dados silenciosamente usando fetch
     const response = await fetch(event.target.action, {
       method: form.method,
       body: data,
@@ -193,18 +176,15 @@ form.addEventListener("submit", async function (event) {
     });
 
     if (response.ok) {
-      // 1. Limpa os campos magicamente
       form.reset();
       
-      // 2. Trava o botão de novo (já que os campos esvaziaram)
       formBtn.setAttribute("disabled", "");
       
-      // 3. Muda o texto do botão temporariamente para dar um feedback visual
       const btnText = formBtn.querySelector("span");
       btnText.innerText = "Enviado com sucesso! ✅";
       
       setTimeout(() => {
-        btnText.innerText = "Send Message"; // Volta ao normal após 4 segundos
+        btnText.innerText = "Send Message";
       }, 4000);
       
     } else {
@@ -215,22 +195,9 @@ form.addEventListener("submit", async function (event) {
   }
 });
 
-// =========================================
-// LÓGICA DO MODAL DE PROJETOS
-// =========================================
 
-// 1. Selecionar todos os cards de projetos (elementos com data-filter-item)
-// 2. Selecionar os elementos do Modal: container do modal, overlay, botão de fechar, título, imagem, texto e bloco de código
-// 3. Criar uma função genérica para alternar (toggle) a classe "active" no modalContainer e no overlay
 
-// 4. Fazer um loop (for) em todos os cards de projetos:
-//    - Adicionar um evento de "click" em cada card
-//    - Prevenir o comportamento padrão do link (preventDefault)
-//    - Atualizar o Título, Imagem e Texto do modal baseado no conteúdo do card clicado
-//    - Chamar a função que abre o modal
 
-// 5. Adicionar evento de "click" no botão de fechar para chamar a função de toggle
-// 6. Adicionar evento de "click" no overlay para fechar o modal ao clicar fora
 
 const projectTriggers = document.querySelectorAll("[data-project-trigger]");
 const projectModal = document.querySelector("[data-project-modal]");
@@ -244,7 +211,6 @@ const modalTags = projectModal.querySelector("[data-modal-tags]");
 const modalRepo = projectModal.querySelector("[data-modal-repo]");
 const modalSite = projectModal.querySelector("[data-modal-site]");
 
-// Tags + descrição de cada uma, e link do repositório (data-repo no <li>) quando existir
 const renderModalTags = function (item) {
   const tags = Array.from(projectTagMap.get(item) || []);
   modalTags.innerHTML = tags.map(function (key) {
@@ -267,9 +233,6 @@ const renderModalTags = function (item) {
   }
 };
 
-// =========================================
-// DEMO INTERATIVA NO MODAL (ex.: Pokédex)
-// =========================================
 const modalDemo = projectModal.querySelector("[data-modal-demo]");
 
 const POKE_TYPE_COLORS = {
@@ -296,7 +259,6 @@ const POKE_DEMO_MARKUP = `
     <div class="poke-demo-result" data-poke-result></div>
   </div>`;
 
-// Consulta a PokeAPI e diferencia "não encontrado" de falha de rede
 const fetchPokemon = async function (query) {
   const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + encodeURIComponent(query));
   if (response.status === 404) throw new Error("not-found");
@@ -304,7 +266,6 @@ const fetchPokemon = async function (query) {
   return response.json();
 };
 
-// Transforma o JSON da API em HTML (peso vem em hectogramas e altura em decímetros)
 const buildPokemonCard = function (data) {
   const sprite = data.sprites.front_default || data.sprites.other["official-artwork"].front_default;
   const weightKg = (data.weight / 10).toLocaleString("pt-BR");
@@ -346,7 +307,7 @@ const setupPokeDemo = function () {
   const input = modalDemo.querySelector("[data-poke-input]");
   const status = modalDemo.querySelector("[data-poke-status]");
   const result = modalDemo.querySelector("[data-poke-result]");
-  let lastRequest = 0; // ignora respostas antigas se o usuário buscar de novo rápido
+  let lastRequest = 0;
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -373,7 +334,6 @@ const setupPokeDemo = function () {
   });
 };
 
-// Cada projeto com data-demo="nome" abre a demo correspondente acima do texto
 const PROJECT_DEMOS = { pokesearch: setupPokeDemo };
 
 const openProjectDemo = function (demoName) {
@@ -384,7 +344,7 @@ const openProjectDemo = function (demoName) {
   if (PROJECT_DEMOS[demoName]) {
     PROJECT_DEMOS[demoName]();
     modalDemo.classList.add("active");
-    modalImage.style.display = "none"; // a demo já ocupa o lugar da imagem
+    modalImage.style.display = "none";
   }
 };
 

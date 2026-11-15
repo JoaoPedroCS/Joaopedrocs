@@ -10,6 +10,7 @@
   <link rel="shortcut icon" href="./assets/images/1rver.png" type="image/png">
 
   <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/easter-eggs.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +18,11 @@
 </head>
 
 <body>
+
+  <!-- 🦖🎬✨ Psst… este site tem 4 easter eggs. Comece digitando "terminal" -->
+  <!-- easter egg: Star Wars (a estrela no canto do céu) -->
+  <button class="egg-starwars" type="button" data-egg-starwars aria-pressed="false" aria-label="Uma estrela no canto do céu" title="✦"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C12.6 8.2 15.8 11.4 22 12C15.8 12.6 12.6 15.8 12 22C11.4 15.8 8.2 12.6 2 12C8.2 11.4 11.4 8.2 12 2Z"/></svg></button>
+  <button class="egg-term-fab" type="button" data-egg-term-open aria-label="Abrir terminal" title="Terminal">&gt;_</button>
 
   <main>
     <aside class="sidebar" data-sidebar>
@@ -123,7 +129,7 @@
 
           <p>
             Sou João Pedro, tenho 23 anos e estudo na UFABC, atualmente moro em Santo André(SP) mas venho de Patos de Minas(MG) e já morei em diversas cidades e estados diferentes, me adapto fácilmente a novas condições. Eu adoro passar meu tempo junto da minha namorada, assisitindo documentários variados e aprendendo receitas novas. Tenho uma facilidade grande em aprender/reconhecer padrões e ao mesmo tempo sou uma pessoa critica.</p>
-          <p>Sou uma pessoa pragmática e curiosa. Gosto de aprender as coisas por mim mesmo, tenho um fascínio genuíno por explorar as mais diversas áreas do conhecimento, que vão desde computação até paleontologia. Essa paixão por aprender continuamente proporciona uma criatividade na solução de problemas de forma eficiente e analítica. Fundamentalmente gosto de identificar e resolver problemas complexos de forma simples e elegante.</p>
+          <p>Sou uma pessoa pragmática e curiosa. Gosto de aprender as coisas por mim mesmo, tenho um fascínio genuíno por explorar as mais diversas áreas do conhecimento, que vão desde computação até paleontologia.<button class="egg-fossil" type="button" data-egg-dino aria-label="Fóssil escondido"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.5 3.5a3 3 0 0 0-2.9 3.7L8 15.8a3 3 0 1 0-3.5 4.7 3 3 0 0 0 4.7-3.5l8.6-8.6a3 3 0 1 0 1.7-4.9z" transform="rotate(0)"/></svg></button> Essa paixão por aprender continuamente proporciona uma criatividade na solução de problemas de forma eficiente e analítica. Fundamentalmente gosto de identificar e resolver problemas complexos de forma simples e elegante.</p>
         </section>
 
         <section class="service">
@@ -226,17 +232,24 @@
         <section class="tech">
           <h3 class="h3 tech-title">Tecnologias</h3>
           <ul class="tech-list has-scrollbar">
-            <li class="tech-item"><img src="./assets/images/techs/tech1.png" alt="Tech logo"></li>
             <li class="tech-item"><img src="./assets/images/techs/tech2.png" alt="Tech logo"></li>
-            <li class="tech-item"><img src="./assets/images/techs/tech3.png" alt="Tech logo"></li>
-            <li class="tech-item"><img src="./assets/images/techs/tech4.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/typescript.svg" alt="TypeScript"></li>
+            <li class="tech-item"><img src="./assets/images/techs/java.svg" alt="Java"></li>
+            <li class="tech-item"><img src="./assets/images/techs/rust.svg" alt="Rust"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tech1.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/go.svg" alt="Go"></li>
             <li class="tech-item"><img src="./assets/images/techs/tech4-2.png" alt="Tech logo"></li>
-            <li class="tech-item"><img src="./assets/images/techs/tech5.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/postgresql.svg" alt="PostgreSQL"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tech3.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/googlecloud.svg" alt="Google Cloud"></li>
+            <li class="tech-item"><img src="./assets/images/techs/docker.svg" alt="Docker"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tensorflow.svg" alt="TensorFlow"></li>
             <li class="tech-item"><img src="./assets/images/techs/tech6.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tech5.png" alt="Tech logo"></li>
             <li class="tech-item"><img src="./assets/images/techs/tech7.png" alt="Tech logo"></li>
-            <li class="tech-item"><img src="./assets/images/techs/tech8.png" alt="Tech logo"></li>
-            <li class="tech-item"><img src="./assets/images/techs/tech9.png" alt="Tech logo"></li>
             <li class="tech-item"><img src="./assets/images/techs/tech10.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tech9.png" alt="Tech logo"></li>
+            <li class="tech-item"><img src="./assets/images/techs/tech8.png" alt="Tech logo"></li>
           </ul>
         </section>
       </article>
@@ -332,7 +345,7 @@
             </li>
             <li class="skills-item">
               <div class="title-wrapper">
-                <h5 class="h5">JavaScript / TypeScript</h5>
+                <h5 class="h5">TypeScript</h5>
                 <data value="50">50%</data>
               </div>
               <div class="skill-progress-bg">
@@ -487,6 +500,20 @@
                 <p class="project-category">Pessoal · Aposentado</p>
               </a>
             </li>
+            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="hackathon"
+              data-description="Hackathon da Tractian, o unicórnio brasileiro de IA industrial (US$ 1,4 bi de valor e mais de 2.000 clientes). O desafio: montar uma proposta comercial para uma fábrica de bebidas que perdia milhões com paradas de máquina, mas cujo orçamento cobria só uma fração do escopo desejado."
+              data-details="A Tractian nasceu em 2019 e hoje vale US$ 1,4 bilhão. É a startup de IA mais valiosa da América Latina, com mais de 2.000 clientes no mundo, incluindo Coca-Cola e Embraer. Ela ensina máquinas a avisar antes de quebrar, e poucas empresas brasileiras exportam tecnologia nesse nível.&#10;&#10;O desafio: uma fábrica de bebidas perdia milhões por ano com paradas de máquina. Ela queria resolver tudo de uma vez, mas o orçamento cobria uma fração do que pedia. Nosso papel era montar uma proposta que fizesse sentido para o cliente e para a Tractian.&#10;&#10;Como a gente pensou:&#10;🔹 Começar pelo dinheiro, não pela tecnologia&#10;🔹 Priorizar onde dói mais, em vez de cobrir tudo&#10;🔹 Propor o menor passo que já se paga e crescer com o resultado&#10;🔹 Falar a língua de quem decide a verba, não só de quem opera&#10;&#10;O que eu levo: o cliente raramente precisa da solução mais completa. Ele precisa da mais convincente, e isso exige coragem de recusar o escopo cheio.">
+              <a href="#" data-project-trigger>
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/images/hackathon.svg" alt="Hackathon Tractian" loading="lazy">
+                </figure>
+                <h3 class="project-title">Hackathon Tractian</h3>
+                <p class="project-category">Pessoal</p>
+              </a>
+            </li>
           </ul>
           <p class="projects-empty" data-projects-empty hidden>Nenhum projeto com essa combinação de filtros.</p>
         </section>
@@ -505,7 +532,7 @@
         </section>
 
         <section class="contact-form">
-          <h3 class="h3 form-title">Contact Form</h3>
+          <h3 class="h3 form-title">Contact Form<button class="egg-clap" type="button" data-egg-cinema aria-label="Claquete escondida"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 9h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9zm.4-2.3L18.9 3l.7 2.8-15.5 3.7zM7 9l3.2-.8-2.1-2.1L5 6.9zm6 0l3.2-.8-2.1-2.1-3.1 1z"/></svg></button></h3>
           <form action="https://formspree.io/f/xbggrbkv" method="POST" class="form" data-form>
 
             <div class="input-wrapper">
@@ -555,6 +582,7 @@
   </div>
 
   <script src="./assets/js/script.js"></script>
+  <script src="./assets/js/easter-eggs.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
