@@ -838,3 +838,10 @@ body.egg-grogu-on .egg-starwars { pointer-events: none; }
   body.egg-cine-mode .project-modal.active .modal-content { animation: none; }
   .egg-toast-timer { animation-duration: 0.01ms; }
 }
+
+
+/* Light theme: deeper tones so the always-visible egg triggers keep their contrast. */
+:root[data-theme="light"] .egg-starwars:not(.is-on) { color: #d97706; }
+:root[data-theme="light"] .egg-term-fab { color: #15803d; }
+:root[data-theme="light"] .egg-term-fab:hover,
+:root[data-theme="light"] .egg-term-fab:focus-visible { border-color: #15803d; }

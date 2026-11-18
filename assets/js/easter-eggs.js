@@ -2,6 +2,8 @@
 
 (function () {
 
+  // Current-language string (see preferences.js); falls back to English.
+  const L = function (en, pt) { return window.I18N ? window.I18N.L(en, pt) : en; };
   const clamp = function (v, min, max) { return Math.min(Math.max(v, min), max); };
   const rand = function (min, max) { return min + Math.random() * (max - min); };
   const pick = function (list) { return list[Math.floor(Math.random() * list.length)]; };
@@ -58,7 +60,7 @@
     el.className = "egg-toast";
     el.innerHTML =
       '<div class="egg-toast-body">' + html + "</div>" +
-      '<button class="egg-toast-close" type="button" aria-label="Fechar aviso">×</button>' +
+      '<button class="egg-toast-close" type="button" aria-label="' + L("Dismiss", "Fechar aviso") + '">×</button>' +
       '<i class="egg-toast-timer" aria-hidden="true"></i>';
     if (opts.group) el.setAttribute("data-group", opts.group);
     const ms = opts.duration || TOAST_MS;
@@ -92,11 +94,19 @@
     return { el: el, close: close };
   };
 
-  const discover = function (key, html) {
+  // A banner on screen would be in the old language after a switch; just clear it.
+  if (window.I18N) window.I18N.onChange(function () { if (toastBox) toastBox.innerHTML = ""; });
+
+  // Every egg shares this single, short banner, shown only the first time it's found.
+  const discover = function (key) {
     if (state[key]) return;
     state[key] = true;
     saveState();
-    toast(html + '<br><span class="egg-muted">easter eggs: <b>' + foundCount() + "/4</b> encontrados</span>", { group: "found" });
+    const n = foundCount();
+    toast(n === 4
+      ? L("🏆 <b>All 4 easter eggs found!</b>", "🏆 <b>Você achou os 4 easter eggs!</b>")
+      : L("🥚 <b>Easter egg found</b> · " + n + "/4", "🥚 <b>Easter egg encontrado</b> · " + n + "/4"),
+      { group: "found", duration: 4000 });
   };
 
   let skyUsed = false;
@@ -723,10 +733,7 @@
       document.body.classList.remove("egg-grogu-on");
       groguBusy = false;
       if (!state.sky) star.click();
-      setTimeout(function () {
-        force.remove();
-        toast("🟢 <b>Alguém bem pequenininho usou a Força</b> e acendeu a estrela para você.", { group: "grogu", duration: 7000 });
-      }, 5200);
+      setTimeout(function () { force.remove(); }, 5200);
     });
   };
 
@@ -758,29 +765,11 @@
     };
     btn.addEventListener("click", function () {
       if (sw.isBusy()) return;
-      const nowOn = sw.toggle(function () {
-        discover("starwars",
-          "✨ <b>Que a Força esteja com você.</b><br>" +
-          '<span class="egg-crawl">Há muito tempo, numa galáxia muito, muito distante…</span>');
-      });
+      sw.toggle(function () { discover("starwars"); });
       sync();
-      if (!nowOn) {
-        toast("🌌 O céu se apagou. Clique de novo na estrela para voltar ao hiperespaço.", { group: "sky", duration: 4000 });
-      }
     });
     sync();
   };
-
-  const DINO_FACTS = [
-    "Aves são dinossauros terópodes vivos. Aquela galinha no quintal é parente do <b>T. rex</b>. 🐔",
-    "O <b>T. rex</b> viveu há ~66 milhões de anos: está mais perto de nós no tempo do que do <b>Stegosaurus</b>, que viveu há ~150 milhões. 🤯",
-    "O Brasil tem dinossauros de sobra. O <b>Uberabatitan</b> foi encontrado em Uberaba (MG), ali pertinho de Patos de Minas. 🦕",
-    "O <b>Staurikosaurus</b>, do Rio Grande do Sul, tem ~233 milhões de anos e está entre os dinossauros mais antigos já descritos.",
-    "Em 1996 o <b>Sinosauropteryx</b> mostrou ao mundo que dinossauros podiam ter penugem. 🪶",
-    "A Era Mesozoica vai de ~252 a ~66 milhões de anos atrás: Triássico, Jurássico e Cretáceo. ⏳",
-    "O <b>Archaeopteryx</b> (~150 Ma) ainda guarda dentes, garras e penas: um elo entre dinossauros e aves. 🦴"
-  ];
-  let dinoFactIndex = Math.floor(Math.random() * DINO_FACTS.length);
 
   const buildFossils = function () {
     const R = function (v) { return Math.round(v * 10) / 10; };
@@ -1369,15 +1358,11 @@
     if (meteorBusy) return;
     if (dig.isOn()) {
       dig.off();
-      toast("🪨 Escavação coberta de volta. O fóssil continua lá em “Sobre mim”.", { group: "dino" });
       return;
     }
     dropMeteor(function (origin) {
       dig.on(true, origin);
-      const fact = DINO_FACTS[dinoFactIndex];
-      dinoFactIndex = (dinoFactIndex + 1) % DINO_FACTS.length;
-      discover("dino", "☄️ <b>Impacto!</b> Fim do Cretáceo… e começo da escavação: a sidebar virou um sítio paleontológico.");
-      toast("🦴 <b>Curiosidade paleontológica</b><br>" + fact, { group: "dino", duration: 12000 });
+      discover("dino");
     });
   };
 
@@ -1409,11 +1394,10 @@
   };
 
   const goToProjects = function () {
-    const page = document.querySelector('[data-page="projetos"]');
+    const page = document.querySelector('[data-page="projects"]');
     if (page && page.classList.contains("active")) return;
-    Array.prototype.forEach.call(document.querySelectorAll("[data-nav-link]"), function (link) {
-      if (normalize(link.textContent) === "projetos") link.click();
-    });
+    const link = document.querySelector('[data-nav-link="projects"]');
+    if (link) link.click();
   };
 
   const playIntro = function () {
@@ -1421,7 +1405,7 @@
     cineEl = document.createElement("div");
     cineEl.className = "egg-cine is-intro";
     cineEl.setAttribute("role", "dialog");
-    cineEl.setAttribute("aria-label", "Contagem do filme (clique para pular)");
+    cineEl.setAttribute("aria-label", L("Film countdown (click to skip)", "Contagem do filme (clique para pular)"));
     cineEl.innerHTML =
       '<div class="egg-cine-leader" data-leader>' +
         '<div class="egg-cine-reticle"><span data-count>3</span></div>' +
@@ -1446,7 +1430,7 @@
       goToProjects();
       playIntro();
     }
-    discover("cinema", "🎬 <b>Luzes, câmera, ação!</b><br>Agora cada projeto abre como uma cena de filme.");
+    discover("cinema");
   };
 
   const cinemaOff = function () {
@@ -1455,7 +1439,6 @@
     stopCinema();
     document.body.classList.remove("egg-cine-mode");
     syncClaps();
-    toast("💡 Fim da sessão: as luzes acenderam. A claquete continua no título de Projetos.", { group: "cine", duration: 4000 });
   };
 
   const runCinema = function () {
@@ -1466,7 +1449,9 @@
   const today = function () {
     const d = new Date();
     const two = function (n) { return (n < 10 ? "0" : "") + n; };
-    return two(d.getDate()) + "/" + two(d.getMonth() + 1) + "/" + String(d.getFullYear()).slice(2);
+    const day = two(d.getDate());
+    const month = two(d.getMonth() + 1);
+    return L(month + "/" + day, day + "/" + month) + "/" + String(d.getFullYear()).slice(2);
   };
 
   const playSlate = function (title, scene, then) {
@@ -1481,13 +1466,13 @@
         '<div class="egg-slate-stick egg-slate-arm"></div>' +
         '<div class="egg-slate-stick egg-slate-base"></div>' +
         '<div class="egg-slate-board">' +
-          '<div class="egg-slate-head">Portfólio · JP</div>' +
-          '<div class="egg-slate-row egg-slate-scene"><span>Cena</span><b>' + escapeHTML(title) + "</b></div>" +
+          '<div class="egg-slate-head">' + L("Portfolio · JP", "Portfólio · JP") + "</div>" +
+          '<div class="egg-slate-row egg-slate-scene"><span>' + L("Scene", "Cena") + "</span><b>" + escapeHTML(title) + "</b></div>" +
           '<div class="egg-slate-grid">' +
-            "<div><span>Rolo</span><b>" + escapeHTML(scene) + "</b></div>" +
+            "<div><span>" + L("Roll", "Rolo") + "</span><b>" + escapeHTML(scene) + "</b></div>" +
             "<div><span>Take</span><b>" + takeCount + "</b></div>" +
-            "<div><span>Direção</span><b>João Pedro</b></div>" +
-            "<div><span>Data</span><b>" + today() + "</b></div>" +
+            "<div><span>" + L("Director", "Direção") + "</span><b>João Pedro</b></div>" +
+            "<div><span>" + L("Date", "Data") + "</span><b>" + today() + "</b></div>" +
           "</div>" +
         "</div>" +
       "</div>";
@@ -1552,68 +1537,121 @@
     setTimeout(function () { closeTerminal(); callback(); }, delay);
   };
 
+  const visitor = function () { return L("visitor", "visitante"); };
+  const prompt = function () { return visitor() + "@jp:~$"; };
+
   const printSecrets = function () {
     const rows = [
-      [state.starwars, "star wars", "uma estrela ✦ cintila no canto superior do céu"],
-      [state.dino, "dinossauros", "algo fossilizado se esconde em “Sobre mim”"],
-      [state.cinema, "cinema", "uma claquete espera no título de “Projetos”"],
-      [state.terminal, "terminal", "você está aqui 😉"]
+      [state.starwars, "star wars", L("a star ✦ twinkles in the top corner of the sky", "uma estrela ✦ cintila no canto superior do céu")],
+      [state.dino, L("dinosaurs", "dinossauros"), L("something fossilized hides in “About”", "algo fossilizado se esconde em “Sobre mim”")],
+      [state.cinema, "cinema", L("a clapperboard waits in the “Projects” title", "uma claquete espera no título de “Projetos”")],
+      [state.terminal, "terminal", L("you are here 😉", "você está aqui 😉")]
     ];
     termPrint(
-      "<strong>easter eggs · " + foundCount() + "/4 encontrados</strong>\n" +
+      "<strong>easter eggs · " + foundCount() + "/4 " + L("found", "encontrados") + "</strong>\n" +
       rows.map(function (r) {
         return "  " + check(r[0]) + " " + r[1].padEnd(13) + '<b class="t-muted">' + r[2] + "</b>";
       }).join("\n")
     );
   };
 
+  // Canonical (English) file names; the Portuguese names still work as aliases.
+  const FILE_ALIASES = { "interesses.txt": "interests.txt", "segredos.txt": "secrets.txt" };
   const FILES = {
-    "readme.md": [
-      '<b class="t-muted"># João Pedro · Developer</b>',
-      "Ciência da Computação na UFABC (previsão 2027), de Patos de Minas (MG) a Santo André (SP).",
-      "Cloud, sistemas, Linux e código de baixo nível. Curioso por tudo, da computação à paleontologia."
-    ].join("\n"),
-    "interesses.txt": [
-      "linux · baixo nível · cloud",
-      "paleontologia · história natural e evolutiva 🦖",
-      "documentários · bons filmes 🎬",
-      "star wars ✨ · mandarim · mercado financeiro"
-    ].join("\n"),
-    "segredos.txt": null
+    "readme.md": function () {
+      return [
+        '<b class="t-muted"># João Pedro · Developer</b>',
+        L("Computer Science at UFABC (expected 2027), from Patos de Minas (MG) to Santo André (SP).",
+          "Ciência da Computação na UFABC (previsão 2027), de Patos de Minas (MG) a Santo André (SP)."),
+        L("Cloud, systems, Linux and low-level code. Curious about everything, from computing to paleontology.",
+          "Cloud, sistemas, Linux e código de baixo nível. Curioso por tudo, da computação à paleontologia.")
+      ].join("\n");
+    },
+    "interests.txt": function () {
+      return L(
+        ["linux · low level · cloud", "paleontology · natural and evolutionary history 🦖", "documentaries · good movies 🎬", "star wars ✨ · mandarin · financial markets"],
+        ["linux · baixo nível · cloud", "paleontologia · história natural e evolutiva 🦖", "documentários · bons filmes 🎬", "star wars ✨ · mandarim · mercado financeiro"]
+      ).join("\n");
+    },
+    "kernel.c": function () {
+      return [
+        '<b class="t-muted">/* ' + L("everyone's first program", "o primeiro programa de todo mundo") + " */</b>",
+        '<b class="t-lilac">#include</b> &lt;stdio.h&gt;',
+        '<b class="t-lilac">int</b> main(<b class="t-lilac">void</b>) {',
+        '    puts(<b class="t-ok">"' + L("hello, world!", "olá, mundo!") + '"</b>);',
+        '    <b class="t-lilac">return</b> 0;',
+        "}"
+      ].join("\n");
+    }
   };
 
-  const FORTUNES = [
-    "“Tudo que é complexo pode ser feito de forma simples e elegante.”",
-    "“Antes de otimizar, meça.”",
-    "“There is no cloud. It's just someone else's computer.”",
-    "“It works on my machine.” 🤷",
-    "“Talk is cheap. Show me the code.” · Linus Torvalds",
-    "“Os dinossauros não tinham programa espacial. Veja onde isso deu.” ☄️"
-  ];
+  const FORTUNES = {
+    en: [
+      "“Anything complex can be done in a simple, elegant way.”",
+      "“Measure before you optimize.”",
+      "“There is no cloud. It's just someone else's computer.”",
+      "“It works on my machine.” 🤷",
+      "“Talk is cheap. Show me the code.” · Linus Torvalds",
+      "“The dinosaurs didn't have a space program. Look where that got them.” ☄️"
+    ],
+    pt: [
+      "“Tudo que é complexo pode ser feito de forma simples e elegante.”",
+      "“Antes de otimizar, meça.”",
+      "“There is no cloud. It's just someone else's computer.”",
+      "“It works on my machine.” 🤷",
+      "“Talk is cheap. Show me the code.” · Linus Torvalds",
+      "“Os dinossauros não tinham programa espacial. Veja onde isso deu.” ☄️"
+    ]
+  };
+
+  // Paleontology trivia: shown by `fortune` (it used to pop up as an extra banner).
+  const DINO_FACTS = {
+    en: [
+      "🦴 Birds are living theropod dinosaurs. That chicken in the backyard is a relative of <b>T. rex</b>. 🐔",
+      "🦴 <b>T. rex</b> lived ~66 million years ago: it's closer in time to us than to <b>Stegosaurus</b>, which lived ~150 million years ago. 🤯",
+      "🦴 Brazil has plenty of dinosaurs. <b>Uberabatitan</b> was found in Uberaba (MG), right near Patos de Minas. 🦕",
+      "🦴 <b>Staurikosaurus</b>, from Rio Grande do Sul, is ~233 million years old and among the oldest dinosaurs ever described.",
+      "🦴 In 1996, <b>Sinosauropteryx</b> showed the world that dinosaurs could have downy feathers. 🪶",
+      "🦴 The Mesozoic Era runs from ~252 to ~66 million years ago: Triassic, Jurassic and Cretaceous. ⏳",
+      "🦴 <b>Archaeopteryx</b> (~150 Ma) still had teeth, claws and feathers: a link between dinosaurs and birds."
+    ],
+    pt: [
+      "🦴 Aves são dinossauros terópodes vivos. Aquela galinha no quintal é parente do <b>T. rex</b>. 🐔",
+      "🦴 O <b>T. rex</b> viveu há ~66 milhões de anos: está mais perto de nós no tempo do que do <b>Stegosaurus</b>, que viveu há ~150 milhões. 🤯",
+      "🦴 O Brasil tem dinossauros de sobra. O <b>Uberabatitan</b> foi encontrado em Uberaba (MG), ali pertinho de Patos de Minas. 🦕",
+      "🦴 O <b>Staurikosaurus</b>, do Rio Grande do Sul, tem ~233 milhões de anos e está entre os dinossauros mais antigos já descritos.",
+      "🦴 Em 1996 o <b>Sinosauropteryx</b> mostrou ao mundo que dinossauros podiam ter penugem. 🪶",
+      "🦴 A Era Mesozoica vai de ~252 a ~66 milhões de anos atrás: Triássico, Jurássico e Cretáceo. ⏳",
+      "🦴 O <b>Archaeopteryx</b> (~150 Ma) ainda guarda dentes, garras e penas: um elo entre dinossauros e aves."
+    ]
+  };
+
+  const closingNote = function () { return ' <b class="t-muted">' + L("closing the terminal", "fechando o terminal") + "</b>"; };
 
   const TERM_COMMANDS = {
     help: function () {
       termPrint([
-        "<strong>comandos</strong>",
-        row("whoami", "quem sou eu"),
-        row("neofetch", "informações do sistema (estilo Linux)"),
-        row("ls · cat", "explore os arquivos (tente cat readme.md)"),
-        row("projetos", "o que eu construí"),
-        row("asm", "um “olá, mundo” direto em assembly x86-64"),
-        row("fortune", "uma frase aleatória"),
-        row("starwars", "liga/desliga o céu estrelado ✨"),
-        row("dino", "liga/desliga a escavação 🦴"),
-        row("cinema", "liga/desliga o modo cinema nos projetos 🎬"),
-        row("segredos", "easter eggs que você já achou"),
-        '  <b class="t-accent">clear</b> · <b class="t-accent">exit</b> <b class="t-muted">· Tab completa, ↑↓ navega no histórico</b>'
+        "<strong>" + L("commands", "comandos") + "</strong>",
+        row("whoami", L("who am I", "quem sou eu")),
+        row("neofetch", L("system info (Linux style)", "informações do sistema (estilo Linux)")),
+        row("ls · cat", L("explore the files (try cat readme.md)", "explore os arquivos (tente cat readme.md)")),
+        row(L("projects", "projetos"), L("what I've built", "o que eu construí")),
+        row("asm", L("a “hello, world” straight in x86-64 assembly", "um “olá, mundo” direto em assembly x86-64")),
+        row("fortune", L("a random quote or dino fact", "uma frase ou curiosidade de dinossauro")),
+        row("starwars", L("toggle the starry sky ✨", "liga/desliga o céu estrelado ✨")),
+        row("dino", L("toggle the dig site 🦴", "liga/desliga a escavação 🦴")),
+        row("cinema", L("toggle cinema mode on projects 🎬", "liga/desliga o modo cinema nos projetos 🎬")),
+        row(L("secrets", "segredos"), L("easter eggs you've already found", "easter eggs que você já achou")),
+        '  <b class="t-accent">clear</b> · <b class="t-accent">exit</b> <b class="t-muted">· ' +
+          L("Tab completes, ↑↓ browses history", "Tab completa, ↑↓ navega no histórico") + "</b>"
       ].join("\n"));
     },
 
     whoami: function () {
       termPrint(
-        "visitante 👋 (uid=1000)\n" +
-        "mas este terminal é de <strong>João Pedro</strong>\n" +
-        '<b class="t-muted">Ciência da Computação @ UFABC · Santo André, SP</b>'
+        visitor() + " 👋 (uid=1000)\n" +
+        L("but this terminal belongs to <strong>João Pedro</strong>", "mas este terminal é de <strong>João Pedro</strong>") + "\n" +
+        '<b class="t-muted">' + L("Computer Science", "Ciência da Computação") + " @ UFABC · Santo André, SP</b>"
       );
     },
 
@@ -1627,15 +1665,16 @@
         "/'\\_   _/`\\",
         "\\___)=(___/"
       ];
+      const field = function (label, value) { return '<b class="t-accent">' + label.padEnd(8) + "</b>" + value; };
       const info = [
-        '<b class="t-accent">visitante</b>@<b class="t-accent">joaopedrocs</b>',
+        '<b class="t-accent">' + visitor() + '</b>@<b class="t-accent">joaopedrocs</b>',
         "───────────────────",
-        '<b class="t-accent">OS</b>      Linux (WSL2) 🐧',
-        '<b class="t-accent">Host</b>    UFABC, Santo André',
-        '<b class="t-accent">Shell</b>   zsh',
-        '<b class="t-accent">Lang</b>    C/C++ · Python · JS/TS',
-        '<b class="t-accent">Foco</b>    paralelo (MPI, OpenMP, CUDA) · cloud',
-        '<b class="t-accent">Mundo</b>   dinos 🦖 · cinema 🎬 · star wars ✨'
+        field("OS", "Linux (WSL2) 🐧"),
+        field("Host", "UFABC, Santo André"),
+        field("Shell", "zsh"),
+        field("Lang", "C/C++ · Python · JS/TS"),
+        field(L("Focus", "Foco"), L("parallel", "paralelo") + " (MPI, OpenMP, CUDA) · cloud"),
+        field(L("World", "Mundo"), "dinos 🦖 · cinema 🎬 · star wars ✨")
       ];
       const lines = [];
       for (let i = 0; i < Math.max(logo.length, info.length); i++) {
@@ -1645,49 +1684,49 @@
     },
 
     ls: function () {
-      termPrint('<b class="t-blue">dinos/</b>  <b class="t-blue">filmes/</b>  <b class="t-blue">galaxia/</b>  readme.md  interesses.txt  segredos.txt  kernel.c');
+      termPrint(L(
+        '<b class="t-blue">dinos/</b>  <b class="t-blue">movies/</b>  <b class="t-blue">galaxy/</b>  readme.md  interests.txt  secrets.txt  kernel.c',
+        '<b class="t-blue">dinos/</b>  <b class="t-blue">filmes/</b>  <b class="t-blue">galaxia/</b>  readme.md  interesses.txt  segredos.txt  kernel.c'
+      ));
     },
 
     cat: function (args) {
-      const file = args[0];
-      if (!file) { termPrint("uso: cat &lt;arquivo&gt;"); return; }
-      if (file === "segredos.txt") { printSecrets(); return; }
-      if (own(FILES, file) && FILES[file]) { termPrint(FILES[file]); return; }
-      if (file === "kernel.c") {
-        termPrint([
-          '<b class="t-muted">/* o primeiro programa de todo mundo */</b>',
-          '<b class="t-lilac">#include</b> &lt;stdio.h&gt;',
-          '<b class="t-lilac">int</b> main(<b class="t-lilac">void</b>) {',
-          '    puts(<b class="t-ok">"olá, mundo!"</b>);',
-          '    <b class="t-lilac">return</b> 0;',
-          "}"
-        ].join("\n"));
+      const typedName = args[0];
+      if (!typedName) { termPrint(L("usage: cat &lt;file&gt;", "uso: cat &lt;arquivo&gt;")); return; }
+      const file = own(FILE_ALIASES, typedName) ? FILE_ALIASES[typedName] : typedName;
+      if (file === "secrets.txt") { printSecrets(); return; }
+      if (own(FILES, file)) { termPrint(FILES[file]()); return; }
+      if (/^(dinos|filmes|movies|galaxia|galaxy)\/?$/.test(file)) {
+        termPrint("cat: " + escapeHTML(typedName) + ": " + L("Is a directory", "É um diretório"));
         return;
       }
-      if (/^(dinos|filmes|galaxia)\/?$/.test(file)) { termPrint("cat: " + escapeHTML(file) + ": é um diretório"); return; }
-      termPrint("cat: " + escapeHTML(file) + ": arquivo não encontrado");
+      termPrint("cat: " + escapeHTML(typedName) + ": " + L("No such file or directory", "Arquivo ou diretório inexistente"));
     },
 
-    projetos: function () {
+    projects: function () {
       termPrint(
-        "<strong>projetos</strong>\n" +
-        '  <b class="t-lilac">▸</b> veja a aba <b class="t-accent">Projetos</b> do site, com filtros por tag e demos interativas.\n' +
-        '  <b class="t-muted">código no GitHub: github.com/JoaoPedroCS</b>'
+        "<strong>" + L("projects", "projetos") + "</strong>\n" +
+        '  <b class="t-lilac">▸</b> ' + L(
+          'check the site\'s <b class="t-accent">Projects</b> tab, with tag filters and interactive demos.',
+          'veja a aba <b class="t-accent">Projetos</b> do site, com filtros por tag e demos interativas.') + "\n" +
+        '  <b class="t-muted">' + L("code on GitHub", "código no GitHub") + ": github.com/JoaoPedroCS</b>"
       );
     },
 
     asm: function () {
+      // The byte count in rdx must match the message (+1 for the newline).
+      const msg = L("hello, world", "ola, mundo");
       termPrint([
-        '<b class="t-muted">; hello.asm · x86-64, NASM, Linux · sem libc, só syscalls</b>',
+        '<b class="t-muted">; hello.asm · x86-64, NASM, Linux · ' + L("no libc, just syscalls", "sem libc, só syscalls") + "</b>",
         '<b class="t-lilac">section</b> .data',
-        '  msg <b class="t-lilac">db</b> <b class="t-ok">"ola, mundo", 10</b>',
+        '  msg <b class="t-lilac">db</b> <b class="t-ok">"' + msg + '", 10</b>',
         '<b class="t-lilac">section</b> .text',
         '<b class="t-lilac">global</b> _start',
         "_start:",
         '  <b class="t-accent">mov</b> rax, 1      <b class="t-muted">; sys_write</b>',
         '  <b class="t-accent">mov</b> rdi, 1      <b class="t-muted">; stdout</b>',
         '  <b class="t-accent">lea</b> rsi, [msg]',
-        '  <b class="t-accent">mov</b> rdx, 11     <b class="t-muted">; bytes</b>',
+        '  <b class="t-accent">mov</b> rdx, ' + String(msg.length + 1).padEnd(7) + '<b class="t-muted">; bytes</b>',
         '  <b class="t-accent">syscall</b>',
         '  <b class="t-accent">mov</b> rax, 60     <b class="t-muted">; sys_exit</b>',
         '  <b class="t-accent">xor</b> rdi, rdi',
@@ -1695,10 +1734,13 @@
       ].join("\n"));
     },
 
-    fortune: function () { termPrint(escapeHTML(pick(FORTUNES))); },
+    fortune: function () {
+      const pool = L(FORTUNES.en.concat(DINO_FACTS.en), FORTUNES.pt.concat(DINO_FACTS.pt));
+      termPrint(pick(pool));
+    },
 
     grogu: function () {
-      termPrint('🟢 algo bem pequeno se mexe atrás de um card… <b class="t-muted">fechando o terminal</b>');
+      termPrint(L("🟢 something very small stirs behind a card…", "🟢 algo bem pequeno se mexe atrás de um card…") + closingNote());
       closeThen(function () {
         if (state.sky) { sw.off(); setTimeout(runGrogu, 900); } else runGrogu();
       }, 700);
@@ -1706,10 +1748,12 @@
 
     starwars: function () {
       const turnOn = !sw.isOn();
-      termPrint(turnOn ? "✨ engatando o hiperespaço… <b class=\"t-muted\">fechando o terminal</b>" : "🌌 apagando as estrelas…");
+      termPrint(turnOn
+        ? L("✨ engaging hyperdrive…", "✨ engatando o hiperespaço…") + closingNote()
+        : L("🌌 switching off the stars…", "🌌 apagando as estrelas…"));
       closeThen(function () {
         if (turnOn) {
-          sw.on(true, function () { discover("starwars", "✨ <b>Que a Força esteja com você.</b>"); });
+          sw.on(true, function () { discover("starwars"); });
         } else {
           sw.off();
         }
@@ -1719,20 +1763,22 @@
     },
 
     dino: function () {
-      termPrint((dig.isOn() ? "🪨 cobrindo a escavação…" : "🦴 escavando a sidebar…") + ' <b class="t-muted">fechando o terminal</b>');
+      termPrint((dig.isOn()
+        ? L("🪨 covering the dig site…", "🪨 cobrindo a escavação…")
+        : L("🦴 digging up the sidebar…", "🦴 escavando a sidebar…")) + closingNote());
       closeThen(runDinos, 700);
     },
 
     cinema: function () {
-      termPrint(state.cine
-        ? '💡 acendendo as luzes da sala… <b class="t-muted">fechando o terminal</b>'
-        : '🎬 silêncio no set… <b class="t-muted">fechando o terminal</b>');
+      termPrint((state.cine
+        ? L("💡 turning the house lights on…", "💡 acendendo as luzes da sala…")
+        : L("🎬 quiet on set…", "🎬 silêncio no set…")) + closingNote());
       closeThen(runCinema, 700);
     },
 
-    segredos: printSecrets,
+    secrets: printSecrets,
 
-    pwd: function () { termPrint("/home/visitante/joaopedrocs"); },
+    pwd: function () { termPrint("/home/" + visitor() + "/joaopedrocs"); },
 
     date: function () { termPrint(escapeHTML(new Date().toString())); },
 
@@ -1745,24 +1791,28 @@
     echo: function (args) { termPrint(escapeHTML(args.join(" "))); },
 
     sudo: function () {
-      termPrint(
-        "[sudo] senha para visitante: ********\n" +
-        "visitante não está no arquivo sudoers. Este incidente será reportado. 😄"
-      );
+      termPrint(L(
+        "[sudo] password for visitor: ********\nvisitor is not in the sudoers file. This incident will be reported. 😄",
+        "[sudo] senha para visitante: ********\nvisitante não está no arquivo sudoers. Este incidente será reportado. 😄"
+      ));
     },
 
     vim: function () {
-      termPrint('<b class="t-muted">~\n~\n~\n~</b>\npreso no vim. Dica: <b class="t-accent">:q!</b> 😅 (ou digite <b class="t-accent">exit</b>)');
+      termPrint('<b class="t-muted">~\n~\n~\n~</b>\n' + L(
+        'stuck in vim. Hint: <b class="t-accent">:q!</b> 😅 (or type <b class="t-accent">exit</b>)',
+        'preso no vim. Dica: <b class="t-accent">:q!</b> 😅 (ou digite <b class="t-accent">exit</b>)'));
     },
 
     rm: function (args) {
       termPrint(args.join(" ").indexOf("/") >= 0 && args.indexOf("-rf") >= 0
-        ? "rm: não vou fazer isso. Eu gosto deste site. 🛑"
-        : "rm: nada removido, aqui é só leitura.");
+        ? L("rm: not doing that. I like this site. 🛑", "rm: não vou fazer isso. Eu gosto deste site. 🛑")
+        : L("rm: nothing removed, this is read-only.", "rm: nada removido, aqui é só leitura."));
     },
 
-    oi: function () {
-      termPrint('oi! 👋 digite <b class="t-accent">help</b> para ver o que dá pra fazer por aqui.');
+    hi: function () {
+      termPrint(L(
+        'hi! 👋 type <b class="t-accent">help</b> to see what you can do here.',
+        'oi! 👋 digite <b class="t-accent">help</b> para ver o que dá pra fazer por aqui.'));
     },
 
     clear: function () { termOut.innerHTML = ""; },
@@ -1771,23 +1821,22 @@
 
   const TERM_ALIASES = {
     ajuda: "help", "?": "help",
-    sobre: "whoami", id: "whoami",
+    sobre: "whoami", about: "whoami", id: "whoami",
     fetch: "neofetch", screenfetch: "neofetch",
     dir: "ls", ll: "ls",
-    projects: "projetos", project: "projetos",
+    projetos: "projects", project: "projects", projeto: "projects",
     assembly: "asm", nasm: "asm",
+    fact: "fortune", facts: "fortune", curiosidade: "fortune",
     yoda: "grogu", "baby-yoda": "grogu", babyyoda: "grogu", mando: "grogu",
     "star-wars": "starwars", force: "starwars", forca: "starwars", sky: "starwars", ceu: "starwars",
-    dinos: "dino", dinossauro: "dino", dinossauros: "dino", trex: "dino", "t-rex": "dino", rawr: "dino",
+    dinos: "dino", dinosaur: "dino", dinosaurs: "dino", dinossauro: "dino", dinossauros: "dino", trex: "dino", "t-rex": "dino", rawr: "dino",
     filme: "cinema", filmes: "cinema", movie: "cinema", movies: "cinema",
-    eggs: "segredos", easter: "segredos", segredo: "segredos",
-    ola: "oi", hello: "oi", hi: "oi",
+    segredos: "secrets", segredo: "secrets", secret: "secrets", eggs: "secrets", easter: "secrets",
+    oi: "hi", ola: "hi", hello: "hi", hey: "hi",
     limpar: "clear", cls: "clear",
     sair: "exit", quit: "exit", q: "exit", ":q": "exit", ":q!": "exit",
     nvim: "vim", nano: "vim", emacs: "vim"
   };
-
-  const PROMPT = "visitante@jp:~$";
 
   const printBanner = function () {
     termPrint(
@@ -1797,14 +1846,15 @@
       "_  | || |_) |\n" +
       "| |_| ||  __/\n" +
       " \\___/ |_|</b>\n\n" +
-      "<strong>terminal</strong> · bem-vindo ao meu cantinho de Linux e baixo nível 🐧\n" +
-      'digite <b class="t-accent">help</b> para ver os comandos.\n'
+      L("<strong>terminal</strong> · welcome to my little corner of Linux and low-level code 🐧\n",
+        "<strong>terminal</strong> · bem-vindo ao meu cantinho de Linux e baixo nível 🐧\n") +
+      L('type <b class="t-accent">help</b> to see the commands.\n', 'digite <b class="t-accent">help</b> para ver os comandos.\n')
     );
   };
 
   const runCommand = function (raw) {
     const line = raw.trim();
-    termPrint('<b class="t-accent">' + PROMPT + "</b> " + escapeHTML(line));
+    termPrint('<b class="t-accent">' + prompt() + "</b> " + escapeHTML(line));
     if (line) {
       cmdHistory.push(line);
       const parts = line.split(/\s+/);
@@ -1813,7 +1863,8 @@
       if (own(TERM_COMMANDS, name)) {
         TERM_COMMANDS[name](parts.slice(1).map(function (p) { return p; }));
       } else {
-        termPrint('<b class="t-muted">bash: comando não encontrado:</b> ' + escapeHTML(parts[0]) + ' · digite <b class="t-accent">help</b>');
+        termPrint('<b class="t-muted">bash: ' + L("command not found", "comando não encontrado") + ":</b> " + escapeHTML(parts[0]) +
+          " · " + L("type", "digite") + ' <b class="t-accent">help</b>');
       }
     }
     historyIndex = cmdHistory.length;
@@ -1861,13 +1912,13 @@
       '<div class="egg-term-window" role="dialog" aria-modal="true" aria-label="Terminal">' +
         '<div class="egg-term-bar">' +
           "<i></i><i></i><i></i>" +
-          '<p class="egg-term-title">visitante@jp: ~ · bash</p>' +
-          '<button class="egg-term-close" type="button" data-term-close aria-label="Fechar terminal">×</button>' +
+          '<p class="egg-term-title" data-term-title></p>' +
+          '<button class="egg-term-close" type="button" data-term-close>×</button>' +
         "</div>" +
         '<div class="egg-term-body" data-term-body>' +
           '<div class="egg-term-out" data-term-out aria-live="polite"></div>' +
           '<form class="egg-term-line" data-term-form>' +
-            '<label for="egg-term-input">' + PROMPT + "</label>" +
+            '<label for="egg-term-input" data-term-prompt></label>' +
             '<input id="egg-term-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send">' +
           "</form>" +
         "</div>" +
@@ -1890,8 +1941,18 @@
       runCommand(value);
     });
     termInput.addEventListener("keydown", onTerminalKey);
+    labelTerminal();
     printBanner();
   };
+
+  // Chrome of the terminal window follows the site language (the scrollback stays as printed).
+  const labelTerminal = function () {
+    if (!term) return;
+    term.querySelector("[data-term-title]").textContent = visitor() + "@jp: ~ · bash";
+    term.querySelector("[data-term-prompt]").textContent = prompt();
+    term.querySelector("[data-term-close]").setAttribute("aria-label", L("Close terminal", "Fechar terminal"));
+  };
+  if (window.I18N) window.I18N.onChange(labelTerminal);
 
   const openTerminal = function () {
     if (!term) buildTerminal();
@@ -1901,7 +1962,7 @@
     document.body.classList.add("egg-term-open");
     termInput.focus();
     termBody.scrollTop = termBody.scrollHeight;
-    discover("terminal", "🐧 <b>Terminal aberto.</b> Digite <code>help</code>.");
+    discover("terminal");
   };
 
   function closeTerminal() {
@@ -1930,7 +1991,6 @@
       if (konamiStep === KONAMI.length) {
         konamiStep = 0;
         event.preventDefault();
-        toast("🎮 <b>Código Konami aceito.</b>", { group: "terminal", duration: 4000 });
         openTerminal();
         return;
       }
@@ -1967,16 +2027,26 @@
   saveState();
 
   const pageTitle = document.title;
-  const AWAY_TITLES = [
-    "🦖 Volte antes da extinção…",
-    "✨ Volte, a Força ainda está aqui",
-    "🎬 Pausamos o filme para você",
-    "$ fg · volte para o portfólio",
-    "学无止境 · volte logo",
-    "📈 Volte, o mercado já abriu"
-  ];
+  const AWAY_TITLES = {
+    en: [
+      "🦖 Come back before the extinction…",
+      "✨ Come back, the Force is still here",
+      "🎬 We paused the movie for you",
+      "$ fg · back to the portfolio",
+      "学无止境 · come back soon",
+      "📈 Come back, the market is open"
+    ],
+    pt: [
+      "🦖 Volte antes da extinção…",
+      "✨ Volte, a Força ainda está aqui",
+      "🎬 Pausamos o filme para você",
+      "$ fg · volte para o portfólio",
+      "学无止境 · volte logo",
+      "📈 Volte, o mercado já abriu"
+    ]
+  };
   document.addEventListener("visibilitychange", function () {
-    document.title = document.hidden ? pick(AWAY_TITLES) : pageTitle;
+    document.title = document.hidden ? pick(L(AWAY_TITLES.en, AWAY_TITLES.pt)) : pageTitle;
   });
 
   const now = new Date();
@@ -1985,7 +2055,8 @@
     try { seenToday = sessionStorage.getItem("jp-may4") === "1"; sessionStorage.setItem("jp-may4", "1"); } catch (e) { seenToday = false; }
     if (!seenToday) {
       setTimeout(function () {
-        toast("✨ <b>Hoje é 4 de maio.</b> Que a Força esteja com você.<br><span class=\"egg-muted\">a estrela no canto da tela sabe o que fazer</span>", { group: "may4", duration: 9000 });
+        toast(L("✨ <b>May the 4th be with you.</b> The star in the corner knows what to do.",
+                "✨ <b>Hoje é 4 de maio.</b> Que a Força esteja com você: a estrela no canto sabe o que fazer."), { group: "may4", duration: 8000 });
       }, 2500);
     }
   }
@@ -1995,12 +2066,14 @@
   try { hintSeen = localStorage.getItem(HINT_KEY) === "1"; } catch (e) { hintSeen = false; }
   if (!hintSeen) {
     setTimeout(function () {
-      toast("👀 <b>Psiu!</b> Este portfólio esconde <b>4 easter eggs</b>. Dica: tem uma estrela ✦ cintilando no canto superior da tela e um botão <code>&gt;_</code> no canto.", { duration: 14000 });
+      toast(L("👀 <b>Psst!</b> This portfolio hides <b>4 easter eggs</b>. Try the ✦ star or the <code>&gt;_</code> button.",
+              "👀 <b>Psiu!</b> Este portfólio esconde <b>4 easter eggs</b>. Comece pela estrela ✦ ou pelo botão <code>&gt;_</code>."), { duration: 9000 });
       try { localStorage.setItem(HINT_KEY, "1"); } catch (e) { }
     }, 6000);
   }
 
-  console.log("%c🦖🎬✨ Oi, pessoa curiosa!", "font: 600 15px Poppins, sans-serif; color: #ff4654;");
-  console.log("%cEste portfólio tem 4 easter eggs. Digite “terminal” na página (fora de um campo) para começar.", "font: 13px Poppins, sans-serif; color: #7aa2f7;");
+  console.log("%c" + L("🦖🎬✨ Hi there, curious person!", "🦖🎬✨ Oi, pessoa curiosa!"), "font: 600 15px Poppins, sans-serif; color: #ff4654;");
+  console.log("%c" + L("This portfolio has 4 easter eggs. Type “terminal” on the page (outside a text field) to start.",
+                       "Este portfólio tem 4 easter eggs. Digite “terminal” na página (fora de um campo) para começar."), "font: 13px Poppins, sans-serif; color: #7aa2f7;");
 
 })();

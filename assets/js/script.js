@@ -2,6 +2,10 @@
 
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
 
+// Picks the string for the current language (see preferences.js). Falls back to English.
+const L = function (en, pt) { return window.I18N ? window.I18N.L(en, pt) : en; };
+const onLanguageChange = function (fn) { if (window.I18N) window.I18N.onChange(fn); };
+
 const BIRTH = { year: 2003, month: 11, day: 11 };
 const currentAge = function () {
   const today = new Date();
@@ -15,16 +19,18 @@ const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
 
-// Para criar uma tag nova: adicione uma entrada aqui e use a chave em data-tags="..." no <li> do projeto.
-// Projetos com data-demo recebem a tag "demo" automaticamente.
+// To add a tag: create an entry here and use its key in data-tags="..." on the project's <li>.
+// Projects with data-demo get the "demo" tag automatically. label/description are [en, pt].
 const PROJECT_TAGS = {
-  ai:     { label: "AI",       icon: "sparkles-outline",    color: "#b794f6", description: "IA usada para agilizar o desenvolvimento e testar o projeto" },
-  github: { label: "GitHub",   icon: "logo-github",         color: "#e6edf3", description: "Tem repositório no GitHub" },
-  demo:   { label: "Demo",     icon: "play-circle-outline", color: "#4ade80", description: "Tem demo interativa aqui no portfólio" },
-  paralelo: { label: "Paralelo", icon: "git-network-outline", color: "#7aa2f7", description: "Usa programação paralela" },
-  hackathon: { label: "Hackathon", icon: "trophy-outline", color: "#f472b6", description: "Projeto feito em hackathon" },
-  dados:  { label: "Dados",    icon: "bar-chart-outline",   color: "#fbbf24", description: "Análise ou simulação sobre dados reais" }
+  ai:        { label: ["AI", "AI"],               icon: "sparkles-outline",    color: "#b794f6", description: ["AI used to speed up development and test the project", "IA usada para agilizar o desenvolvimento e testar o projeto"] },
+  github:    { label: ["GitHub", "GitHub"],       icon: "logo-github",         color: "#e6edf3", description: ["Has a GitHub repository", "Tem repositório no GitHub"] },
+  demo:      { label: ["Demo", "Demo"],           icon: "play-circle-outline", color: "#4ade80", description: ["Has an interactive demo right here in the portfolio", "Tem demo interativa aqui no portfólio"] },
+  paralelo:  { label: ["Parallel", "Paralelo"],   icon: "git-network-outline", color: "#7aa2f7", description: ["Uses parallel programming", "Usa programação paralela"] },
+  hackathon: { label: ["Hackathon", "Hackathon"], icon: "trophy-outline",      color: "#f472b6", description: ["Project built at a hackathon", "Projeto feito em hackathon"] },
+  dados:     { label: ["Data", "Dados"],          icon: "bar-chart-outline",   color: "#fbbf24", description: ["Analysis or simulation on real data", "Análise ou simulação sobre dados reais"] }
 };
+const tagLabel = function (key) { return L.apply(null, PROJECT_TAGS[key].label); };
+const tagDescription = function (key) { return L.apply(null, PROJECT_TAGS[key].description); };
 
 const select = document.querySelector("[data-select]");
 const selectItems = document.querySelectorAll("[data-select-item]");
@@ -39,7 +45,7 @@ const projectsEmpty = document.querySelector("[data-projects-empty]");
 
 select.addEventListener("click", function () { elementToggleFunc(this); });
 
-let activeCategory = "todos";
+let activeCategory = "all";
 const activeTags = new Set();
 const projectTagMap = new Map();
 
@@ -51,15 +57,26 @@ const getProjectTags = function (item) {
 
 const tagChipHTML = function (key) {
   const tag = PROJECT_TAGS[key];
-  return `<span class="tag-chip" style="--tag-color:${tag.color}" title="${tag.description}"><ion-icon name="${tag.icon}"></ion-icon>${tag.label}</span>`;
+  return `<span class="tag-chip" data-tag="${key}" style="--tag-color:${tag.color}" title="${tagDescription(key)}"><ion-icon name="${tag.icon}"></ion-icon><span class="tag-label">${tagLabel(key)}</span></span>`;
 };
+
+// Re-labels every tag chip (cards + filter bar) in the current language.
+const relabelTags = function () {
+  document.querySelectorAll("[data-tag]").forEach(function (chip) {
+    const key = chip.dataset.tag;
+    chip.title = tagDescription(key);
+    const label = chip.querySelector(".tag-label");
+    if (label) label.textContent = tagLabel(key);
+  });
+};
+onLanguageChange(relabelTags);
 
 const applyFilters = function () {
   let visibleCount = 0;
   for (let i = 0; i < filterItems.length; i++) {
     const item = filterItems[i];
     const projectTags = projectTagMap.get(item);
-    const categoryOk = activeCategory === "todos" || activeCategory === item.dataset.category;
+    const categoryOk = activeCategory === "all" || activeCategory === item.dataset.category;
     const tagsOk = Array.from(activeTags).every(function (key) { return projectTags.has(key); });
     const show = categoryOk && tagsOk;
     item.classList.toggle("active", show);
@@ -92,7 +109,7 @@ Object.keys(PROJECT_TAGS).forEach(function (key) {
   if (!tagCounts[key]) return;
   const tag = PROJECT_TAGS[key];
   const li = document.createElement("li");
-  li.innerHTML = `<button type="button" class="tag-chip tag-chip-btn" style="--tag-color:${tag.color}" data-tag-key="${key}" aria-pressed="false" title="${tag.description}"><ion-icon name="${tag.icon}"></ion-icon>${tag.label}<span class="tag-count">${tagCounts[key]}</span></button>`;
+  li.innerHTML = `<button type="button" class="tag-chip tag-chip-btn" style="--tag-color:${tag.color}" data-tag="${key}" data-tag-key="${key}" aria-pressed="false" title="${tagDescription(key)}"><ion-icon name="${tag.icon}"></ion-icon><span class="tag-label">${tagLabel(key)}</span><span class="tag-count">${tagCounts[key]}</span></button>`;
   tagFilterList.appendChild(li);
 });
 if (!tagFilterList.children.length) tagFilter.hidden = true;
@@ -114,21 +131,27 @@ tagClearBtn.addEventListener("click", function () {
   applyFilters();
 });
 
+// Filters match on data-filter-btn / data-select-item values (not on the visible,
+// translatable text). The mobile select shows the label of the active filter.
+const syncSelectValue = function () {
+  const activeBtn = document.querySelector(`[data-filter-btn="${activeCategory}"]`);
+  if (activeBtn) selectValue.innerText = activeBtn.innerText;
+};
+onLanguageChange(syncSelectValue);
+
 for (let i = 0; i < selectItems.length; i++) {
   selectItems[i].addEventListener("click", function () {
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
     elementToggleFunc(select);
-    filterFunc(selectedValue);
+    filterFunc(this.dataset.selectItem);
+    syncSelectValue();
   });
 }
 
 let lastClickedBtn = filterBtn[0];
 for (let i = 0; i < filterBtn.length; i++) {
   filterBtn[i].addEventListener("click", function () {
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    filterFunc(selectedValue);
+    filterFunc(this.dataset.filterBtn);
+    syncSelectValue();
 
     lastClickedBtn.classList.remove("active");
     this.classList.add("active");
@@ -143,7 +166,7 @@ for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
 
     for (let j = 0; j < pages.length; j++) {
-      if (this.innerHTML.toLowerCase() === pages[j].dataset.page) {
+      if (this.dataset.navLink === pages[j].dataset.page) {
         pages[j].classList.add("active");
         navigationLinks[j].classList.add("active"); 
         window.scrollTo(0, 0);
@@ -190,17 +213,18 @@ form.addEventListener("submit", async function (event) {
       formBtn.setAttribute("disabled", "");
       
       const btnText = formBtn.querySelector("span");
-      btnText.innerText = "Enviado com sucesso! ✅";
-      
+      btnText.innerText = L("Sent successfully! ✅", "Enviado com sucesso! ✅");
+
       setTimeout(() => {
-        btnText.innerText = "Send Message";
+        btnText.innerText = L("Send message", "Enviar mensagem");
       }, 4000);
-      
+
     } else {
-      alert("Ops! Ocorreu um problema ao enviar sua mensagem. Tente novamente.");
+      alert(L("Oops! Something went wrong while sending your message. Please try again.",
+              "Ops! Ocorreu um problema ao enviar sua mensagem. Tente novamente."));
     }
   } catch (error) {
-    alert("Ops! Ocorreu um problema na sua conexão.");
+    alert(L("Oops! There was a problem with your connection.", "Ops! Ocorreu um problema na sua conexão."));
   }
 });
 
@@ -243,7 +267,7 @@ const modalSite = projectModal.querySelector("[data-modal-site]");
 const renderModalTags = function (item) {
   const tags = Array.from(projectTagMap.get(item) || []);
   modalTags.innerHTML = tags.map(function (key) {
-    return `<li class="modal-tag-row">${tagChipHTML(key)}<span class="modal-tag-desc">${PROJECT_TAGS[key].description}</span></li>`;
+    return `<li class="modal-tag-row">${tagChipHTML(key)}<span class="modal-tag-desc">${tagDescription(key)}</span></li>`;
   }).join("");
   modalTags.hidden = tags.length === 0;
 
@@ -277,16 +301,19 @@ const POKE_STAT_LABELS = {
   "special-attack": "Sp. Atk", "special-defense": "Sp. Def", "speed": "Speed"
 };
 
-const POKE_DEMO_MARKUP = `
+// Built when the modal opens, so it always uses the current language.
+const pokeDemoMarkup = function () {
+  return `
   <div class="poke-demo">
     <form class="poke-demo-form" data-poke-form>
-      <input class="poke-demo-input" type="text" placeholder="Nome ou ID (ex: pikachu, 6)"
-        aria-label="Nome ou ID do Pokémon" autocomplete="off" data-poke-input>
-      <button class="poke-demo-btn" type="submit">Buscar</button>
+      <input class="poke-demo-input" type="text" placeholder="${L("Name or ID (e.g. pikachu, 6)", "Nome ou ID (ex: pikachu, 6)")}"
+        aria-label="${L("Pokémon name or ID", "Nome ou ID do Pokémon")}" autocomplete="off" data-poke-input>
+      <button class="poke-demo-btn" type="submit">${L("Search", "Buscar")}</button>
     </form>
-    <div class="poke-demo-status" data-poke-status>Digite o nome ou o número de um Pokémon.</div>
+    <div class="poke-demo-status" data-poke-status>${L("Type a Pokémon's name or number.", "Digite o nome ou o número de um Pokémon.")}</div>
     <div class="poke-demo-result" data-poke-result></div>
   </div>`;
+};
 
 const fetchPokemon = async function (query) {
   const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + encodeURIComponent(query));
@@ -297,8 +324,9 @@ const fetchPokemon = async function (query) {
 
 const buildPokemonCard = function (data) {
   const sprite = data.sprites.front_default || data.sprites.other["official-artwork"].front_default;
-  const weightKg = (data.weight / 10).toLocaleString("pt-BR");
-  const heightM = (data.height / 10).toLocaleString("pt-BR");
+  const locale = L("en-US", "pt-BR");
+  const weightKg = (data.weight / 10).toLocaleString(locale);
+  const heightM = (data.height / 10).toLocaleString(locale);
 
   const typesHTML = data.types.map(function (entry) {
     const typeName = entry.type.name;
@@ -322,7 +350,7 @@ const buildPokemonCard = function (data) {
       <img class="poke-sprite" src="${sprite}" alt="${data.name}">
       <div class="poke-info">
         <div class="poke-name">${data.name} <span class="poke-id">#${data.id}</span></div>
-        <div class="poke-meta">Peso: ${weightKg} kg · Altura: ${heightM} m</div>
+        <div class="poke-meta">${L("Weight", "Peso")}: ${weightKg} kg · ${L("Height", "Altura")}: ${heightM} m</div>
         <div class="poke-types">${typesHTML}</div>
       </div>
     </div>
@@ -330,7 +358,7 @@ const buildPokemonCard = function (data) {
 };
 
 const setupPokeDemo = function () {
-  modalDemo.innerHTML = POKE_DEMO_MARKUP;
+  modalDemo.innerHTML = pokeDemoMarkup();
 
   const form = modalDemo.querySelector("[data-poke-form]");
   const input = modalDemo.querySelector("[data-poke-input]");
@@ -345,7 +373,7 @@ const setupPokeDemo = function () {
 
     const requestId = ++lastRequest;
     status.className = "poke-demo-status";
-    status.innerText = "Buscando...";
+    status.innerText = L("Searching...", "Buscando...");
 
     try {
       const data = await fetchPokemon(query);
@@ -357,8 +385,8 @@ const setupPokeDemo = function () {
       result.innerHTML = "";
       status.classList.add("error");
       status.innerText = error.message === "not-found"
-        ? "Pokémon não encontrado. Tente outro nome ou ID."
-        : "Não foi possível consultar a PokeAPI agora. Tente novamente.";
+        ? L("Pokémon not found. Try another name or ID.", "Pokémon não encontrado. Tente outro nome ou ID.")
+        : L("Couldn't reach PokeAPI right now. Please try again.", "Não foi possível consultar a PokeAPI agora. Tente novamente.");
     }
   });
 };

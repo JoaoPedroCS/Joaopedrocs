@@ -1,4 +1,14 @@
-:root {
+/*
+  Color tokens. Dark is the default theme. The light theme (further down) redefines the
+  same names, so components never need to know which theme is active. A few effects
+  (starry sky, dig site, terminal) are designed for dark and re-declare the dark tokens
+  on their own subtree, so they keep working while the rest of the page is light.
+*/
+:root,
+:root[data-theme="light"] body.egg-sky-on,
+:root[data-theme="light"] body.egg-dig-on .sidebar,
+:root[data-theme="light"] .egg-term-window {
+  color-scheme: dark;
   --bg-gradient-onyx: linear-gradient(to bottom right, #111823 3%, #0b1018 97%);
   --bg-gradient-jet: linear-gradient(to bottom right, rgba(17, 24, 35, 0.5) 0%, rgba(17, 24, 35, 0) 100%), #111823;
   --bg-gradient-yellow-1: linear-gradient(to bottom right, #ff4654 0%, rgba(255, 70, 84, 0) 50%);
@@ -19,6 +29,47 @@
   --light-gray-70: hsla(0, 0%, 84%, 0.7);
   --bittersweet-shimmer: hsl(0, 43%, 51%);
 
+  --navbar-bg: hsla(240, 1%, 17%, 0.75);
+  --map-filter: grayscale(1) invert(1);
+  --scrollbar-thumb: hsla(0, 0%, 100%, 0.1);
+  --scrollbar-thumb-hover: hsla(0, 0%, 100%, 0.15);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg-gradient-onyx: linear-gradient(to bottom right, #ffffff 3%, #eef1f5 97%);
+  --bg-gradient-jet: linear-gradient(to bottom right, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%), #f7f8fa;
+  --bg-gradient-yellow-1: linear-gradient(to bottom right, #d92d3c 0%, rgba(217, 45, 60, 0) 50%);
+  --bg-gradient-yellow-2: linear-gradient(135deg, rgba(217, 45, 60, 0.12) 0%, rgba(217, 45, 60, 0) 59.86%), #ffffff;
+  --border-gradient-onyx: linear-gradient(to bottom right, #d8dde5 0%, rgba(216, 221, 229, 0) 50%);
+  --text-gradient-yellow: linear-gradient(to right, #e5394a, #b02a37);
+
+  --jet: #e2e6ec;
+  --onyx: #eef1f5;
+  --eerie-black-1: #f7f8fa;
+  --eerie-black-2: #ffffff;
+  --smoky-black: #eef1f5;
+  --white-1: #111827;
+  --white-2: #0f172a;
+  --orange-yellow-crayola: #d92d3c;
+  --vegas-gold: #b02a37;
+  --light-gray: #374151;
+  --light-gray-70: rgba(55, 65, 81, 0.72);
+  --bittersweet-shimmer: hsl(0, 60%, 45%);
+
+  --navbar-bg: hsla(0, 0%, 100%, 0.82);
+  --map-filter: grayscale(1);
+  --scrollbar-thumb: hsla(220, 15%, 20%, 0.18);
+  --scrollbar-thumb-hover: hsla(220, 15%, 20%, 0.28);
+
+  --shadow-1: -4px 8px 24px hsla(220, 30%, 20%, 0.08);
+  --shadow-2: 0 16px 30px hsla(220, 30%, 20%, 0.08);
+  --shadow-3: 0 16px 40px hsla(220, 30%, 20%, 0.08);
+  --shadow-4: 0 25px 50px hsla(220, 30%, 20%, 0.06);
+  --shadow-5: 0 24px 80px hsla(220, 30%, 20%, 0.1);
+}
+
+:root {
   --ff-poppins: 'Poppins', sans-serif;
   --fs-1: 24px;
   --fs-2: 18px;
@@ -57,7 +108,10 @@
 a { text-decoration: none; }
 li { list-style: none; }
 img, ion-icon, a, button, time, span { display: block; }
-span[data-age] { display: inline; }
+span[data-age], span.inline { display: inline; }
+
+/* While a saved PT preference is being applied, hide the English text (avoids a flash). */
+.i18n-pending main { visibility: hidden; }
 
 button {
   font: inherit;
@@ -200,7 +254,7 @@ article.active {
 }
 
 main {
-  margin: 15px 12px;
+  margin: 52px 12px;
   margin-bottom: 75px;
   min-width: 259px;
 }
@@ -347,7 +401,7 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: hsla(240, 1%, 17%, 0.75);
+  background: var(--navbar-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--jet);
   border-radius: 19px 19px 0 0;
@@ -674,7 +728,7 @@ main {
   border-radius: 13px;
 }
 
-.select-item button:hover { --eerie-black-2: hsl(240, 2%, 20%); }
+.select-item button:hover { background: var(--jet); }
 
 .project-list {
   display: grid;
@@ -934,7 +988,7 @@ main {
   width: 100%;
   height: 100%;
   border: none;
-  filter: grayscale(1) invert(1);
+  filter: var(--map-filter);
 }
 
 .contact-form { margin-bottom: 10px; }
@@ -1154,11 +1208,11 @@ textarea.form-input::-webkit-resizer { display: none; }
   body::-webkit-scrollbar-track { background: var(--smoky-black); }
   body::-webkit-scrollbar-thumb {
     border: 5px solid var(--smoky-black);
-    background: hsla(0, 0%, 100%, 0.1);
+    background: var(--scrollbar-thumb);
     border-radius: 32px;
     box-shadow: inset 1px 1px 0 hsla(0, 0%, 100%, 0.11), inset -1px -1px 0 hsla(0, 0%, 100%, 0.11);
   }
-  body::-webkit-scrollbar-thumb:hover { background: hsla(0, 0%, 100%, 0.15); }
+  body::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
   body::-webkit-scrollbar-button { height: 60px; }
 
   .sidebar, article { width: auto; }
@@ -1325,7 +1379,7 @@ body.modal-open { overflow: hidden; }
   padding: 10px 18px;
   border-radius: 16px;
   background: var(--orange-yellow-crayola);
-  color: var(--white-1);
+  color: #fff;
   font-family: inherit;
   font-size: var(--fs-6);
   font-weight: var(--fw-500);
@@ -1431,7 +1485,14 @@ body.modal-open { overflow: hidden; }
 .tag-chip-btn[aria-pressed="true"] {
   background: var(--tag-color);
   border-color: var(--tag-color);
-  color: var(--smoky-black);
+  color: #0b1018;
+}
+
+/* Tag colors are tuned for dark backgrounds; darken the text so they stay legible on light. */
+:root[data-theme="light"] .tag-chip:not([aria-pressed="true"]) {
+  color: color-mix(in srgb, var(--tag-color) 55%, #111827);
+  border-color: color-mix(in srgb, var(--tag-color) 55%, transparent);
+  background: color-mix(in srgb, var(--tag-color) 14%, transparent);
 }
 
 .tag-count { font-size: var(--fs-8); opacity: 0.7; }
@@ -1493,3 +1554,65 @@ body.modal-open { overflow: hidden; }
 }
 .modal-repo-link:hover { background: var(--jet); }
 .modal-repo-link[hidden] { display: none; }
+
+/*-----------------------------------*\
+  #PREFERENCES (theme + language)
+  One small pill in the top-right gap. position: absolute (not fixed) so it scrolls
+  away with the page and never floats over content on small screens.
+\*-----------------------------------*/
+
+.prefs {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--eerie-black-2);
+  border: 1px solid var(--jet);
+  border-radius: 999px;
+  box-shadow: var(--shadow-1);
+}
+
+.prefs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  min-width: 30px;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: var(--light-gray-70);
+  font-size: 12px;
+  font-weight: var(--fw-500);
+  letter-spacing: 0.04em;
+  transition: color var(--transition-1), background var(--transition-1);
+}
+
+.prefs button:hover { color: var(--white-2); }
+.prefs button:focus-visible { outline: 2px solid var(--orange-yellow-crayola); outline-offset: 1px; }
+
+.prefs .prefs-theme { padding: 0; font-size: 16px; }
+.prefs-theme ion-icon { --ionicon-stroke-width: 40px; }
+:root[data-theme="dark"] .prefs-icon-moon,
+:root[data-theme="light"] .prefs-icon-sun { display: none; }
+
+.prefs .prefs-lang[aria-pressed="true"] {
+  background: var(--onyx);
+  color: var(--orange-yellow-crayola);
+}
+
+.prefs-sep {
+  width: 1px;
+  height: 16px;
+  margin: 0 3px;
+  background: var(--jet);
+}
+
+@media (min-width: 580px) {
+  .prefs { top: 14px; right: 18px; }
+}
+
+body.egg-hyper-busy .prefs { visibility: hidden; }

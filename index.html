@@ -6,6 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>João Pedro - Portfolio</title>
+  <meta name="theme-color" content="#05080c">
+
+  <!-- Apply the saved theme/language before first paint (no flash). English + dark are the defaults. -->
+  <script>
+    (function () {
+      var root = document.documentElement, theme = null, lang = null;
+      try { theme = localStorage.getItem("jp-theme"); lang = localStorage.getItem("jp-lang"); } catch (e) { }
+      root.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+      if (lang === "pt") {
+        root.lang = "pt-BR";
+        root.classList.add("i18n-pending");
+        setTimeout(function () { root.classList.remove("i18n-pending"); }, 2000);
+      }
+    })();
+  </script>
 
   <link rel="shortcut icon" href="./assets/images/1rver.png" type="image/png">
 
@@ -20,10 +35,22 @@
 
 <body>
 
-  <!-- 🦖🎬✨ Psst… este site tem 4 easter eggs. Comece digitando "terminal" -->
-  <!-- easter egg: Star Wars (a estrela no canto do céu) -->
-  <button class="egg-starwars" type="button" data-egg-starwars aria-pressed="false" aria-label="Uma estrela no canto do céu" title="✦"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C12.6 8.2 15.8 11.4 22 12C15.8 12.6 12.6 15.8 12 22C11.4 15.8 8.2 12.6 2 12C8.2 11.4 11.4 8.2 12 2Z"/></svg></button>
-  <button class="egg-term-fab" type="button" data-egg-term-open aria-label="Abrir terminal" title="Terminal">&gt;_</button>
+  <!-- 🦖🎬✨ Psst… this site has 4 easter eggs. Start by typing "terminal" -->
+
+  <!-- Display preferences: theme + language. Sits in the top gap and scrolls away with the page. -->
+  <div class="prefs" role="group" aria-label="Display preferences" data-i18n-attr="aria-label:prefs.group">
+    <button class="prefs-theme" type="button" data-theme-toggle>
+      <ion-icon class="prefs-icon-sun" name="sunny-outline" aria-hidden="true"></ion-icon>
+      <ion-icon class="prefs-icon-moon" name="moon-outline" aria-hidden="true"></ion-icon>
+    </button>
+    <span class="prefs-sep" aria-hidden="true"></span>
+    <button class="prefs-lang" type="button" data-lang-set="en" lang="en" aria-pressed="true" title="English">EN</button>
+    <button class="prefs-lang" type="button" data-lang-set="pt" lang="pt-BR" aria-pressed="false" title="Português (Brasil)">PT</button>
+  </div>
+
+  <!-- easter egg: Star Wars (the star in the corner of the sky) -->
+  <button class="egg-starwars" type="button" data-egg-starwars aria-pressed="false" aria-label="A star in the corner of the sky" data-i18n-attr="aria-label:egg.star" title="✦"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C12.6 8.2 15.8 11.4 22 12C15.8 12.6 12.6 15.8 12 22C11.4 15.8 8.2 12.6 2 12C8.2 11.4 11.4 8.2 12 2Z"/></svg></button>
+  <button class="egg-term-fab" type="button" data-egg-term-open aria-label="Open terminal" data-i18n-attr="aria-label:egg.term" title="Terminal">&gt;_</button>
 
   <main>
     <aside class="sidebar" data-sidebar>
@@ -36,7 +63,7 @@
           <p class="title">Developer</p>
         </div>
         <button class="info_more-btn" data-sidebar-btn>
-          <span>Show Contacts</span>
+          <span data-i18n="side.more">Show Contacts</span>
           <ion-icon name="chevron-down"></ion-icon>
         </button>
       </div>
@@ -59,7 +86,7 @@
               <ion-icon name="school-outline"></ion-icon>
             </div>
             <div class="contact-info">
-              <p class="contact-title">Universidade</p>
+              <p class="contact-title" data-i18n="side.university">University</p>
               <a href="#" class="contact-link">UFABC</a>
             </div>
           </li>
@@ -68,7 +95,7 @@
               <ion-icon name="calendar-outline"></ion-icon>
             </div>
             <div class="contact-info">
-              <p class="contact-title">Idade</p>
+              <p class="contact-title" data-i18n="side.age">Age</p>
               <time datetime="2003-11-11" data-age>23</time>
             </div>
           </li>
@@ -77,7 +104,7 @@
               <ion-icon name="location-outline"></ion-icon>
             </div>
             <div class="contact-info">
-              <p class="contact-title">Local</p>
+              <p class="contact-title" data-i18n="side.location">Location</p>
               <address>Santo André, São Paulo</address>
             </div>
           </li>
@@ -107,34 +134,33 @@
       <nav class="navbar">
         <ul class="navbar-list">
           <li class="navbar-item">
-            <button class="navbar-link active" data-nav-link>Sobre mim</button>
+            <button class="navbar-link active" data-nav-link="about" data-i18n="nav.about">About</button>
           </li>
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Curriculo</button>
+            <button class="navbar-link" data-nav-link="resume" data-i18n="nav.resume">Resume</button>
           </li>
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Projetos</button>
+            <button class="navbar-link" data-nav-link="projects" data-i18n="nav.projects">Projects</button>
           </li>
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contato</button>
+            <button class="navbar-link" data-nav-link="contact" data-i18n="nav.contact">Contact</button>
           </li>
         </ul>
       </nav>
 
-      <article class="about active" data-page="sobre mim">
+      <article class="about active" data-page="about">
         <header>
-          <h2 class="h2 article-title">Sobre mim</h2>
+          <h2 class="h2 article-title" data-i18n="about.title">About me</h2>
         </header>
 
         <section class="about-text">
 
-          <p>
-            Sou João Pedro, tenho <span data-age>23</span> anos e estudo na UFABC, atualmente moro em Santo André(SP) mas venho de Patos de Minas(MG) e já morei em diversas cidades e estados diferentes, me adapto fácilmente a novas condições. Eu adoro passar meu tempo junto da minha namorada, assisitindo documentários variados e aprendendo receitas novas. Tenho uma facilidade grande em aprender/reconhecer padrões e ao mesmo tempo sou uma pessoa critica.</p>
-          <p>Sou uma pessoa pragmática e curiosa. Gosto de aprender as coisas por mim mesmo, tenho um fascínio genuíno por explorar as mais diversas áreas do conhecimento, que vão desde computação até paleontologia.<button class="egg-fossil" type="button" data-egg-dino aria-label="Fóssil escondido"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.5 3.5a3 3 0 0 0-2.9 3.7L8 15.8a3 3 0 1 0-3.5 4.7 3 3 0 0 0 4.7-3.5l8.6-8.6a3 3 0 1 0 1.7-4.9z" transform="rotate(0)"/></svg></button> Essa paixão por aprender continuamente proporciona uma criatividade na solução de problemas de forma eficiente e analítica. Fundamentalmente gosto de identificar e resolver problemas complexos de forma simples e elegante.</p>
+          <p><span class="inline" data-i18n="about.p1a">I'm João Pedro, </span><span data-age>23</span><span class="inline" data-i18n="about.p1b"> years old, and I study at UFABC (Federal University of ABC). I currently live in Santo André (SP), but I'm originally from Patos de Minas (MG) and have lived in several different cities and states, so I adapt easily to new conditions. I love spending time with my girlfriend, watching all kinds of documentaries and learning new recipes. I have a knack for learning and recognizing patterns, and at the same time I'm a critical thinker.</span></p>
+          <p><span class="inline" data-i18n="about.p2a">I'm a pragmatic and curious person. I like learning things on my own, and I have a genuine fascination for exploring the most diverse fields of knowledge, from computing all the way to paleontology.</span><button class="egg-fossil" type="button" data-egg-dino aria-label="Hidden fossil" data-i18n-attr="aria-label:egg.fossil"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.5 3.5a3 3 0 0 0-2.9 3.7L8 15.8a3 3 0 1 0-3.5 4.7 3 3 0 0 0 4.7-3.5l8.6-8.6a3 3 0 1 0 1.7-4.9z" transform="rotate(0)"/></svg></button><span class="inline" data-i18n="about.p2b"> This passion for continuous learning fuels a creative, efficient and analytical approach to problem solving. At heart, I like to identify complex problems and solve them in simple, elegant ways.</span></p>
         </section>
 
         <section class="service">
-          <h3 class="h3 service-title">O que estou fazendo</h3>
+          <h3 class="h3 service-title" data-i18n="about.doing">What I'm doing</h3>
           
           <ul class="service-list">
             
@@ -143,8 +169,8 @@
                 <img src="./assets/images/icon-cloud.svg" alt="Cloud icon" width="40">
               </div>
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Cloud & Certificações</h4>
-                <p class="service-item-text">Aprofundando meus conhecimentos em infraestrutura em nuvem e focado na emissão de novas certificações na área.</p>
+                <h4 class="h4 service-item-title" data-i18n="svc.cloud.title">Cloud &amp; Certifications</h4>
+                <p class="service-item-text" data-i18n="svc.cloud.text">Deepening my knowledge of cloud infrastructure, focused on earning new certifications in the field.</p>
               </div>
             </li>
 
@@ -153,8 +179,8 @@
                 <img src="./assets/images/icon-dev.svg" alt="Degree icon" width="40">
               </div>
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Ciência da Computação</h4>
-                <p class="service-item-text">Na reta final para concluir meu bacharelado, com foco intensivo em ciência da computação e tecnologia.<span class="egg-caret" aria-hidden="true"></span></p>
+                <h4 class="h4 service-item-title" data-i18n="svc.cs.title">Computer Science</h4>
+                <p class="service-item-text"><span class="inline" data-i18n="svc.cs.text">In the final stretch of my bachelor's degree, with an intensive focus on computer science and technology.</span><span class="egg-caret" aria-hidden="true"></span></p>
               </div>
             </li>
 
@@ -163,10 +189,10 @@
                 <img src="./assets/images/icon-mandarin.svg" alt="Mandarin icon" width="40">
               </div>
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Estudando Mandarim</h4>
-                <p class="service-item-text">Buscando expandir minhas fronteiras e habilidades de comunicação global. Meu objetivo é até o final de 2027 vem ser capaz de ter uma conversa no idioma.</p>
+                <h4 class="h4 service-item-title" data-i18n="svc.zh.title">Studying Mandarin</h4>
+                <p class="service-item-text" data-i18n="svc.zh.text">Expanding my horizons and my global communication skills. My goal is to be able to hold a conversation in the language by the end of 2027.</p>
               </div>
-              <span class="egg-hanzi" lang="zh" title="xué wú zhǐ jìng · o aprendizado não tem fim">学无止境</span>
+              <span class="egg-hanzi" lang="zh" title="xué wú zhǐ jìng · learning never ends" data-i18n-attr="title:svc.zh.hanzi">学无止境</span>
             </li>
 
             <li class="service-item">
@@ -174,8 +200,8 @@
                 <img src="./assets/images/icon-wealth.svg" alt="Wealth icon" width="40">
               </div>
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Mercado Financeiro & Análise Quantitativa</h4>
-                <p class="service-item-text">Estudo o mercado de capitais com uma abordagem analítica: séries históricas, risco e retorno, e entender como construir carteiras diversificadas de longo prazo.</p>
+                <h4 class="h4 service-item-title" data-i18n="svc.fin.title">Financial Markets &amp; Quantitative Analysis</h4>
+                <p class="service-item-text" data-i18n="svc.fin.text">I study capital markets with an analytical approach: historical series, risk and return, and how to build diversified long-term portfolios.</p>
               </div>
               <svg class="egg-candles" viewBox="0 0 66 34" aria-hidden="true" focusable="false"><g class="up"><path d="M5 20v12M15 14v14M35 12v16M55 2v20"/><rect x="2" y="23" width="6" height="7"/><rect x="12" y="17" width="6" height="8"/><rect x="32" y="15" width="6" height="10"/><rect x="52" y="5" width="6" height="12"/></g><g class="down"><path d="M25 10v16M45 9v14"/><rect x="22" y="13" width="6" height="8"/><rect x="42" y="11" width="6" height="9"/></g></svg>
             </li>
@@ -184,14 +210,14 @@
         </section>
 
         <section class="certificates">
-          <h3 class="h3 certificates-title">Certificações</h3>
+          <h3 class="h3 certificates-title" data-i18n="about.certs">Certifications</h3>
           <ul class="certificates-list has-scrollbar">
 
             <li class="certificates-item">
               <div class="content-card">
                 <a href="https://www.credly.com/badges/4e328ee3-698f-4ff1-83f3-0ca715c49d83/public_url" target="_blank">
                   <figure class="certificate-img-box">
-                    <img src="./assets/images/certificates/c1.png" alt="Certificado 1" loading="lazy">
+                    <img src="./assets/images/certificates/c1.png" alt="Certificate 1" data-i18n-attr="alt:about.cert1" loading="lazy">
                   </figure>
                   <h4 class="h4 certificates-item-title">Cloud computing 101</h4>
                   <div class="certificates-text">
@@ -205,7 +231,7 @@
               <div class="content-card">
                 <a href="https://www.freecodecamp.org/certification/joaopedrocs/responsive-web-design" target="_blank">
                   <figure class="certificate-img-box">
-                    <img src="./assets/images/certificates/c2.png" alt="Certificado 2" loading="lazy">
+                    <img src="./assets/images/certificates/c2.png" alt="Certificate 2" data-i18n-attr="alt:about.cert2" loading="lazy">
                   </figure>
                   <h4 class="h4 certificates-item-title">Web Dev</h4>
                   <div class="certificates-text">
@@ -219,7 +245,7 @@
               <div class="content-card">
                 <a href="https://app.rocketseat.com.br/certificates/28abae4a-f488-44a4-9354-8ab9d5c6bda0" target="_blank">
                   <figure class="certificate-img-box">
-                    <img src="./assets/images/certificates/c3.jpg" alt="Certificado 3" loading="lazy">
+                    <img src="./assets/images/certificates/c3.jpg" alt="Certificate 3" data-i18n-attr="alt:about.cert3" loading="lazy">
                   </figure>
                   <h4 class="h4 certificates-item-title">Laravel/PHP</h4>
                   <div class="certificates-text">
@@ -233,7 +259,7 @@
         </section>
 
         <section class="tech">
-          <h3 class="h3 tech-title">Tecnologias</h3>
+          <h3 class="h3 tech-title" data-i18n="about.tech">Technologies</h3>
           <ul class="tech-list has-scrollbar">
             <li class="tech-item"><img src="./assets/images/techs/tech2.png" alt="Tech logo" loading="lazy" decoding="async"></li>
             <li class="tech-item"><img src="./assets/images/techs/typescript.svg" alt="TypeScript" loading="lazy" decoding="async"></li>
@@ -257,9 +283,9 @@
         </section>
       </article>
 
-      <article class="resume" data-page="curriculo">
+      <article class="resume" data-page="resume">
         <header>
-          <h2 class="h2 article-title">Currículo</h2>
+          <h2 class="h2 article-title" data-i18n="resume.title">Resume</h2>
         </header>
 
         <section class="timeline">
@@ -267,16 +293,16 @@
             <div class="icon-box">
               <ion-icon name="book-outline"></ion-icon>
             </div>
-            <h3 class="h3">Educação</h3>
+            <h3 class="h3" data-i18n="resume.edu">Education</h3>
           </div>
           <ol class="timeline-list">
             <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">Universidade Federal do ABC (UFABC)</h4>
-              <span>Jun 2023 — 1.2027 (Previsão)</span>
-              <p class="timeline-text">
-                <strong>Bacharelado em Ciência e Tecnologia</strong><br><br>
-                • <strong>Computação:</strong> Domínio em algoritmos avançados, estruturas de dados e programação paralela de alto desempenho (OpenMP, Pthreads e CUDA), aliando experiência no desenvolvimento de shaders para computação gráfica a fundamentos sólidos em segurança da informação, criptografia e proteção de sistemas.<br>
-                • <strong>Interdisciplinaridade:</strong> Sólido desenvolvimento analítico e intelectual, com aplicação integrada de conceitos avançados de Matemática, Física (Mecânica, Elétrica, Quântica), Química e Engenharias na resolução de problemas complexos, aliados a princípios de Economia e Ciências Sociais para garantir soluções que sejam técnica, econômica e socialmente viáveis.
+              <h4 class="h4 timeline-item-title" data-i18n="resume.edu.school">Federal University of ABC (UFABC)</h4>
+              <span data-i18n="resume.edu.date">Jun 2023 — Term 1, 2027 (expected)</span>
+              <p class="timeline-text" data-i18n="resume.edu.text">
+                <strong>Bachelor of Science and Technology</strong><br><br>
+                • <strong>Computing:</strong> Proficiency in advanced algorithms, data structures and high-performance parallel programming (OpenMP, Pthreads and CUDA), combined with experience developing shaders for computer graphics and solid foundations in information security, cryptography and systems protection.<br>
+                • <strong>Interdisciplinarity:</strong> Strong analytical and intellectual background, applying advanced concepts from Mathematics, Physics (Mechanics, Electricity, Quantum), Chemistry and Engineering in an integrated way to solve complex problems, together with principles of Economics and the Social Sciences to deliver solutions that are technically, economically and socially viable.
               </p>
             </li>
           </ol>
@@ -287,18 +313,18 @@
             <div class="icon-box">
               <ion-icon name="briefcase-outline"></ion-icon>
             </div>
-            <h3 class="h3">Experiência</h3>
+            <h3 class="h3" data-i18n="resume.exp">Experience</h3>
           </div>
           <ol class="timeline-list">
             <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">Estagiário em Eficiência Operacional — Shopper.com.br</h4>
-              <span>Ago 2025 — Jul 2026</span>
-              <p class="timeline-text">
-                Eficientização de processos e galpão com uso de dados, para garantir execução inteligente.<br><br>
-                • <strong>Análise de Dados, Simulação e Otimização de Layout:</strong> Desenvolvi um simulador algorítmico (pipeline de ponta a ponta) para Warehouse Slotting, mapeando rotas de picking e avaliando lógicas de endereçamento. A adaptação resultou na otimização do layout do novo Fulfillment Center (FC4) em Brasília, projetando um ganho de cerca de 20% em eficiência.<br>
-                • <strong>Engenharia e Otimização de Dados:</strong> Estruturei, tratei e otimizei bases de dados complexas de crescimento diário. Arquitetei pipelines automatizados (Google Sheets, Google Apps Script, GitHub Actions, Metabase e Google Web App) para assegurar a integração, tratamento e visualização escalável dos dados.<br>
-                • <strong>Business Intelligence (BI) e Ferramentas Operacionais (PCP):</strong> Criei sistemas intuitivos para operadores de ponta em múltiplos galpões. Desenvolvi ferramentas de PCP para alocação de equipes via previsão de demanda, dimensionamento de headcount, sistemas de keeping (estoque) e robustos painéis de KPIs.<br>
-                • <strong>Cultura de Inovação e Otimização com AI:</strong> Integrei ativamente ferramentas de IA generativa (Codex e Claude) no fluxo de trabalho, acelerando a escrita de código, potencializando o desenvolvimento de ferramentas internas e aprimorando mapeamentos da operação.
+              <h4 class="h4 timeline-item-title" data-i18n="resume.exp.role">Operational Efficiency Intern — Shopper.com.br</h4>
+              <span data-i18n="resume.exp.date">Aug 2025 — Jul 2026</span>
+              <p class="timeline-text" data-i18n="resume.exp.text">
+                Data-driven efficiency for processes and the warehouse, ensuring smart execution.<br><br>
+                • <strong>Data Analysis, Simulation and Layout Optimization:</strong> Built an end-to-end algorithmic simulator (pipeline) for Warehouse Slotting, mapping picking routes and evaluating slotting logic. The adaptation led to an optimized layout for the new Fulfillment Center in Brasília, with a projected efficiency gain of about 20%.<br>
+                • <strong>Data Engineering and Optimization:</strong> Structured, cleaned and optimized complex, daily-growing databases. Designed automated pipelines (Google Sheets, Google Apps Script, GitHub Actions, Metabase and Google Web App) to ensure scalable data integration, processing and visualization.<br>
+                • <strong>Business Intelligence (BI) and Operational Tools (PCP):</strong> Built intuitive systems for front-line operators across multiple warehouses. Developed production planning and control (PCP) tools for team allocation through demand forecasting, headcount sizing, inventory keeping systems and robust KPI dashboards.<br>
+                • <strong>Innovation Culture and AI-Driven Optimization:</strong> Actively integrated generative AI tools (Codex and Claude) into the workflow, speeding up coding, boosting the development of internal tools and improving operational mappings.
               </p>
             </li>
           </ol>
@@ -309,23 +335,23 @@
             <div class="icon-box">
               <ion-icon name="language-outline"></ion-icon>
             </div>
-            <h3 class="h3">Idiomas</h3>
+            <h3 class="h3" data-i18n="resume.langs">Languages</h3>
           </div>
           <ol class="timeline-list">
             <li class="timeline-item" style="padding-bottom: 0;">
-              <p class="timeline-text">
-                🇧🇷 <strong>Português</strong> - Nativo <br>
-                🇺🇸 <strong>Inglês</strong> - Fluente<br>
-                🇪🇸 <strong>Espanhol</strong> - Intermediário <br>
-                🇨🇳 <strong>Mandarim</strong> - Iniciante <br>
-                🇫🇷 <strong>Francês</strong> - Iniciante
+              <p class="timeline-text" data-i18n="resume.langs.text">
+                🇧🇷 <strong>Portuguese</strong> - Native <br>
+                🇺🇸 <strong>English</strong> - Fluent<br>
+                🇪🇸 <strong>Spanish</strong> - Intermediate <br>
+                🇨🇳 <strong>Mandarin</strong> - Beginner <br>
+                🇫🇷 <strong>French</strong> - Beginner
               </p>
             </li>
           </ol>
         </section>
 
         <section class="skill">
-          <h3 class="h3 skills-title">Minhas Skills</h3>
+          <h3 class="h3 skills-title" data-i18n="resume.skills">My Skills</h3>
           <ul class="skills-list content-card">
             
             <li class="skills-item">
@@ -366,7 +392,7 @@
             </li>
             <li class="skills-item">
               <div class="title-wrapper">
-                <h5 class="h5">Banco de Dados (SQL / ETL)</h5>
+                <h5 class="h5" data-i18n="resume.skills.db">Databases (SQL / ETL)</h5>
                 <data value="40">40%</data>
               </div>
               <div class="skill-progress-bg">
@@ -387,39 +413,39 @@
         </section>
       </article>
 
-      <article class="projects-section" data-page="projetos">
+      <article class="projects-section" data-page="projects">
         <header>
-          <h2 class="h2 article-title">Projetos<button class="egg-clap" type="button" data-egg-cinema aria-label="Claquete escondida" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="clap-board" fill-rule="evenodd" d="M3 7.7h18v2.6H3zM6.1 7.7h2.5l-1.7 2.6H4.4zM11.1 7.7h2.5l-1.7 2.6H9.4zM16.1 7.7h2.5l-1.7 2.6h-2.5zM3 11.2h18V20a1.2 1.2 0 0 1-1.2 1.2H4.2A1.2 1.2 0 0 1 3 20zM6 14.2h12v1.1H6zM6 17.2h7v1.1H6z"/><path class="clap-arm" fill-rule="evenodd" d="M3 4.7h18v2.6H3zM5.4 4.7h2.5l1.7 2.6H7.1zM10.4 4.7h2.5l1.7 2.6h-2.5zM15.4 4.7h2.5l1.7 2.6h-2.5z"/></svg></button></h2>
+          <h2 class="h2 article-title"><span class="inline" data-i18n="projects.title">Projects</span><button class="egg-clap" type="button" data-egg-cinema aria-label="Hidden clapperboard" data-i18n-attr="aria-label:egg.clap" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="clap-board" fill-rule="evenodd" d="M3 7.7h18v2.6H3zM6.1 7.7h2.5l-1.7 2.6H4.4zM11.1 7.7h2.5l-1.7 2.6H9.4zM16.1 7.7h2.5l-1.7 2.6h-2.5zM3 11.2h18V20a1.2 1.2 0 0 1-1.2 1.2H4.2A1.2 1.2 0 0 1 3 20zM6 14.2h12v1.1H6zM6 17.2h7v1.1H6z"/><path class="clap-arm" fill-rule="evenodd" d="M3 4.7h18v2.6H3zM5.4 4.7h2.5l1.7 2.6H7.1zM10.4 4.7h2.5l1.7 2.6h-2.5zM15.4 4.7h2.5l1.7 2.6h-2.5z"/></svg></button></h2>
         </header>
 
         <section class="projects">
           <ul class="filter-list">
             <li class="filter-item">
-              <button class="active" data-filter-btn>Todos</button>
+              <button class="active" data-filter-btn="all" data-i18n="filter.all">All</button>
             </li>
             <li class="filter-item">
-              <button data-filter-btn>Shopper</button>
+              <button data-filter-btn="shopper">Shopper</button>
             </li>
             <li class="filter-item">
-              <button data-filter-btn>Universidade</button>
+              <button data-filter-btn="universidade" data-i18n="filter.uni">University</button>
             </li>
             <li class="filter-item">
-              <button data-filter-btn>Pessoal</button>
+              <button data-filter-btn="pessoal" data-i18n="filter.personal">Personal</button>
             </li>
           </ul>
 
           <div class="filter-select-box">
             <button class="filter-select" data-select>
-              <div class="select-value" data-selecct-value>Todos</div>
+              <div class="select-value" data-selecct-value>All</div>
               <div class="select-icon">
                 <ion-icon name="chevron-down"></ion-icon>
               </div>
             </button>
             <ul class="select-list">
-              <li class="select-item"><button data-select-item>Todos</button></li>
-              <li class="select-item"><button data-select-item>Shopper</button></li>
-              <li class="select-item"><button data-select-item>Universidade</button></li>
-              <li class="select-item"><button data-select-item>Pessoal</button></li>
+              <li class="select-item"><button data-select-item="all" data-i18n="filter.all">All</button></li>
+              <li class="select-item"><button data-select-item="shopper">Shopper</button></li>
+              <li class="select-item"><button data-select-item="universidade" data-i18n="filter.uni">University</button></li>
+              <li class="select-item"><button data-select-item="pessoal" data-i18n="filter.personal">Personal</button></li>
             </ul>
           </div>
 
@@ -427,14 +453,15 @@
              <p class="tag-filter-label"><ion-icon name="pricetags-outline"></ion-icon>Tags</p>
              <ul class="tag-filter-list" data-tag-filter-list></ul>
              <button class="tag-filter-clear" type="button" data-tag-clear hidden>
-               <ion-icon name="close-outline"></ion-icon>Limpar tags
+               <ion-icon name="close-outline"></ion-icon><span data-i18n="filter.clear">Clear tags</span>
              </button>
            </div>
 
           <ul class="project-list">
             <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai"
-              data-description="Simulador de Warehouse Slotting que nasceu como uma ferramenta de trocas de SKUs validadas por força bruta contra pedidos reais e evoluiu para um motor replicável, guiado por um layout em CSV, capaz de otimizar não só o endereçamento, mas a própria estrutura física de galpões novos."
-              data-details="O projeto começou como uma ferramenta que sugeria trocas de SKUs dentro de um galpão e calculava, em simulação, se cada troca gerava ganho real. A abordagem foi deliberadamente de força bruta, para garantir ganhos verdadeiros: os SKUs eram priorizados por uma métrica de penetração (a taxa com que aparecem nos pedidos) e só podiam trocar de lugar com SKUs de gôndolas do mesmo tipo. Cada troca era simulada individualmente contra pedidos reais, medindo a variação na média de metros percorridos por pedido. Ao final, um holdout com os pedidos mais recentes media o ganho real, evitando overfitting ao histórico. Esse primeiro ciclo usava um layout já existente, e adaptá-lo a outro galpão exigiria um longo trabalho de tradução das particularidades de cada estrutura e rota de picking.&#10;&#10;O desafio seguinte foi adaptar o motor a um galpão novo, projetado do zero. A solução foi padronizar o problema: criei um schema em CSV em que cada linha representa uma rua e descreve seu comportamento por completo (ponto de partida ou chegada, sentido de percorrimento, capacidade, distância, entradas e saídas, entre outros atributos). Com as regras num formato único, o motor de simulação de rotas passou a consumir qualquer layout, e criar uma nova estrutura virou apenas uma questão de traduzi-la para o CSV. O pipeline precisa de três insumos: histórico de pedidos, o CSV do layout e a lista de SKUs, e com isso simula tanto galpões existentes quanto novos.&#10;&#10;O resultado foi um método altamente replicável e AI-friendly: com uma IA bem orientada, é possível gerar e testar diversos layouts, avaliando não apenas o endereçamento ideal dos SKUs, mas também a estrutura física do galpão. Um desses testes revelou um layout com ganho projetado de 20% em metros por pedido, só por mudanças estruturais, sem considerar otimização de endereçamento, que seguiu respeitando regras sanitárias e critérios qualitativos de apoio à reposição. Como o galpão não existia, as simulações usaram pedidos de outras operações. O principal aprendizado: transformar regras implícitas em dados padronizados é o que faz uma solução pontual virar uma plataforma.">
+              data-description="Warehouse Slotting simulator that started as a SKU-swap tool validated by brute force against real orders and evolved into a replicable engine, driven by a CSV layout, capable of optimizing not only slotting but the physical structure of new warehouses itself."
+              data-details="The project started as a tool that suggested SKU swaps inside a warehouse and calculated, in simulation, whether each swap produced a real gain. The approach was deliberately brute force, to guarantee true gains: SKUs were prioritized by a penetration metric (the rate at which they appear in orders) and could only swap places with SKUs on shelves of the same type. Each swap was simulated individually against real orders, measuring the change in average meters walked per order. At the end, a holdout with the most recent orders measured the real gain, avoiding overfitting to history. This first cycle used an existing layout, and adapting it to another warehouse would have required a long effort to translate the particularities of each structure and picking route.&#10;&#10;The next challenge was adapting the engine to a new warehouse, designed from scratch. The solution was to standardize the problem: I created a CSV schema in which each row represents an aisle and fully describes its behavior (start or end point, direction of travel, capacity, distance, entries and exits, among other attributes). With the rules in a single format, the route simulation engine could consume any layout, and creating a new structure became just a matter of translating it into the CSV. The pipeline needs three inputs: order history, the layout CSV and the SKU list, and with them it simulates both existing and new warehouses.&#10;&#10;The result was a highly replicable, AI-friendly method: with a well-guided AI, it&#x27;s possible to generate and test many layouts, evaluating not only the ideal SKU slotting but also the physical structure of the warehouse. One of these tests revealed a layout with a projected 20% gain in meters per order from structural changes alone, before any slotting optimization, while still respecting sanitary rules and qualitative criteria that support replenishment. Since the warehouse didn&#x27;t exist yet, the simulations used orders from other operations. The main lesson: turning implicit rules into standardized data is what turns a one-off solution into a platform."
+              data-i18n-attr="data-description:proj.slotting.desc;data-details:proj.slotting.details">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
@@ -447,8 +474,9 @@
               </a>
             </li>
             <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai"
-              data-description="Suíte de analytics para operações de supply chain composta por um simulador de capacidade para a doca de recebimento, que equilibra tempo de fila de fornecedores e ociosidade de operadores, e por uma ferramenta de monitoramento e previsão da efetividade de reposição de gôndolas."
-              data-details="O primeiro módulo atacou o dimensionamento da equipe de recebimento, a área que atende fornecedores e cadastra novos itens no estoque. Construí um simulador de eventos discretos alimentado por dados reais de operação (horário de chegada e tempo de atendimento de cada fornecedor) que recebe como variável o número de operadores conferentes. Ao rodar a simulação ao longo de vários dias, a ferramenta responde, para cada configuração de equipe, qual o tempo médio de fila e qual o tempo ocioso por operador, além de calcular em que percentual dos dias uma meta de tempo mediano de fila foi atingida. A modelagem por turnos permite testar equipes de tamanhos diferentes em cada período. O objetivo era duplo e deliberadamente conflitante: minimizar a espera para garantir uma boa experiência ao fornecedor e, ao mesmo tempo, reduzir a ociosidade da equipe.&#10;&#10;O segundo módulo nasceu de um requisito simples e difícil de sustentar: a reposição precisa manter as gôndolas cheias. A ferramenta acompanha a efetividade de cada lista de reposição, comparando o que se esperava repor com o que foi de fato reposto, já que o estoque do sistema nem sempre reflete a realidade física. Esse indicador é combinado a um gráfico macro que confronta o total de saídas das gôndolas com o total reposto, e a leitura conjunta revela como a efetividade varia conforme o nível de ocupação do galpão. Com base no histórico, a ferramenta também estima o tempo de execução e a eficácia esperada para uma meta de itens a repor, dando a quem executa uma previsão realista de quantos itens serão repostos de fato e de quanto tempo isso levará.&#10;&#10;Nos dois casos, a lógica foi a mesma: trocar decisões por intuição por simulação e métricas sobre dados reais. O recebimento ganhou uma forma objetiva de dimensionar equipe por turno, enquanto a reposição ganhou visibilidade sobre a divergência entre o estoque do sistema e o físico, além de previsibilidade de execução. O principal aprendizado foi que indicadores só geram ação quando são comparáveis com uma meta e acompanhados de uma previsão.">
+              data-description="Analytics suite for supply chain operations, made up of a capacity simulator for the receiving dock, which balances supplier queue time against operator idle time, and a tool that monitors and forecasts shelf replenishment effectiveness."
+              data-details="The first module tackled sizing the receiving team, the area that serves suppliers and registers new items into inventory. I built a discrete-event simulator fed with real operational data (arrival time and service time for each supplier) that takes the number of checking operators as a variable. By running the simulation over several days, the tool answers, for each team configuration, what the average queue time and the idle time per operator are, and also calculates on what percentage of days a target median queue time was met. Shift-based modeling makes it possible to test teams of different sizes in each period. The goal was twofold and deliberately conflicting: minimize waiting to ensure a good supplier experience while reducing team idle time.&#10;&#10;The second module was born from a requirement that is simple to state and hard to sustain: replenishment must keep the shelves full. The tool tracks the effectiveness of each replenishment list, comparing what was expected to be replenished with what actually was, since system inventory doesn&#x27;t always reflect physical reality. This indicator is combined with a macro chart that compares total shelf outflows with total replenishment, and reading both together reveals how effectiveness varies with the warehouse&#x27;s occupancy level. Based on history, the tool also estimates the execution time and expected effectiveness for a target number of items to replenish, giving the people doing the work a realistic forecast of how many items will actually be replenished and how long it will take.&#10;&#10;In both cases the logic was the same: replace gut-feeling decisions with simulation and metrics on real data. Receiving gained an objective way to size its team per shift, while replenishment gained visibility into the gap between system and physical inventory, plus predictable execution. The main lesson was that indicators only drive action when they can be compared to a target and come with a forecast."
+              data-i18n-attr="data-description:proj.supply.desc;data-details:proj.supply.details">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
@@ -461,8 +489,9 @@
               </a>
             </li>
             <li class="project-item active" data-filter-item data-category="universidade" data-tags="paralelo github" data-repo="https://github.com/JoaoPedroCS/EternityII"
-              data-description="Solver em C para o quebra-cabeça Eternity II, desenvolvido em dupla na UFABC. A busca por backtracking fornecida pelo professor foi otimizada com heurísticas (índice de peças por cor, preenchimento em espiral a partir de um vértice) e paralelizada com MPI em um modelo master-worker, em que cada worker explora uma configuração inicial diferente do tabuleiro."
-              data-details="O Eternity II é um quebra-cabeça de casamento de bordas lançado em 2007 com um prêmio de US$ 2 milhões para quem o resolvesse: são 256 peças em um tabuleiro 16×16 com 22 cores, as bordas do tabuleiro só aceitam peças com lado cinza (cor 0) e cada peça pode ser rotacionada. Ninguém encontrou uma solução até hoje, e o espaço de busca passa de 10⁶⁶¹ combinações. Neste projeto da disciplina de Programação Paralela, feito em dupla, trabalhamos com instâncias menores do mesmo problema: o programa em C lê o tamanho do tabuleiro, o número de cores e a lista de peças (quatro cores por peça, no sentido horário) e devolve, para cada casa, qual peça usar e quantas rotações aplicar. O objetivo era otimizar o solver com heurísticas e paralelizá-lo com MPI.&#10;&#10;O ponto de partida foi um código sequencial de backtracking fornecido pelo professor. Sobre ele aplicamos três heurísticas. A primeira é um índice de peças por cor: antes da busca, cada cor ganha uma lista com as peças que a contêm, e como o vizinho já determina a cor exigida, só testamos candidatos dessa lista, em vez de varrer todas as peças. A segunda é o percurso em espiral no lugar do linear: o preenchimento começa pela borda do tabuleiro, onde as peças só podem ter lados cinza e existem poucas permutações válidas, então os erros aparecem cedo e galhos inteiros da árvore de busca são podados antes de crescerem. A terceira é iniciar sempre por uma peça de vértice (duas bordas cinza), que ancora a espiral. A espiral foi implementada nos dois sentidos, horário e anti-horário.&#10;&#10;A paralelização com MPI usa um modelo master-worker. O espaço de busca é dividido por configuração inicial: são 8 tarefas, combinando 4 peças de vértice com 2 sentidos de espiral. O processo 0 lê a entrada, distribui o jogo por broadcast e atribui uma tarefa a cada worker, de forma estática. Cada worker monta sua própria cópia das estruturas (tabuleiro e índices por cor) e roda a busca completa a partir da sua configuração. Para encerrar rápido, a cada 2000 chamadas recursivas o worker consulta de forma não bloqueante, com MPI_Iprobe, se o master mandou parar. Ao achar uma solução, o worker serializa o tabuleiro (id e rotação de cada peça) e envia ao master, que imprime o resultado e manda todos pararem. Como o master apenas coordena, com 6 processos são 5 workers buscando, e só com 9 processos as 8 configurações são exploradas desde o início.&#10;&#10;Nos testes com 6 processos, o speedup sobre a versão sequencial variou de 3,04× a 29,95× nas entradas do professor. Nas instâncias geradas (6 cores), foi de 8,25× no 2×2, 7,3× no 3×3, 4,85× no 4×4, 1,61× no 5×5, 0,72× no 6×6, 1,27× no 7×7 e 8,24× no 8×8. A estratégia funciona mais como uma corrida entre ordens de busca diferentes do que como divisão igualitária de trabalho: basta um processo acertar o caminho, o que explica os ganhos superlineares em alguns casos e também o speedup abaixo de 1 em outros (como no 6×6), quando a versão sequencial teve sorte ou o custo de comunicação pesou. O principal aprendizado foi que, em busca com backtracking, as heurísticas que podam a árvore trazem tanto ganho quanto o paralelismo, e que o desempenho depende da instância tanto quanto do número de processos."
+              data-description="C solver for the Eternity II puzzle, built as a pair project at UFABC. The backtracking search provided by the professor was optimized with heuristics (a color index of pieces, spiral filling from a corner) and parallelized with MPI in a master-worker model, where each worker explores a different initial board configuration."
+              data-details="Eternity II is an edge-matching puzzle released in 2007 with a US$ 2 million prize for whoever solved it: 256 pieces on a 16×16 board with 22 colors, the board&#x27;s border only accepts pieces with a gray side (color 0), and every piece can be rotated. Nobody has found a solution to this day, and the search space exceeds 10⁶⁶¹ combinations. In this Parallel Programming course project, done in pairs, we worked with smaller instances of the same problem: the C program reads the board size, the number of colors and the list of pieces (four colors per piece, clockwise) and returns, for each cell, which piece to use and how many rotations to apply. The goal was to optimize the solver with heuristics and parallelize it with MPI.&#10;&#10;The starting point was sequential backtracking code provided by the professor. On top of it we applied three heuristics. The first is a color index of pieces: before the search, each color gets a list of the pieces that contain it, and since the neighbor already determines the required color, we only test candidates from that list instead of scanning every piece. The second is a spiral traversal instead of a linear one: filling starts at the board&#x27;s border, where pieces can only have gray sides and there are few valid permutations, so mistakes show up early and entire branches of the search tree are pruned before they grow. The third is to always start from a corner piece (two gray edges), which anchors the spiral. The spiral was implemented in both directions, clockwise and counterclockwise.&#10;&#10;The MPI parallelization uses a master-worker model. The search space is split by initial configuration: there are 8 tasks, combining 4 corner pieces with 2 spiral directions. Process 0 reads the input, broadcasts the game and statically assigns one task to each worker. Each worker builds its own copy of the structures (board and color indexes) and runs the full search from its configuration. To stop quickly, every 2000 recursive calls the worker checks, without blocking, via MPI_Iprobe, whether the master has told it to stop. When it finds a solution, the worker serializes the board (id and rotation of each piece) and sends it to the master, which prints the result and tells everyone to stop. Since the master only coordinates, with 6 processes there are 5 workers searching, and only with 9 processes are all 8 configurations explored from the start.&#10;&#10;In tests with 6 processes, the speedup over the sequential version ranged from 3.04× to 29.95× on the professor&#x27;s inputs. On the generated instances (6 colors), it was 8.25× on 2×2, 7.3× on 3×3, 4.85× on 4×4, 1.61× on 5×5, 0.72× on 6×6, 1.27× on 7×7 and 8.24× on 8×8. The strategy works more like a race between different search orders than an even split of the work: a single process only needs to hit the right path, which explains the superlinear gains in some cases and also the speedup below 1 in others (like 6×6), when the sequential version got lucky or communication overhead weighed in. The main lesson was that, in backtracking search, heuristics that prune the tree bring as much gain as parallelism, and that performance depends on the instance as much as on the number of processes."
+              data-i18n-attr="data-description:proj.eternity.desc;data-details:proj.eternity.details"
               data-code="// Candidate lookup + spiral traversal + non-blocking stop check&#10;int play(game *g, unsigned int x, unsigned int y,&#10;         unsigned int required_color, int *stop_flag) {&#10;  // Every 2000 calls, poll (non-blocking) for a STOP message from the master&#10;  static int check_counter = 0;&#10;  if (++check_counter % 2000 == 0) {&#10;    int message_present = 0;&#10;    MPI_Iprobe(0, STOP, MPI_COMM_WORLD, &amp;message_present, MPI_STATUS_IGNORE);&#10;    if (message_present) { *stop_flag = 1; return 0; }&#10;  }&#10;&#10;  // Only tiles that contain the required color are candidates&#10;  tile_list *candidates = g-&gt;color_buckets[required_color];&#10;  for (unsigned int i = 0; i &lt; candidates-&gt;count; i++) {&#10;    tile *t = candidates-&gt;tiles[i];&#10;    if (t-&gt;used) continue;&#10;    t-&gt;used = 1;&#10;&#10;    for (int rot = 0; rot &lt; 4; rot++) {&#10;      t-&gt;rotation = rot;&#10;      if (!valid_move(g, x, y, t)) continue;&#10;      g-&gt;board[y][x] = t;&#10;&#10;      // Spiral: choose the next cell and the color it must match&#10;      unsigned int nx = g-&gt;size, ny = g-&gt;size, next_color = 0;&#10;      if (x &lt; g-&gt;size - 1 &amp;&amp; !g-&gt;board[y][x + 1] &amp;&amp; (y == 0 || g-&gt;board[y - 1][x])) {&#10;        nx = x + 1; ny = y;     next_color = E_COLOR(t);  // east&#10;      } else if (y &lt; g-&gt;size - 1 &amp;&amp; !g-&gt;board[y + 1][x]) {&#10;        nx = x;     ny = y + 1; next_color = S_COLOR(t);  // south&#10;      } else if (x &gt; 0 &amp;&amp; !g-&gt;board[y][x - 1]) {&#10;        nx = x - 1; ny = y;     next_color = W_COLOR(t);  // west&#10;      } else if (y &gt; 0 &amp;&amp; !g-&gt;board[y - 1][x]) {&#10;        nx = x;     ny = y - 1; next_color = N_COLOR(t);  // north&#10;      }&#10;&#10;      // Board complete (no next cell) or recurse deeper&#10;      if (ny == g-&gt;size || play(g, nx, ny, next_color, stop_flag)) return 1;&#10;      g-&gt;board[y][x] = NULL;  // backtrack&#10;    }&#10;    t-&gt;used = 0;&#10;  }&#10;  return 0;&#10;}">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
@@ -472,12 +501,13 @@
                   <div class="project-cover cover-universidade" role="img" aria-label="Eternity II Solver"><svg class="cover-art" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="1.6"> <g fill="currentColor" stroke="none"> <path d="M65 15L80 30L95 15Z" fill-opacity=".8"/><path d="M80 30L95 45L95 15Z" fill-opacity=".35"/> <path d="M95 15L110 30L125 15Z" fill-opacity=".15"/><path d="M95 45L110 30L95 15Z" fill-opacity=".35"/> <path d="M95 45L110 60L125 45Z" fill-opacity=".8"/><path d="M95 45L110 30L125 45Z" fill-opacity=".15"/> <path d="M35 45L50 30L65 45Z" fill-opacity=".55"/><path d="M65 45L80 30L65 15Z" fill-opacity=".15"/> <path d="M65 45L80 60L95 45Z" fill-opacity=".55"/><path d="M95 45L80 60L95 75Z" fill-opacity=".8"/> <path d="M95 75L110 60L95 45Z" fill-opacity=".8"/><path d="M65 75L80 60L65 45Z" fill-opacity=".35"/> <path d="M65 45L50 60L65 75Z" fill-opacity=".35"/><path d="M65 75L80 90L95 75Z" fill-opacity=".15"/> <path d="M65 75L80 90L65 105Z" fill-opacity=".55"/><path d="M95 105L110 90L95 75Z" fill-opacity=".55"/> </g> <rect x="35" y="15" width="90" height="90"/><path d="M65 15V105M95 15V105M35 45H125M35 75H125"/> <path d="M35 15L125 105M125 15L35 105M65 15L125 75M95 15L125 45M35 45L95 105M35 75L65 105M95 15L35 75M125 15L65 75M65 15L35 45M125 45L65 105M125 75L95 105" stroke-opacity=".45"/></g> <path d="M50 30H110V90H50V58H80V68" stroke-width="3" stroke-dasharray="1 6" stroke-opacity=".95"/> <circle cx="50" cy="30" r="4" fill="currentColor"/></svg></div>
                 </figure>
                 <h3 class="project-title">Eternity II Solver (MPI)</h3>
-                <p class="project-category">Universidade</p>
+                <p class="project-category" data-i18n="cat.uni">University</p>
               </a>
             </li>
             <li class="project-item active" data-filter-item data-category="pessoal" data-tags="" data-demo="pokesearch"
-              data-description="Pokédex interativa que consulta a PokeAPI em tempo real. Digite o nome ou o número de um Pokémon na busca acima e veja sprite, tipos e atributos base."
-              data-details="Feita com HTML, CSS e JavaScript puros. Ao enviar a busca, o JavaScript monta a URL da PokeAPI com o nome ou ID digitado e faz uma requisição assíncrona com fetch. A API devolve um JSON, do qual extraio nome, ID, peso, altura, sprite, tipos e os seis atributos base. Os dados são convertidos para unidades legíveis (kg e metros) e renderizados dinamicamente no DOM: cada tipo vira uma etiqueta colorida e cada atributo, uma barra proporcional ao valor. Se o Pokémon não existir ou a API falhar, a interface mostra uma mensagem de erro em vez de quebrar.">
+              data-description="Interactive Pokédex that queries PokeAPI in real time. Type a Pokémon&#x27;s name or number in the search above and see its sprite, types and base stats."
+              data-details="Built with plain HTML, CSS and JavaScript. When the search is submitted, JavaScript builds the PokeAPI URL with the typed name or ID and makes an asynchronous request with fetch. The API returns JSON, from which I extract the name, ID, weight, height, sprite, types and the six base stats. The data is converted into readable units (kg and meters) and rendered dynamically in the DOM: each type becomes a colored label and each stat a bar proportional to its value. If the Pokémon doesn&#x27;t exist or the API fails, the interface shows an error message instead of breaking."
+              data-i18n-attr="data-description:proj.pokedex.desc;data-details:proj.pokedex.details">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
@@ -485,27 +515,29 @@
                   </div>
                   <div class="project-cover cover-pessoal" role="img" aria-label="Pokédex"><svg class="cover-art" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <rect x="34" y="10" width="76" height="100" rx="10"/> <circle cx="52" cy="28" r="9"/><circle cx="52" cy="28" r="4" fill="currentColor" fill-opacity=".7" stroke="none"/> <circle cx="70" cy="24" r="2.5" fill="currentColor" stroke="none"/><circle cx="79" cy="24" r="2.5" fill="currentColor" fill-opacity=".6" stroke="none"/><circle cx="88" cy="24" r="2.5" fill="currentColor" fill-opacity=".35" stroke="none"/> <rect x="44" y="44" width="56" height="52" rx="4" stroke-width="2"/> <g stroke-width="4"><path d="M52 56H88" stroke-opacity=".25"/><path d="M52 56H80"/><path d="M52 68H88" stroke-opacity=".25"/><path d="M52 68H68"/><path d="M52 80H88" stroke-opacity=".25"/><path d="M52 80H84"/></g> <circle cx="120" cy="80" r="15" stroke-width="3" fill="currentColor" fill-opacity=".12"/><path d="M131 91L144 104" stroke-width="4.5"/></svg></div>
                 </figure>
-                <h3 class="project-title">Pokédex com PokeAPI</h3>
-                <p class="project-category">Pessoal</p>
+                <h3 class="project-title" data-i18n="proj.pokedex.title">Pokédex with PokeAPI</h3>
+                <p class="project-category" data-i18n="cat.personal">Personal</p>
               </a>
             </li>
             <li class="project-item active" data-filter-item data-category="pessoal" data-tags="github" data-repo="https://github.com/JoaoPedroCS/BolaoDaCopa" data-site="https://joaopedrocs.github.io/BolaoDaCopa/"
-              data-description="Site estático que gerenciou um bolão da Copa do Mundo 2026 entre amigos: cada palpiteiro tinha um perfil com seus palpites, o site buscava os placares reais sozinho e recalculava o ranking ao vivo no navegador, na fase de grupos e no mata-mata. Foi um bolão ativo, para uso meu e dos amigos, e chegou à versão final com a gravação de palpites mais segura, via Worker; hoje está aposentado, e o site segue no ar como projeto de portfólio, com apelidos genéricos e sem fotos."
-              data-details="O site alterna entre dois modos. No modo Grupos: Ranking (com filtro por Rodada 1, 2, 3 ou Total), Jogos (agrupados por rodada, cada jogo abre a lista de palpites de todos), Tabela (classificação de cada grupo) e Palpiteiros. No modo Mata-mata: Ranking, Partidas (em ordem de data, com vencedor em destaque e pênaltis), Chaveamento (bracket completo até a final, com zoom e arrasto, em que os times avançam conforme os resultados reais) e Meus Palpites. Há ainda uma página de evolução, com um gráfico dos pontos acumulados de cada pessoa ao longo dos jogos. Os perfis eram fixos, sem cadastro: a identidade ficava salva no localStorage, só para personalizar a visão, sem login com senha.&#10;&#10;Pontuação na fase de grupos: placar exato 5 pontos, empate certo (placar diferente) 3, acertar só o vencedor 2,5 e errar 0; o desempate vai para quem tiver mais placares exatos, depois mais empates certos. No mata-mata, os 16-avos pedem o placar dos 90 minutos (exato 5, empate 3, só o vencedor 2,5, mais 5 de bônus por acertar quem se classifica) e as demais fases pedem só quem avança: oitavas 10, quartas 20, semifinal 40, 3º lugar 60 e final 80.&#10;&#10;Por baixo, tudo é calculado no navegador, em HTML, CSS e JavaScript puros, sem framework e sem build. Um Cloudflare Worker consulta a football-data.org, junta fase de grupos, mata-mata e placar ao vivo numa única resposta JSON em cache, e o site rebusca a cada 60 s com a aba aberta. Uma semente local com os 72 jogos de grupo (ids estáveis) serve de fallback, e um script com GitHub Action a regenera a partir da API. Jogos finalizados são congelados para o placar não zerar por falha da fonte, mas o app ainda adota dados tardios, como pênaltis e quem avançou. Na versão final, mais segura, os palpites passam por uma rota /palpites do próprio Worker, que guarda a chave do JsonBin como secret: o navegador nunca vê a chave, já que uma chave embutida em site estático é pública e, com permissão de escrita, deixaria qualquer um apagar o bolão. A rota devolve o registro no GET e, no PUT, só aceita gravação da origem do site (e localhost no desenvolvimento), valida formato e tamanho, não deixa criar, apagar ou renomear perfis e preserva o bloco de dados ao vivo. Sem a rota configurada, o site lê um arquivo de palpites local. O limite honesto desse modelo: os perfis não têm login, então um PUT válido forjado por fora do navegador ainda poderia editar palpites; a proteção real exigiria um PIN por perfil validado no Worker. A página de evolução usa Chart.js, a hospedagem é o GitHub Pages, e o repositório público usa apelidos genéricos e deixa de fora os palpites reais e a configuração privada do Worker.">
+              data-description="Static site that ran a 2026 World Cup prediction pool among friends: each player had a profile with their predictions, and the site fetched the real scores on its own and recalculated the ranking live in the browser, through both the group stage and the knockout rounds. It was an active pool, used by me and my friends, and it reached its final version with safer prediction saving through a Worker. It&#x27;s now retired, and the site stays online as a portfolio project, with generic nicknames and no photos."
+              data-details="The site switches between two modes. In Groups mode: Ranking (filterable by Round 1, 2, 3 or Total), Matches (grouped by round; each match opens everyone&#x27;s predictions), Table (standings for each group) and Players. In Knockout mode: Ranking, Matches (in date order, with the winner highlighted and penalties), Bracket (the full bracket up to the final, with zoom and drag, where teams advance according to the real results) and My Predictions. There&#x27;s also an evolution page with a chart of each person&#x27;s accumulated points across the matches. Profiles were fixed, with no sign-up: the identity was saved in localStorage only to personalize the view, with no password login.&#10;&#10;Group stage scoring: exact score 5 points, correct draw (different score) 3, only the winner right 2.5, and a miss 0; ties are broken by the most exact scores, then the most correct draws. In the knockout stage, the round of 32 asks for the 90-minute score (exact 5, draw 3, only the winner 2.5, plus a 5-point bonus for picking who advances) and the later rounds only ask who advances: round of 16 10, quarterfinals 20, semifinals 40, 3rd place 60 and final 80.&#10;&#10;Under the hood, everything is computed in the browser, in plain HTML, CSS and JavaScript, with no framework and no build step. A Cloudflare Worker queries football-data.org, merges the group stage, knockout rounds and live scores into a single cached JSON response, and the site refetches every 60 s while the tab is open. A local seed with the 72 group matches (stable ids) serves as a fallback, and a script run by a GitHub Action regenerates it from the API. Finished matches are frozen so the score doesn&#x27;t reset if the source fails, but the app still adopts late data, such as penalties and who advanced. In the final, safer version, predictions go through a /palpites route on the Worker itself, which keeps the JsonBin key as a secret: the browser never sees the key, because a key embedded in a static site is public and, with write permission, would let anyone wipe the pool. The route returns the record on GET and, on PUT, only accepts writes from the site&#x27;s origin (and localhost during development), validates format and size, doesn&#x27;t allow creating, deleting or renaming profiles, and preserves the live data block. Without the route configured, the site reads a local predictions file. The honest limit of this model: profiles have no login, so a valid PUT forged outside the browser could still edit predictions; real protection would require a per-profile PIN validated in the Worker. The evolution page uses Chart.js, hosting is on GitHub Pages, and the public repository uses generic nicknames and leaves out the real predictions and the Worker&#x27;s private configuration."
+              data-i18n-attr="data-description:proj.bolao.desc;data-details:proj.bolao.details">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <div class="project-cover cover-pessoal" role="img" aria-label="Bolão da Copa 2026"><svg class="cover-art" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="2"> <path d="M14 18H34V38H14M14 48H34V38M14 72H34V92H14M14 102H34V92"/> <path d="M34 28H52V82H34M52 55H70" /> </g> <g fill="currentColor" stroke="none"><circle cx="14" cy="18" r="3"/><circle cx="14" cy="48" r="3" fill-opacity=".45"/><circle cx="14" cy="72" r="3" fill-opacity=".45"/><circle cx="14" cy="102" r="3"/></g> <circle cx="98" cy="55" r="26"/> <path d="M98 45L107.5 52L104 63H92L88.5 52Z" fill="currentColor" fill-opacity=".85"/> <path d="M98 45V29M107.5 52L122 46M104 63L113 76M92 63L83 76M88.5 52L74 46" stroke-width="2"/> <rect x="120" y="92" width="32" height="20" rx="4" stroke-width="2"/> <text x="136" y="106.5" fill="currentColor" stroke="none" font-family="Poppins, sans-serif" font-size="11" font-weight="600" text-anchor="middle">2×1</text></svg></div>
+                  <div class="project-cover cover-pessoal" role="img" aria-label="World Cup 2026 Pool" data-i18n-attr="aria-label:proj.bolao.title"><svg class="cover-art" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="2"> <path d="M14 18H34V38H14M14 48H34V38M14 72H34V92H14M14 102H34V92"/> <path d="M34 28H52V82H34M52 55H70" /> </g> <g fill="currentColor" stroke="none"><circle cx="14" cy="18" r="3"/><circle cx="14" cy="48" r="3" fill-opacity=".45"/><circle cx="14" cy="72" r="3" fill-opacity=".45"/><circle cx="14" cy="102" r="3"/></g> <circle cx="98" cy="55" r="26"/> <path d="M98 45L107.5 52L104 63H92L88.5 52Z" fill="currentColor" fill-opacity=".85"/> <path d="M98 45V29M107.5 52L122 46M104 63L113 76M92 63L83 76M88.5 52L74 46" stroke-width="2"/> <rect x="120" y="92" width="32" height="20" rx="4" stroke-width="2"/> <text x="136" y="106.5" fill="currentColor" stroke="none" font-family="Poppins, sans-serif" font-size="11" font-weight="600" text-anchor="middle">2×1</text></svg></div>
                 </figure>
-                <h3 class="project-title">Bolão da Copa 2026</h3>
-                <p class="project-category">Pessoal · Aposentado</p>
+                <h3 class="project-title" data-i18n="proj.bolao.title">World Cup 2026 Pool</h3>
+                <p class="project-category" data-i18n="cat.retired">Personal · Retired</p>
               </a>
             </li>
             <li class="project-item active" data-filter-item data-category="pessoal" data-tags="hackathon"
-              data-description="Hackathon da Tractian, o unicórnio brasileiro de IA industrial (US$ 1,4 bi de valor e mais de 2.000 clientes). O desafio: montar uma proposta comercial para uma fábrica de bebidas que perdia milhões com paradas de máquina, mas cujo orçamento cobria só uma fração do escopo desejado."
-              data-details="A Tractian nasceu em 2019 e hoje vale US$ 1,4 bilhão. É a startup de IA mais valiosa da América Latina, com mais de 2.000 clientes no mundo, incluindo Coca-Cola e Embraer. Ela ensina máquinas a avisar antes de quebrar, e poucas empresas brasileiras exportam tecnologia nesse nível.&#10;&#10;O desafio: uma fábrica de bebidas perdia milhões por ano com paradas de máquina. Ela queria resolver tudo de uma vez, mas o orçamento cobria uma fração do que pedia. Nosso papel era montar uma proposta que fizesse sentido para o cliente e para a Tractian.&#10;&#10;Como a gente pensou:&#10;🔹 Começar pelo dinheiro, não pela tecnologia&#10;🔹 Priorizar onde dói mais, em vez de cobrir tudo&#10;🔹 Propor o menor passo que já se paga e crescer com o resultado&#10;🔹 Falar a língua de quem decide a verba, não só de quem opera&#10;&#10;O que eu levo: o cliente raramente precisa da solução mais completa. Ele precisa da mais convincente, e isso exige coragem de recusar o escopo cheio.">
+              data-description="Hackathon by Tractian, the Brazilian industrial AI unicorn (US$ 1.4 billion valuation and more than 2,000 customers). The challenge: put together a sales proposal for a beverage plant that was losing millions to machine downtime, but whose budget covered only a fraction of the scope it wanted."
+              data-details="Tractian was founded in 2019 and is now worth US$ 1.4 billion. It&#x27;s the most valuable AI startup in Latin America, with more than 2,000 customers worldwide, including Coca-Cola and Embraer. It teaches machines to warn before they break, and few Brazilian companies export technology at that level.&#10;&#10;The challenge: a beverage plant was losing millions a year to machine downtime. It wanted to solve everything at once, but the budget covered a fraction of what it asked for. Our job was to put together a proposal that made sense for both the client and Tractian.&#10;&#10;How we approached it:&#10;🔹 Start with the money, not the technology&#10;🔹 Prioritize where it hurts most instead of covering everything&#10;🔹 Propose the smallest step that already pays for itself, then grow with the results&#10;🔹 Speak the language of whoever controls the budget, not just whoever runs the machines&#10;&#10;What I took away: the client rarely needs the most complete solution. They need the most convincing one, and that takes the courage to turn down the full scope."
+              data-i18n-attr="data-description:proj.tractian.desc;data-details:proj.tractian.details">
               <a href="#" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
@@ -514,18 +546,18 @@
                   <div class="project-cover cover-pessoal" role="img" aria-label="Hackathon Tractian"><svg class="cover-art" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <rect x="16" y="50" width="56" height="34" rx="5"/><path d="M26 50V84M36 50V84M46 50V84" stroke-width="1.8" stroke-opacity=".5"/> <path d="M72 60H84V74H72"/><path d="M20 84L14 96H74L68 84"/> <rect x="34" y="38" width="14" height="12" rx="2" fill="currentColor" fill-opacity=".85" stroke="none"/> <path d="M30 30a14 14 0 0 1 22 0M25 23a22 22 0 0 1 32 0" stroke-width="2"/> <path d="M88 104H98L103 98L108 108L113 100L118 104H122L127 66L133 112L138 96H150" stroke-width="2.2"/> <path d="M127 56V50" stroke-width="2"/><circle cx="127" cy="45" r=".8" fill="currentColor"/> <circle cx="124" cy="26" r="15" fill="currentColor" fill-opacity=".15"/> <text x="124" y="32" fill="currentColor" stroke="none" font-family="Poppins, sans-serif" font-size="17" font-weight="600" text-anchor="middle">$</text></svg></div>
                 </figure>
                 <h3 class="project-title">Hackathon Tractian</h3>
-                <p class="project-category">Pessoal</p>
+                <p class="project-category" data-i18n="cat.personal">Personal</p>
               </a>
             </li>
           </ul>
-          <p class="projects-empty" data-projects-empty hidden>Nenhum projeto com essa combinação de filtros. Nem escavando fundo achei esse fóssil 🦴</p>
+          <p class="projects-empty" data-projects-empty hidden data-i18n="projects.empty">No project matches this combination of filters. Not even deep digging found this fossil 🦴</p>
         </section>
 
       </article>
 
-      <article class="contact" data-page="contato">
+      <article class="contact" data-page="contact">
         <header>
-          <h2 class="h2 article-title">Contact</h2>
+          <h2 class="h2 article-title" data-i18n="contact.title">Contact</h2>
         </header>
 
         <section class="mapbox" data-mapbox>
@@ -535,20 +567,20 @@
         </section>
 
         <section class="contact-form">
-          <h3 class="h3 form-title">Contact Form</h3>
+          <h3 class="h3 form-title" data-i18n="contact.form">Contact Form</h3>
           <form action="https://formspree.io/f/xbggrbkv" method="POST" class="form" data-form>
 
             <div class="input-wrapper">
-              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" data-i18n-attr="placeholder:contact.name" required data-form-input>
 
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+              <input type="email" name="email" class="form-input" placeholder="Email address" data-i18n-attr="placeholder:contact.email" required data-form-input>
             </div>
 
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+            <textarea name="message" class="form-input" placeholder="Your message" data-i18n-attr="placeholder:contact.message" required data-form-input></textarea>
 
             <button class="form-btn" type="submit" disabled data-form-btn>
               <ion-icon name="paper-plane"></ion-icon>
-              <span>Send Message</span>
+              <span data-i18n="contact.send">Send message</span>
             </button>
 
           </form>
@@ -562,29 +594,31 @@
   <div class="project-modal" data-project-modal aria-hidden="true">
     <div class="modal-overlay" data-modal-overlay></div>
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal-close-btn" type="button" data-modal-close aria-label="Fechar modal">
+      <button class="modal-close-btn" type="button" data-modal-close aria-label="Close" data-i18n-attr="aria-label:modal.close">
         <ion-icon name="close-outline"></ion-icon>
       </button>
-      <h3 id="modal-title">Título do projeto</h3>
+      <h3 id="modal-title">Project title</h3>
       <div class="modal-links">
       <a class="modal-repo-link" data-modal-site href="#" target="_blank" rel="noopener" hidden>
         <ion-icon name="globe-outline"></ion-icon>
-        <span>Acessar o site</span>
+        <span data-i18n="modal.site">Visit the site</span>
       </a>
       <a class="modal-repo-link" data-modal-repo href="#" target="_blank" rel="noopener" hidden>
         <ion-icon name="logo-github"></ion-icon>
-        <span>Ver repositório no GitHub</span>
+        <span data-i18n="modal.repo">View repository on GitHub</span>
       </a>
       </div>
       <ul class="modal-tags" data-modal-tags hidden></ul>
       <div class="modal-demo" data-modal-demo></div>
-      <img alt="Imagem do projeto" data-modal-img hidden>
+      <img alt="Project image" data-modal-img hidden>
       <div class="modal-cover" data-modal-cover hidden></div>
       <p data-modal-description></p>
       <p data-modal-details></p>
     </div>
   </div>
 
+  <script src="./assets/js/lang-pt.js"></script>
+  <script src="./assets/js/preferences.js"></script>
   <script src="./assets/js/script.js"></script>
   <script src="./assets/js/easter-eggs.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

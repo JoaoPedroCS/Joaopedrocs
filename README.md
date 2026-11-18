@@ -1,26 +1,26 @@
-# Olá, eu sou o João Pedro! 👋
+# Hi, I'm João Pedro! 👋
 
-Desenvolvedor | Analista de Dados | Estudante de Ciência da Computação
+Developer | Data Analyst | Computer Science Student
 
-Sou um profissional com forte base analítica, focado em transformar desafios operacionais complexos em soluções sistêmicas. Atualmente, estudo na **Universidade Federal do ABC (UFABC)** e tenho experiência prática em desenvolver simuladores algorítmicos, pipelines de dados e ferramentas de alta eficiência. 
+I have a strong analytical background and focus on turning complex operational challenges into systemic solutions. I'm currently studying at the **Federal University of ABC (UFABC)** and have hands-on experience building algorithmic simulators, data pipelines and high-efficiency tools.
 
-Gosto de unir a lógica da computação de alto desempenho (C/C++, CUDA, OpenMP) com a agilidade e escalabilidade do ecossistema moderno (Python, Cloud e Web).
-
----
-
-### 🚀 Sobre mim
-
-- 🎓 Graduando em **Ciência da Computação** e **Ciência e Tecnologia** pela UFABC (Previsão: 2027).
-- 💼 Experiência anterior como **Estagiário de Eficiência Operacional na Shopper**, onde desenvolvi um motor de simulação (*Warehouse Slotting*) que gerou um **ganho projetado de 20% em eficiência** no Galpão em Brasília.
-- 🌐 Idiomas: Português (Nativo), Inglês (Fluente - C1), Espanhol (Intermediário), e estudando Mandarim e Francês.
+I like combining the logic of high-performance computing (C/C++, CUDA, OpenMP) with the speed and scalability of the modern ecosystem (Python, Cloud and Web).
 
 ---
 
-### 📂 Portfólio
+### 🚀 About me
 
-Este repositório também hospeda o meu site de portfólio pessoal, construído do zero utilizando **HTML5, CSS3 e JavaScript Vanilla**. Nele, você pode ver mais detalhes sobre meus projetos, certificações completas e trajetória profissional.
+- 🎓 Undergraduate in **Computer Science** and **Science and Technology** at UFABC (expected graduation: 2027).
+- 💼 Previously an **Operational Efficiency Intern at Shopper**, where I built a simulation engine (*Warehouse Slotting*) that delivered a **projected 20% efficiency gain** at the Brasília warehouse.
+- 🌐 Languages: Portuguese (native), English (fluent - C1), Spanish (intermediate), and currently studying Mandarin and French.
 
-🔗 **[Acesse o meu Portfólio aqui](#)**
+---
+
+### 📂 Portfolio
+
+This repository also hosts my personal portfolio website, built from scratch with **HTML5, CSS3 and vanilla JavaScript**. It has more details about my projects, my full certifications and my professional journey, in English or Brazilian Portuguese and in dark or light mode.
+
+🔗 **[Visit my portfolio](https://joaopedrocs.tech)**
 
 ---
 
@@ -34,8 +34,8 @@ Este repositório também hospeda o meu site de portfólio pessoal, construído 
 
 ---
 
-### 📫 Como me encontrar
+### 📫 Where to find me
 
-- <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" width="80" /> **[Seu LinkedIn](https://www.linkedin.com/in/joao-pedro-cs)** *(Substitua o # pelo seu link)*
+- <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" width="80" /> **[LinkedIn](https://www.linkedin.com/in/joao-pedro-cs)**
 - ✉️ **joaopedrocorreasilva0@gmail.com**
-- 📍 Santo André, SP - Brasil
+- 📍 Santo André, SP - Brazil
