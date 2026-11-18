@@ -10,7 +10,7 @@
   const PT = window.LANG_PT || {};
   const LANG_KEY = "jp-lang";
   const THEME_KEY = "jp-theme";
-  const THEME_COLORS = { dark: "#05080c", light: "#eef1f5" };
+  const THEME_COLORS = { dark: "#04070a", light: "#eef1f5" };
 
   const read = function (key) { try { return localStorage.getItem(key); } catch (e) { return null; } };
   const write = function (key, value) { try { localStorage.setItem(key, value); } catch (e) { } };
