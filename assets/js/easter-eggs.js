@@ -126,7 +126,7 @@
     let busy = false;
     let streaks = [];
     let spin = 0;
-    const SEQ = { ship: 950, open: 1500, burn: 2150, flash: 2850, arrive: 3650, settle: 1300 };
+    const SEQ = { ship: 950, open: 1500, burn: 2150, flash: 2850, arrive: 3650, settle: 1500 };
     const seg = function (e, a, b) { return clamp((e - a) / (b - a), 0, 1); };
     const smooth = function (x) { return x * x * (3 - 2 * x); };
 
@@ -443,7 +443,28 @@
       );
     };
 
-    const AWAY = [1, 0.82, 0.45, 0.17, 0.03];
+    // The page recedes into the distance and later flies back: every panel shares
+    // the viewport centre as origin and the same scale curve, so the layout moves
+    // as one rigid piece. Scale is eased in log space, which reads as a steady
+    // change of distance instead of a sudden pop; opacity only drops at the very
+    // end, once the page is already a speck.
+    const FAR = 0.003;
+    const depthFrames = function (o, back) {
+      const ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(2 - 2 * x, 3) / 2; };
+      const frames = [];
+      const n = 32;
+      for (let i = 0; i <= n; i++) {
+        const t = i / n;
+        const d = ease(back ? 1 - t : t);
+        const far = back ? 1 - t : t;
+        frames.push({
+          transform: "scale(" + Math.pow(FAR, d).toFixed(5) + ")",
+          transformOrigin: o,
+          opacity: far < 0.88 ? 1 : (1 - far) / 0.12
+        });
+      }
+      return frames;
+    };
     const stopAnims = function (el) {
       if (typeof el.getAnimations === "function") el.getAnimations().forEach(function (a) { a.cancel(); });
     };
@@ -458,10 +479,7 @@
       const flying = panels().map(function (el) {
         const r = el.getBoundingClientRect();
         const o = (vw / 2 - r.left).toFixed(1) + "px " + (vh / 2 - r.top).toFixed(1) + "px";
-        const frames = AWAY.map(function (sc, i) {
-          return { transform: "scale(" + sc + ")", transformOrigin: o, opacity: i < 3 ? 1 : (i === 3 ? 0.7 : 0) };
-        });
-        return { el: el, o: o, anim: el.animate(frames, { duration: 1150, easing: "cubic-bezier(.45,0,.75,.5)", fill: "forwards" }) };
+        return { el: el, o: o, anim: el.animate(depthFrames(o, false), { duration: 1400, easing: "linear", fill: "forwards" }) };
       });
 
       jumpAt = performance.now();
@@ -497,13 +515,9 @@
         }
       });
       later(SEQ.arrive, function () {
-        flying.forEach(function (f, i) {
+        flying.forEach(function (f) {
           f.anim.cancel();
-          f.el.animate([
-            { transform: "scale(0.03)", transformOrigin: f.o, opacity: 0 },
-            { opacity: 1, offset: 0.28 },
-            { transform: "scale(1)", transformOrigin: f.o, opacity: 1 }
-          ], { duration: SEQ.settle - 100, delay: i * 70, easing: "cubic-bezier(.1,.75,.2,1)", fill: "backwards" });
+          f.el.animate(depthFrames(f.o, true), { duration: SEQ.settle, easing: "linear" });
         });
       });
       later(SEQ.arrive + SEQ.settle + 150, function () {
