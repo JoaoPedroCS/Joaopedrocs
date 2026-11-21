@@ -357,13 +357,13 @@ const buildPokemonCard = function (data) {
     <div class="poke-stats-list">${statsHTML}</div>`;
 };
 
-const setupPokeDemo = function () {
-  modalDemo.innerHTML = pokeDemoMarkup();
+const setupPokeDemo = function (container) {
+  container.innerHTML = pokeDemoMarkup();
 
-  const form = modalDemo.querySelector("[data-poke-form]");
-  const input = modalDemo.querySelector("[data-poke-input]");
-  const status = modalDemo.querySelector("[data-poke-status]");
-  const result = modalDemo.querySelector("[data-poke-result]");
+  const form = container.querySelector("[data-poke-form]");
+  const input = container.querySelector("[data-poke-input]");
+  const status = container.querySelector("[data-poke-status]");
+  const result = container.querySelector("[data-poke-result]");
   let lastRequest = 0;
 
   form.addEventListener("submit", async function (event) {
@@ -391,7 +391,316 @@ const setupPokeDemo = function () {
   });
 };
 
-const PROJECT_DEMOS = { pokesearch: setupPokeDemo };
+// ---- Calculator (iOS-style) ----
+const calcMarkup = function () {
+  const keys = [
+    ["clear", "AC", "top"], ["negate", "+/-", "top"], ["percent", "%", "top"], ["/", "÷", "op"],
+    ["7", "7"], ["8", "8"], ["9", "9"], ["*", "×", "op"],
+    ["4", "4"], ["5", "5"], ["6", "6"], ["-", "-", "op"],
+    ["1", "1"], ["2", "2"], ["3", "3"], ["+", "+", "op"],
+    ["0", "0", "zero"], ["dot", ","], ["equals", "=", "op"]
+  ];
+  return `
+  <div class="calc-demo">
+    <output class="calc-display" data-calc-display aria-live="polite">0</output>
+    <div class="calc-keys">${keys.map(function (k) {
+      return `<button type="button" class="calc-key ${k[2] ? "calc-" + k[2] : ""}" data-calc-key="${k[0]}">${k[1]}</button>`;
+    }).join("")}</div>
+  </div>`;
+};
+
+const setupCalcDemo = function (container) {
+  container.innerHTML = calcMarkup();
+  const display = container.querySelector("[data-calc-display]");
+  const clearKey = container.querySelector('[data-calc-key="clear"]');
+  const opKeys = container.querySelectorAll(".calc-op:not([data-calc-key=equals])");
+
+  let current = "0";      // full-precision value behind the display
+  let stored = null;      // left operand
+  let operator = null;
+  let waiting = false;    // true right after picking an operator
+  let fresh = false;      // true when the display shows a result (after = or %): typing starts a new number
+  let computed = false;   // current came from a calculation (formatted like iOS), not typed by the user
+  let lastOp = null;      // for repeated "=" (e.g. 2 + 3 = = =)
+
+  // Keeps 12 significant digits internally: removes float noise (0.1 + 0.2 -> 0.3) without losing precision.
+  const clean = function (n) {
+    return isFinite(n) ? String(parseFloat(n.toPrecision(12))) : "Error";
+  };
+  const compute = function (a, op, b) {
+    switch (op) {
+      case "+": return a + b;
+      case "-": return a - b;
+      case "*": return a * b;
+      case "/": return b === 0 ? NaN : a / b;
+    }
+  };
+
+  // iOS-style display: thousands separators, at most 9 digits, scientific notation like "1e12" when it doesn't fit.
+  const groupDigits = function (intPart) {
+    return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, L(",", "."));
+  };
+  const scientific = function (value) {
+    for (let p = 8; p >= 0; p--) {
+      const parts = value.toExponential(p).split("e");
+      const mantissa = parts[0].includes(".") ? parts[0].replace(/\.?0+$/, "") : parts[0];
+      const exponent = String(Number(parts[1]));
+      if (mantissa.replace(/[-.]/g, "").length + exponent.length <= 10 || p === 0) {
+        return mantissa.replace(".", L(".", ",")) + "e" + exponent;
+      }
+    }
+  };
+  const formatResult = function (value) {
+    const abs = Math.abs(value);
+    if (abs >= 1e9 || (abs !== 0 && abs < 1e-8)) return scientific(value);
+    const intDigits = abs < 1 ? 1 : Math.floor(Math.log10(abs)) + 1;
+    let text = value.toFixed(Math.max(0, 9 - intDigits));
+    if (text.includes(".")) text = text.replace(/\.?0+$/, "");
+    if (text.replace(/[-.]/g, "").length > 9 && !text.includes(".")) return scientific(value);
+    if (parseFloat(text) === 0 && value !== 0) return scientific(value);
+    if (text === "-0") text = "0";
+    return formatTyped(text);
+  };
+  const formatTyped = function (text) {
+    const negative = text.startsWith("-");
+    const parts = text.replace("-", "").split(".");
+    return (negative ? "-" : "") + groupDigits(parts[0]) + (parts.length > 1 ? L(".", ",") + parts[1] : "");
+  };
+
+  const render = function () {
+    const text = current === "Error" ? L("Error", "Erro")
+      : computed ? formatResult(parseFloat(current)) : formatTyped(current);
+    display.textContent = text;
+    // Shrink the font as the number grows, like the iPhone does.
+    display.style.setProperty("--calc-scale", Math.min(1, 9 / Math.max(text.length, 1)).toFixed(3));
+    clearKey.textContent = current !== "0" && !waiting ? "C" : "AC";
+    opKeys.forEach(function (k) { k.classList.toggle("selected", waiting && k.dataset.calcKey === operator); });
+  };
+
+  const startNewNumber = function () {
+    const starting = waiting || fresh;
+    waiting = false;
+    fresh = false;
+    computed = false;
+    return starting;
+  };
+
+  const press = function (key) {
+    if (current === "Error" && key !== "clear") { current = "0"; stored = null; operator = null; computed = false; fresh = false; }
+
+    if (/^\d$/.test(key)) {
+      if (startNewNumber()) current = key;
+      else if (current.replace(/[-.]/g, "").length < 9) current = current === "0" ? key : current === "-0" ? "-" + key : current + key;
+    } else if (key === "dot") {
+      if (startNewNumber()) current = "0.";
+      else if (!current.includes(".")) current += ".";
+    } else if (key === "clear") {
+      if (clearKey.textContent === "C") { current = "0"; computed = false; fresh = false; }
+      else { current = "0"; stored = null; operator = null; waiting = false; fresh = false; computed = false; lastOp = null; }
+    } else if (key === "negate") {
+      if (waiting) { current = "0"; waiting = false; computed = false; }
+      current = current.startsWith("-") ? current.slice(1) : "-" + current;
+    } else if (key === "percent") {
+      const value = parseFloat(current);
+      current = clean(stored !== null && (operator === "+" || operator === "-") ? stored * value / 100 : value / 100);
+      waiting = false;
+      fresh = true;
+      computed = true;
+    } else if (key === "equals") {
+      if (operator !== null) {
+        const right = waiting ? stored : parseFloat(current);
+        lastOp = [operator, right];
+        current = clean(compute(stored, operator, right));
+        operator = null; stored = null;
+      } else if (lastOp) {
+        current = clean(compute(parseFloat(current), lastOp[0], lastOp[1]));
+      }
+      waiting = false;
+      fresh = true;
+      computed = true;
+    } else { // + - * /
+      if (operator !== null && !waiting) current = clean(compute(stored, operator, parseFloat(current)));
+      if (current === "Error") { render(); return; }
+      stored = parseFloat(current);
+      operator = key;
+      waiting = true;
+      fresh = false;
+      computed = true;
+      lastOp = null;
+    }
+    render();
+  };
+
+  // Swipe left or right on the display to delete the last digit (only while typing a number).
+  const backspace = function () {
+    if (waiting || fresh || computed || current === "Error") return;
+    current = current.slice(0, -1);
+    if (current === "" || current === "-") current = "0";
+    render();
+  };
+  let swipeStartX = null;
+  display.addEventListener("pointerdown", function (event) { swipeStartX = event.clientX; });
+  display.addEventListener("pointerup", function (event) {
+    if (swipeStartX !== null && Math.abs(event.clientX - swipeStartX) > 30) backspace();
+    swipeStartX = null;
+  });
+  display.addEventListener("pointercancel", function () { swipeStartX = null; });
+
+  container.querySelector(".calc-keys").addEventListener("click", function (event) {
+    const btn = event.target.closest("[data-calc-key]");
+    if (btn) press(btn.dataset.calcKey);
+  });
+  render();
+};
+
+// ---- To-do list (saved in localStorage) ----
+const TODO_STORAGE_KEY = "portfolio-todos";
+const loadTodos = function () {
+  try { return JSON.parse(localStorage.getItem(TODO_STORAGE_KEY)) || []; } catch (e) { return []; }
+};
+const saveTodos = function (todos) {
+  try { localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(todos)); } catch (e) { /* storage blocked: list just won't persist */ }
+};
+
+const setupTodoDemo = function (container) {
+  container.innerHTML = `
+  <div class="todo-demo">
+    <form class="poke-demo-form" data-todo-form>
+      <input class="poke-demo-input" type="text" maxlength="120" autocomplete="off" data-todo-input
+        placeholder="${L("What needs to be done?", "O que precisa ser feito?")}" aria-label="${L("New task", "Nova tarefa")}">
+      <button class="poke-demo-btn" type="submit">${L("Add", "Adicionar")}</button>
+    </form>
+    <ul class="todo-list" data-todo-list></ul>
+    <div class="todo-footer" data-todo-footer></div>
+  </div>`;
+
+  const form = container.querySelector("[data-todo-form]");
+  const input = container.querySelector("[data-todo-input]");
+  const list = container.querySelector("[data-todo-list]");
+  const footer = container.querySelector("[data-todo-footer]");
+  let todos = loadTodos();
+
+  const commit = function () { saveTodos(todos); render(); };
+
+  const render = function () {
+    list.innerHTML = "";
+    if (!todos.length) {
+      list.innerHTML = `<li class="todo-empty">${L("Nothing to do. Enjoy it 🌴", "Nada pra fazer. Aproveite 🌴")}</li>`;
+    }
+    todos.forEach(function (todo, index) {
+      const li = document.createElement("li");
+      li.className = "todo-item" + (todo.completed ? " done" : "");
+      li.innerHTML = `
+        <label class="todo-check"><input type="checkbox" ${todo.completed ? "checked" : ""}><span class="todo-box"><ion-icon name="checkmark-outline"></ion-icon></span></label>
+        <span class="todo-text"></span>
+        <button type="button" class="todo-btn" data-action="edit" aria-label="${L("Edit", "Editar")}"><ion-icon name="create-outline"></ion-icon></button>
+        <button type="button" class="todo-btn" data-action="delete" aria-label="${L("Delete", "Excluir")}"><ion-icon name="trash-outline"></ion-icon></button>`;
+      li.querySelector(".todo-text").textContent = todo.text;
+
+      li.querySelector("input").addEventListener("change", function () {
+        todo.completed = this.checked;
+        commit();
+      });
+      li.querySelector('[data-action="delete"]').addEventListener("click", function () {
+        todos.splice(index, 1);
+        commit();
+      });
+      li.querySelector('[data-action="edit"]').addEventListener("click", function () {
+        const field = document.createElement("input");
+        field.className = "poke-demo-input todo-edit";
+        field.value = todo.text;
+        field.maxLength = 120;
+        let finished = false;
+        const finish = function (save) {
+          if (finished) return; // removing the field fires blur; don't commit twice
+          finished = true;
+          const value = field.value.trim();
+          if (save && value) todo.text = value;
+          commit();
+        };
+        field.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") finish(true);
+          if (event.key === "Escape") { event.stopPropagation(); finish(false); }
+        });
+        field.addEventListener("blur", function () { finish(true); });
+        li.querySelector(".todo-text").replaceWith(field);
+        this.hidden = true;
+        field.focus();
+      });
+      list.append(li);
+    });
+
+    const doneCount = todos.filter(function (t) { return t.completed; }).length;
+    footer.innerHTML = todos.length
+      ? `<span>${doneCount}/${todos.length} ${L("done", "concluídas")}</span>` +
+        (doneCount ? `<button type="button" class="todo-clear" data-todo-clear>${L("Clear completed", "Limpar concluídas")}</button>` : "")
+      : "";
+    const clearBtn = footer.querySelector("[data-todo-clear]");
+    if (clearBtn) clearBtn.addEventListener("click", function () {
+      todos = todos.filter(function (t) { return !t.completed; });
+      commit();
+    });
+  };
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    todos.push({ text: text, completed: false });
+    input.value = "";
+    commit();
+  });
+
+  render();
+};
+
+// ---- Mini web projects: one card, tabs switch between the three demos ----
+const MINI_PROJECTS = [
+  {
+    key: "pokedex", icon: "search-outline", label: ["Pokédex", "Pokédex"], setup: setupPokeDemo,
+    details: [
+      "Pokédex: built with plain HTML, CSS and JavaScript. When the search is submitted, JavaScript builds the PokeAPI URL with the typed name or ID and makes an asynchronous request with fetch. The API returns JSON, from which I extract the name, ID, weight, height, sprite, types and the six base stats. The data is converted into readable units (kg and meters) and rendered dynamically in the DOM: each type becomes a colored label and each stat a bar proportional to its value. If the Pokémon doesn't exist or the API fails, the interface shows an error message instead of breaking.",
+      "Pokédex: feita com HTML, CSS e JavaScript puros. Ao enviar a busca, o JavaScript monta a URL da PokeAPI com o nome ou ID digitado e faz uma requisição assíncrona com fetch. A API devolve um JSON, do qual extraio nome, ID, peso, altura, sprite, tipos e os seis atributos base. Os dados são convertidos para unidades legíveis (kg e metros) e renderizados dinamicamente no DOM: cada tipo vira uma etiqueta colorida e cada atributo, uma barra proporcional ao valor. Se o Pokémon não existir ou a API falhar, a interface mostra uma mensagem de erro em vez de quebrar."
+    ]
+  },
+  {
+    key: "calc", icon: "calculator-outline", label: ["Calculator", "Calculadora"], setup: setupCalcDemo,
+    details: [
+      "Calculator: my \"hello world 2.0\". I made one in Python with tkinter to get out of the terminal, and this one in JavaScript to get a better grip on the language, challenging myself to copy the iOS calculator's design and behavior from before its 2024 redesign: AC/C, +/−, percentage, the highlighted operator and repeating the last operation when pressing = again. The best lesson was fixing the classic floating point rounding problem (0.1 + 0.2), which isn't as simple as just calling round.",
+      "Calculadora: meu \"hello world 2.0\". Fiz uma em Python com tkinter para sair do terminal, e esta em JavaScript para dominar melhor a linguagem, me desafiando a copiar o design e o comportamento da calculadora do iOS de antes da mudança de 2024: AC/C, +/−, porcentagem, o operador destacado e repetir a última operação ao apertar = de novo. A melhor lição foi resolver o problema clássico de arredondamento do float (0,1 + 0,2), que não é tão simples quanto usar round."
+    ]
+  },
+  {
+    key: "todo", icon: "checkbox-outline", label: ["To-do", "To-do"], setup: setupTodoDemo,
+    details: [
+      "To-do: my \"hello world 3.0\", a task list in plain JavaScript that saves everything in the browser's localStorage, so your tasks are still here when you come back. Beyond the tutorial basics (add, complete, delete) I added inline editing of a task's text and a button to clear completed tasks.",
+      "To-do: meu \"hello world 3.0\", uma lista de tarefas em JavaScript puro que salva tudo no localStorage do navegador, então suas tarefas continuam aqui quando você voltar. Além do básico dos tutoriais (adicionar, concluir, excluir), adicionei edição do texto da tarefa e um botão para limpar as concluídas."
+    ]
+  }
+];
+
+const setupMiniProjects = function () {
+  modalDemo.innerHTML = `
+  <div class="mini-tabs" role="tablist">${MINI_PROJECTS.map(function (p) {
+    return `<button type="button" class="mini-tab" role="tab" data-mini-tab="${p.key}" aria-selected="false"><ion-icon name="${p.icon}"></ion-icon><span>${L.apply(null, p.label)}</span></button>`;
+  }).join("")}</div>
+  <div class="mini-panel" role="tabpanel" data-mini-panel></div>`;
+
+  const panel = modalDemo.querySelector("[data-mini-panel]");
+  const tabs = modalDemo.querySelectorAll("[data-mini-tab]");
+
+  const show = function (key) {
+    const project = MINI_PROJECTS.find(function (p) { return p.key === key; });
+    tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.dataset.miniTab === key)); });
+    project.setup(panel);
+    modalDetails.innerText = L.apply(null, project.details);
+  };
+
+  tabs.forEach(function (t) { t.addEventListener("click", function () { show(t.dataset.miniTab); }); });
+  show(MINI_PROJECTS[0].key);
+};
+
+const PROJECT_DEMOS = { pokesearch: function () { setupPokeDemo(modalDemo); }, miniprojects: setupMiniProjects };
 
 const openProjectDemo = function (demoName) {
   modalDemo.classList.remove("active");
