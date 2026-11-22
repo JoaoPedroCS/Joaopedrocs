@@ -649,30 +649,22 @@ main {
 .skills-list { padding: 20px; }
 .skills-item:not(:last-child) { margin-bottom: 15px; }
 
-.skill .title-wrapper {
+.skills-item .h5 { margin-bottom: 10px; }
+
+.skill-tags {
   display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.skill .title-wrapper data {
+.skill-tag {
+  background: var(--onyx);
+  border: 1px solid var(--jet);
   color: var(--light-gray);
   font-size: var(--fs-7);
   font-weight: var(--fw-300);
-}
-
-.skill-progress-bg {
-  background: var(--jet);
-  width: 100%;
-  height: 8px;
+  padding: 4px 12px;
   border-radius: 16px;
-}
-
-.skill-progress-fill {
-  background: var(--text-gradient-yellow);
-  height: 100%;
-  border-radius: inherit;
 }
 
 .filter-list { display: none; }
@@ -750,7 +742,10 @@ main {
   100% { transform: scale(1); }
 }
 
-.project-item > a { width: 100%; }
+.project-item > a { width: 100%; cursor: pointer; }
+
+/* Full project text stays in the static HTML for crawlers/readers; humans read it in the modal. */
+.project-text { display: none; }
 
 .project-img {
   position: relative;

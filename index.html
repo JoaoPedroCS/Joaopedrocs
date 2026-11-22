@@ -6,6 +6,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>João Pedro - Portfolio</title>
+  <meta name="description" content="João Pedro, Computer Science student at UFABC (Federal University of ABC). I build algorithmic simulators, data pipelines and high-performance parallel programs (OpenMP, Pthreads, CUDA).">
+  <link rel="canonical" href="https://joaopedrocs.tech/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://joaopedrocs.tech/">
+  <meta property="og:title" content="João Pedro - Portfolio">
+  <meta property="og:description" content="Computer Science student at UFABC. Algorithmic simulators, data pipelines and parallel programming. Projects, resume and contact.">
+  <meta property="og:image" content="https://joaopedrocs.tech/assets/images/pfp2.jpeg">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="João Pedro">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#04070a">
 
   <!-- Apply the saved theme/language before first paint (no flash). English + dark are the defaults. -->
@@ -87,7 +100,7 @@
             </div>
             <div class="contact-info">
               <p class="contact-title" data-i18n="side.university">University</p>
-              <a href="#" class="contact-link">UFABC</a>
+              <a href="https://www.ufabc.edu.br" class="contact-link" target="_blank" rel="noopener">UFABC</a>
             </div>
           </li>
           <li class="contact-item">
@@ -353,62 +366,36 @@
         <section class="skill">
           <h3 class="h3 skills-title" data-i18n="resume.skills">My Skills</h3>
           <ul class="skills-list content-card">
-            
             <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Python</h5>
-                <data value="75">75%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 75%;"></div>
-              </div>
+              <h5 class="h5" data-i18n="resume.skills.parallel">Parallel Computing</h5>
+              <ul class="skill-tags">
+                <li class="skill-tag">OpenMP</li>
+                <li class="skill-tag">Pthreads</li>
+                <li class="skill-tag">CUDA</li>
+              </ul>
             </li>
             <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">C / C++</h5>
-                <data value="60">60%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 60%;"></div>
-              </div>
+              <h5 class="h5" data-i18n="resume.skills.data">Data &amp; Automation</h5>
+              <ul class="skill-tags">
+                <li class="skill-tag">Google Sheets</li>
+                <li class="skill-tag">Google Apps Script</li>
+                <li class="skill-tag">Google Web App</li>
+                <li class="skill-tag">Metabase</li>
+              </ul>
             </li>
             <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">TypeScript</h5>
-                <data value="50">50%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 50%;"></div>
-              </div>
+              <h5 class="h5" data-i18n="resume.skills.cicd">CI/CD</h5>
+              <ul class="skill-tags">
+                <li class="skill-tag">GitHub Actions</li>
+              </ul>
             </li>
             <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Cloud (AWS, GCP, Azure)</h5>
-                <data value="55">55%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 55%;"></div>
-              </div>
+              <h5 class="h5" data-i18n="resume.skills.ai">Generative AI</h5>
+              <ul class="skill-tags">
+                <li class="skill-tag">Codex</li>
+                <li class="skill-tag">Claude</li>
+              </ul>
             </li>
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5" data-i18n="resume.skills.db">Databases (SQL / ETL)</h5>
-                <data value="40">40%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 40%;"></div>
-              </div>
-            </li>
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Git, CI/CD & Linux</h5>
-                <data value="85">85%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 85%;"></div>
-              </div>
-            </li>
-
           </ul>
         </section>
       </article>
@@ -458,11 +445,8 @@
            </div>
 
           <ul class="project-list">
-            <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai"
-              data-description="Warehouse Slotting simulator that started as a SKU-swap tool validated by brute force against real orders and evolved into a replicable engine, driven by a CSV layout, capable of optimizing not only slotting but the physical structure of new warehouses itself."
-              data-details="The project started as a tool that suggested SKU swaps inside a warehouse and calculated, in simulation, whether each swap produced a real gain. The approach was deliberately brute force, to guarantee true gains: SKUs were prioritized by a penetration metric (the rate at which they appear in orders) and could only swap places with SKUs on shelves of the same type. Each swap was simulated individually against real orders, measuring the change in average meters walked per order. At the end, a holdout with the most recent orders measured the real gain, avoiding overfitting to history. This first cycle used an existing layout, and adapting it to another warehouse would have required a long effort to translate the particularities of each structure and picking route.&#10;&#10;The next challenge was adapting the engine to a new warehouse, designed from scratch. The solution was to standardize the problem: I created a CSV schema in which each row represents an aisle and fully describes its behavior (start or end point, direction of travel, capacity, distance, entries and exits, among other attributes). With the rules in a single format, the route simulation engine could consume any layout, and creating a new structure became just a matter of translating it into the CSV. The pipeline needs three inputs: order history, the layout CSV and the SKU list, and with them it simulates both existing and new warehouses.&#10;&#10;The result was a highly replicable, AI-friendly method: with a well-guided AI, it&#x27;s possible to generate and test many layouts, evaluating not only the ideal SKU slotting but also the physical structure of the warehouse. One of these tests revealed a layout with a projected 20% gain in meters per order from structural changes alone, before any slotting optimization, while still respecting sanitary rules and qualitative criteria that support replenishment. Since the warehouse didn&#x27;t exist yet, the simulations used orders from other operations. The main lesson: turning implicit rules into standardized data is what turns a one-off solution into a platform."
-              data-i18n-attr="data-description:proj.slotting.desc;data-details:proj.slotting.details">
-              <a href="#" data-project-trigger>
+            <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai">
+              <a role="button" tabindex="0" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -472,12 +456,13 @@
                 <h3 class="project-title">Warehouse Slotting</h3>
                 <p class="project-category">Shopper</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.slotting.desc">Warehouse Slotting simulator that started as a SKU-swap tool validated by brute force against real orders and evolved into a replicable engine, driven by a CSV layout, capable of optimizing not only slotting but the physical structure of new warehouses itself.</p>
+                <p class="project-details" data-project-details data-i18n="proj.slotting.details">The project started as a tool that suggested SKU swaps inside a warehouse and calculated, in simulation, whether each swap produced a real gain. The approach was deliberately brute force, to guarantee true gains: SKUs were prioritized by a penetration metric (the rate at which they appear in orders) and could only swap places with SKUs on shelves of the same type. Each swap was simulated individually against real orders, measuring the change in average meters walked per order. At the end, a holdout with the most recent orders measured the real gain, avoiding overfitting to history. This first cycle used an existing layout, and adapting it to another warehouse would have required a long effort to translate the particularities of each structure and picking route.<br><br>The next challenge was adapting the engine to a new warehouse, designed from scratch. The solution was to standardize the problem: I created a CSV schema in which each row represents an aisle and fully describes its behavior (start or end point, direction of travel, capacity, distance, entries and exits, among other attributes). With the rules in a single format, the route simulation engine could consume any layout, and creating a new structure became just a matter of translating it into the CSV. The pipeline needs three inputs: order history, the layout CSV and the SKU list, and with them it simulates both existing and new warehouses.<br><br>The result was a highly replicable, AI-friendly method: with a well-guided AI, it's possible to generate and test many layouts, evaluating not only the ideal SKU slotting but also the physical structure of the warehouse. One of these tests revealed a layout with a projected 20% gain in meters per order from structural changes alone, before any slotting optimization, while still respecting sanitary rules and qualitative criteria that support replenishment. Since the warehouse didn't exist yet, the simulations used orders from other operations. The main lesson: turning implicit rules into standardized data is what turns a one-off solution into a platform.</p>
+              </div>
             </li>
-            <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai"
-              data-description="Analytics suite for supply chain operations, made up of a capacity simulator for the receiving dock, which balances supplier queue time against operator idle time, and a tool that monitors and forecasts shelf replenishment effectiveness."
-              data-details="The first module tackled sizing the receiving team, the area that serves suppliers and registers new items into inventory. I built a discrete-event simulator fed with real operational data (arrival time and service time for each supplier) that takes the number of checking operators as a variable. By running the simulation over several days, the tool answers, for each team configuration, what the average queue time and the idle time per operator are, and also calculates on what percentage of days a target median queue time was met. Shift-based modeling makes it possible to test teams of different sizes in each period. The goal was twofold and deliberately conflicting: minimize waiting to ensure a good supplier experience while reducing team idle time.&#10;&#10;The second module was born from a requirement that is simple to state and hard to sustain: replenishment must keep the shelves full. The tool tracks the effectiveness of each replenishment list, comparing what was expected to be replenished with what actually was, since system inventory doesn&#x27;t always reflect physical reality. This indicator is combined with a macro chart that compares total shelf outflows with total replenishment, and reading both together reveals how effectiveness varies with the warehouse&#x27;s occupancy level. Based on history, the tool also estimates the execution time and expected effectiveness for a target number of items to replenish, giving the people doing the work a realistic forecast of how many items will actually be replenished and how long it will take.&#10;&#10;In both cases the logic was the same: replace gut-feeling decisions with simulation and metrics on real data. Receiving gained an objective way to size its team per shift, while replenishment gained visibility into the gap between system and physical inventory, plus predictable execution. The main lesson was that indicators only drive action when they can be compared to a target and come with a forecast."
-              data-i18n-attr="data-description:proj.supply.desc;data-details:proj.supply.details">
-              <a href="#" data-project-trigger>
+            <li class="project-item active" data-filter-item data-category="shopper" data-tags="dados ai">
+              <a role="button" tabindex="0" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -487,13 +472,14 @@
                 <h3 class="project-title">Supply Chain Analytics</h3>
                 <p class="project-category">Shopper</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.supply.desc">Analytics suite for supply chain operations, made up of a capacity simulator for the receiving dock, which balances supplier queue time against operator idle time, and a tool that monitors and forecasts shelf replenishment effectiveness.</p>
+                <p class="project-details" data-project-details data-i18n="proj.supply.details">The first module tackled sizing the receiving team, the area that serves suppliers and registers new items into inventory. I built a discrete-event simulator fed with real operational data (arrival time and service time for each supplier) that takes the number of checking operators as a variable. By running the simulation over several days, the tool answers, for each team configuration, what the average queue time and the idle time per operator are, and also calculates on what percentage of days a target median queue time was met. Shift-based modeling makes it possible to test teams of different sizes in each period. The goal was twofold and deliberately conflicting: minimize waiting to ensure a good supplier experience while reducing team idle time.<br><br>The second module was born from a requirement that is simple to state and hard to sustain: replenishment must keep the shelves full. The tool tracks the effectiveness of each replenishment list, comparing what was expected to be replenished with what actually was, since system inventory doesn't always reflect physical reality. This indicator is combined with a macro chart that compares total shelf outflows with total replenishment, and reading both together reveals how effectiveness varies with the warehouse's occupancy level. Based on history, the tool also estimates the execution time and expected effectiveness for a target number of items to replenish, giving the people doing the work a realistic forecast of how many items will actually be replenished and how long it will take.<br><br>In both cases the logic was the same: replace gut-feeling decisions with simulation and metrics on real data. Receiving gained an objective way to size its team per shift, while replenishment gained visibility into the gap between system and physical inventory, plus predictable execution. The main lesson was that indicators only drive action when they can be compared to a target and come with a forecast.</p>
+              </div>
             </li>
             <li class="project-item active" data-filter-item data-category="universidade" data-tags="paralelo github" data-repo="https://github.com/JoaoPedroCS/EternityII"
-              data-description="C solver for the Eternity II puzzle, built as a pair project at UFABC. The backtracking search provided by the professor was optimized with heuristics (a color index of pieces, spiral filling from a corner) and parallelized with MPI in a master-worker model, where each worker explores a different initial board configuration."
-              data-details="Eternity II is an edge-matching puzzle released in 2007 with a US$ 2 million prize for whoever solved it: 256 pieces on a 16×16 board with 22 colors, the board&#x27;s border only accepts pieces with a gray side (color 0), and every piece can be rotated. Nobody has found a solution to this day, and the search space exceeds 10⁶⁶¹ combinations. In this Parallel Programming course project, done in pairs, we worked with smaller instances of the same problem: the C program reads the board size, the number of colors and the list of pieces (four colors per piece, clockwise) and returns, for each cell, which piece to use and how many rotations to apply. The goal was to optimize the solver with heuristics and parallelize it with MPI.&#10;&#10;The starting point was sequential backtracking code provided by the professor. On top of it we applied three heuristics. The first is a color index of pieces: before the search, each color gets a list of the pieces that contain it, and since the neighbor already determines the required color, we only test candidates from that list instead of scanning every piece. The second is a spiral traversal instead of a linear one: filling starts at the board&#x27;s border, where pieces can only have gray sides and there are few valid permutations, so mistakes show up early and entire branches of the search tree are pruned before they grow. The third is to always start from a corner piece (two gray edges), which anchors the spiral. The spiral was implemented in both directions, clockwise and counterclockwise.&#10;&#10;The MPI parallelization uses a master-worker model. The search space is split by initial configuration: there are 8 tasks, combining 4 corner pieces with 2 spiral directions. Process 0 reads the input, broadcasts the game and statically assigns one task to each worker. Each worker builds its own copy of the structures (board and color indexes) and runs the full search from its configuration. To stop quickly, every 2000 recursive calls the worker checks, without blocking, via MPI_Iprobe, whether the master has told it to stop. When it finds a solution, the worker serializes the board (id and rotation of each piece) and sends it to the master, which prints the result and tells everyone to stop. Since the master only coordinates, with 6 processes there are 5 workers searching, and only with 9 processes are all 8 configurations explored from the start.&#10;&#10;In tests with 6 processes, the speedup over the sequential version ranged from 3.04× to 29.95× on the professor&#x27;s inputs. On the generated instances (6 colors), it was 8.25× on 2×2, 7.3× on 3×3, 4.85× on 4×4, 1.61× on 5×5, 0.72× on 6×6, 1.27× on 7×7 and 8.24× on 8×8. The strategy works more like a race between different search orders than an even split of the work: a single process only needs to hit the right path, which explains the superlinear gains in some cases and also the speedup below 1 in others (like 6×6), when the sequential version got lucky or communication overhead weighed in. The main lesson was that, in backtracking search, heuristics that prune the tree bring as much gain as parallelism, and that performance depends on the instance as much as on the number of processes."
-              data-i18n-attr="data-description:proj.eternity.desc;data-details:proj.eternity.details"
               data-code="// Candidate lookup + spiral traversal + non-blocking stop check&#10;int play(game *g, unsigned int x, unsigned int y,&#10;         unsigned int required_color, int *stop_flag) {&#10;  // Every 2000 calls, poll (non-blocking) for a STOP message from the master&#10;  static int check_counter = 0;&#10;  if (++check_counter % 2000 == 0) {&#10;    int message_present = 0;&#10;    MPI_Iprobe(0, STOP, MPI_COMM_WORLD, &amp;message_present, MPI_STATUS_IGNORE);&#10;    if (message_present) { *stop_flag = 1; return 0; }&#10;  }&#10;&#10;  // Only tiles that contain the required color are candidates&#10;  tile_list *candidates = g-&gt;color_buckets[required_color];&#10;  for (unsigned int i = 0; i &lt; candidates-&gt;count; i++) {&#10;    tile *t = candidates-&gt;tiles[i];&#10;    if (t-&gt;used) continue;&#10;    t-&gt;used = 1;&#10;&#10;    for (int rot = 0; rot &lt; 4; rot++) {&#10;      t-&gt;rotation = rot;&#10;      if (!valid_move(g, x, y, t)) continue;&#10;      g-&gt;board[y][x] = t;&#10;&#10;      // Spiral: choose the next cell and the color it must match&#10;      unsigned int nx = g-&gt;size, ny = g-&gt;size, next_color = 0;&#10;      if (x &lt; g-&gt;size - 1 &amp;&amp; !g-&gt;board[y][x + 1] &amp;&amp; (y == 0 || g-&gt;board[y - 1][x])) {&#10;        nx = x + 1; ny = y;     next_color = E_COLOR(t);  // east&#10;      } else if (y &lt; g-&gt;size - 1 &amp;&amp; !g-&gt;board[y + 1][x]) {&#10;        nx = x;     ny = y + 1; next_color = S_COLOR(t);  // south&#10;      } else if (x &gt; 0 &amp;&amp; !g-&gt;board[y][x - 1]) {&#10;        nx = x - 1; ny = y;     next_color = W_COLOR(t);  // west&#10;      } else if (y &gt; 0 &amp;&amp; !g-&gt;board[y - 1][x]) {&#10;        nx = x;     ny = y - 1; next_color = N_COLOR(t);  // north&#10;      }&#10;&#10;      // Board complete (no next cell) or recurse deeper&#10;      if (ny == g-&gt;size || play(g, nx, ny, next_color, stop_flag)) return 1;&#10;      g-&gt;board[y][x] = NULL;  // backtrack&#10;    }&#10;    t-&gt;used = 0;&#10;  }&#10;  return 0;&#10;}">
-              <a href="#" data-project-trigger>
+              <a href="https://github.com/JoaoPedroCS/EternityII" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -503,12 +489,13 @@
                 <h3 class="project-title">Eternity II Solver (MPI)</h3>
                 <p class="project-category" data-i18n="cat.uni">University</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.eternity.desc">C solver for the Eternity II puzzle, built as a pair project at UFABC. The backtracking search provided by the professor was optimized with heuristics (a color index of pieces, spiral filling from a corner) and parallelized with MPI in a master-worker model, where each worker explores a different initial board configuration.</p>
+                <p class="project-details" data-project-details data-i18n="proj.eternity.details">Eternity II is an edge-matching puzzle released in 2007 with a US$ 2 million prize for whoever solved it: 256 pieces on a 16×16 board with 22 colors, the board's border only accepts pieces with a gray side (color 0), and every piece can be rotated. Nobody has found a solution to this day, and the search space exceeds 10⁶⁶¹ combinations. In this Parallel Programming course project, done in pairs, we worked with smaller instances of the same problem: the C program reads the board size, the number of colors and the list of pieces (four colors per piece, clockwise) and returns, for each cell, which piece to use and how many rotations to apply. The goal was to optimize the solver with heuristics and parallelize it with MPI.<br><br>The starting point was sequential backtracking code provided by the professor. On top of it we applied three heuristics. The first is a color index of pieces: before the search, each color gets a list of the pieces that contain it, and since the neighbor already determines the required color, we only test candidates from that list instead of scanning every piece. The second is a spiral traversal instead of a linear one: filling starts at the board's border, where pieces can only have gray sides and there are few valid permutations, so mistakes show up early and entire branches of the search tree are pruned before they grow. The third is to always start from a corner piece (two gray edges), which anchors the spiral. The spiral was implemented in both directions, clockwise and counterclockwise.<br><br>The MPI parallelization uses a master-worker model. The search space is split by initial configuration: there are 8 tasks, combining 4 corner pieces with 2 spiral directions. Process 0 reads the input, broadcasts the game and statically assigns one task to each worker. Each worker builds its own copy of the structures (board and color indexes) and runs the full search from its configuration. To stop quickly, every 2000 recursive calls the worker checks, without blocking, via MPI_Iprobe, whether the master has told it to stop. When it finds a solution, the worker serializes the board (id and rotation of each piece) and sends it to the master, which prints the result and tells everyone to stop. Since the master only coordinates, with 6 processes there are 5 workers searching, and only with 9 processes are all 8 configurations explored from the start.<br><br>In tests with 6 processes, the speedup over the sequential version ranged from 3.04× to 29.95× on the professor's inputs. On the generated instances (6 colors), it was 8.25× on 2×2, 7.3× on 3×3, 4.85× on 4×4, 1.61× on 5×5, 0.72× on 6×6, 1.27× on 7×7 and 8.24× on 8×8. The strategy works more like a race between different search orders than an even split of the work: a single process only needs to hit the right path, which explains the superlinear gains in some cases and also the speedup below 1 in others (like 6×6), when the sequential version got lucky or communication overhead weighed in. The main lesson was that, in backtracking search, heuristics that prune the tree bring as much gain as parallelism, and that performance depends on the instance as much as on the number of processes.</p>
+              </div>
             </li>
-            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="" data-demo="miniprojects"
-              data-description="Three small web projects from when I was learning front-end, now living together in one place: a Pokédex that queries PokeAPI, an iOS-style calculator and a to-do list. Pick one in the tabs above and try it right here."
-              data-details=""
-              data-i18n-attr="data-description:proj.mini.desc">
-              <a href="#" data-project-trigger>
+            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="" data-demo="miniprojects">
+              <a role="button" tabindex="0" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -518,12 +505,15 @@
                 <h3 class="project-title" data-i18n="proj.mini.title">Mini Web Projects</h3>
                 <p class="project-category" data-i18n="cat.personal">Personal</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.mini.desc">Three small web projects from when I was learning front-end, now living together in one place: a Pokédex that queries PokeAPI, an iOS-style calculator and a to-do list. Pick one in the tabs above and try it right here.</p>
+                <p class="project-details" data-mini-details="pokedex" data-i18n="proj.mini.pokedex">Pokédex: built with plain HTML, CSS and JavaScript. When the search is submitted, JavaScript builds the PokeAPI URL with the typed name or ID and makes an asynchronous request with fetch. The API returns JSON, from which I extract the name, ID, weight, height, sprite, types and the six base stats. The data is converted into readable units (kg and meters) and rendered dynamically in the DOM: each type becomes a colored label and each stat a bar proportional to its value. If the Pokémon doesn't exist or the API fails, the interface shows an error message instead of breaking.</p>
+                <p class="project-details" data-mini-details="calc" data-i18n="proj.mini.calc">Calculator: my "hello world 2.0". I made one in Python with tkinter to get out of the terminal, and this one in JavaScript to get a better grip on the language, challenging myself to copy the iOS calculator's design and behavior from before its 2024 redesign: AC/C, +/−, percentage, the highlighted operator and repeating the last operation when pressing = again. The best lesson was fixing the classic floating point rounding problem (0.1 + 0.2), which isn't as simple as just calling round.</p>
+                <p class="project-details" data-mini-details="todo" data-i18n="proj.mini.todo">To-do: my "hello world 3.0", a task list in plain JavaScript that saves everything in the browser's localStorage, so your tasks are still here when you come back. Beyond the tutorial basics (add, complete, delete) I added inline editing of a task's text and a button to clear completed tasks.</p>
+              </div>
             </li>
-            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="github" data-repo="https://github.com/JoaoPedroCS/BolaoDaCopa" data-site="https://joaopedrocs.github.io/BolaoDaCopa/"
-              data-description="Static site that ran a 2026 World Cup prediction pool among friends: each player had a profile with their predictions, and the site fetched the real scores on its own and recalculated the ranking live in the browser, through both the group stage and the knockout rounds. It was an active pool, used by me and my friends, and it reached its final version with safer prediction saving through a Worker. It&#x27;s now retired, and the site stays online as a portfolio project, with generic nicknames and no photos."
-              data-details="The site switches between two modes. In Groups mode: Ranking (filterable by Round 1, 2, 3 or Total), Matches (grouped by round; each match opens everyone&#x27;s predictions), Table (standings for each group) and Players. In Knockout mode: Ranking, Matches (in date order, with the winner highlighted and penalties), Bracket (the full bracket up to the final, with zoom and drag, where teams advance according to the real results) and My Predictions. There&#x27;s also an evolution page with a chart of each person&#x27;s accumulated points across the matches. Profiles were fixed, with no sign-up: the identity was saved in localStorage only to personalize the view, with no password login.&#10;&#10;Group stage scoring: exact score 5 points, correct draw (different score) 3, only the winner right 2.5, and a miss 0; ties are broken by the most exact scores, then the most correct draws. In the knockout stage, the round of 32 asks for the 90-minute score (exact 5, draw 3, only the winner 2.5, plus a 5-point bonus for picking who advances) and the later rounds only ask who advances: round of 16 10, quarterfinals 20, semifinals 40, 3rd place 60 and final 80.&#10;&#10;Under the hood, everything is computed in the browser, in plain HTML, CSS and JavaScript, with no framework and no build step. A Cloudflare Worker queries football-data.org, merges the group stage, knockout rounds and live scores into a single cached JSON response, and the site refetches every 60 s while the tab is open. A local seed with the 72 group matches (stable ids) serves as a fallback, and a script run by a GitHub Action regenerates it from the API. Finished matches are frozen so the score doesn&#x27;t reset if the source fails, but the app still adopts late data, such as penalties and who advanced. In the final, safer version, predictions go through a /palpites route on the Worker itself, which keeps the JsonBin key as a secret: the browser never sees the key, because a key embedded in a static site is public and, with write permission, would let anyone wipe the pool. The route returns the record on GET and, on PUT, only accepts writes from the site&#x27;s origin (and localhost during development), validates format and size, doesn&#x27;t allow creating, deleting or renaming profiles, and preserves the live data block. Without the route configured, the site reads a local predictions file. The honest limit of this model: profiles have no login, so a valid PUT forged outside the browser could still edit predictions; real protection would require a per-profile PIN validated in the Worker. The evolution page uses Chart.js, hosting is on GitHub Pages, and the public repository uses generic nicknames and leaves out the real predictions and the Worker&#x27;s private configuration."
-              data-i18n-attr="data-description:proj.bolao.desc;data-details:proj.bolao.details">
-              <a href="#" data-project-trigger>
+            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="github" data-repo="https://github.com/JoaoPedroCS/BolaoDaCopa" data-site="https://joaopedrocs.github.io/BolaoDaCopa/">
+              <a href="https://joaopedrocs.github.io/BolaoDaCopa/" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -533,12 +523,13 @@
                 <h3 class="project-title" data-i18n="proj.bolao.title">World Cup 2026 Pool</h3>
                 <p class="project-category" data-i18n="cat.retired">Personal · Retired</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.bolao.desc">Static site that ran a 2026 World Cup prediction pool among friends: each player had a profile with their predictions, and the site fetched the real scores on its own and recalculated the ranking live in the browser, through both the group stage and the knockout rounds. It was an active pool, used by me and my friends, and it reached its final version with safer prediction saving through a Worker. It's now retired, and the site stays online as a portfolio project, with generic nicknames and no photos.</p>
+                <p class="project-details" data-project-details data-i18n="proj.bolao.details">The site switches between two modes. In Groups mode: Ranking (filterable by Round 1, 2, 3 or Total), Matches (grouped by round; each match opens everyone's predictions), Table (standings for each group) and Players. In Knockout mode: Ranking, Matches (in date order, with the winner highlighted and penalties), Bracket (the full bracket up to the final, with zoom and drag, where teams advance according to the real results) and My Predictions. There's also an evolution page with a chart of each person's accumulated points across the matches. Profiles were fixed, with no sign-up: the identity was saved in localStorage only to personalize the view, with no password login.<br><br>Group stage scoring: exact score 5 points, correct draw (different score) 3, only the winner right 2.5, and a miss 0; ties are broken by the most exact scores, then the most correct draws. In the knockout stage, the round of 32 asks for the 90-minute score (exact 5, draw 3, only the winner 2.5, plus a 5-point bonus for picking who advances) and the later rounds only ask who advances: round of 16 10, quarterfinals 20, semifinals 40, 3rd place 60 and final 80.<br><br>Under the hood, everything is computed in the browser, in plain HTML, CSS and JavaScript, with no framework and no build step. A Cloudflare Worker queries football-data.org, merges the group stage, knockout rounds and live scores into a single cached JSON response, and the site refetches every 60 s while the tab is open. A local seed with the 72 group matches (stable ids) serves as a fallback, and a script run by a GitHub Action regenerates it from the API. Finished matches are frozen so the score doesn't reset if the source fails, but the app still adopts late data, such as penalties and who advanced. In the final, safer version, predictions go through a /palpites route on the Worker itself, which keeps the JsonBin key as a secret: the browser never sees the key, because a key embedded in a static site is public and, with write permission, would let anyone wipe the pool. The route returns the record on GET and, on PUT, only accepts writes from the site's origin (and localhost during development), validates format and size, doesn't allow creating, deleting or renaming profiles, and preserves the live data block. Without the route configured, the site reads a local predictions file. The honest limit of this model: profiles have no login, so a valid PUT forged outside the browser could still edit predictions; real protection would require a per-profile PIN validated in the Worker. The evolution page uses Chart.js, hosting is on GitHub Pages, and the public repository uses generic nicknames and leaves out the real predictions and the Worker's private configuration.</p>
+              </div>
             </li>
-            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="hackathon"
-              data-description="Hackathon by Tractian, the Brazilian industrial AI unicorn (US$ 1.4 billion valuation and more than 2,000 customers). The challenge: put together a sales proposal for a beverage plant that was losing millions to machine downtime, but whose budget covered only a fraction of the scope it wanted."
-              data-details="Tractian was founded in 2019 and is now worth US$ 1.4 billion. It&#x27;s the most valuable AI startup in Latin America, with more than 2,000 customers worldwide, including Coca-Cola and Embraer. It teaches machines to warn before they break, and few Brazilian companies export technology at that level.&#10;&#10;The challenge: a beverage plant was losing millions a year to machine downtime. It wanted to solve everything at once, but the budget covered a fraction of what it asked for. Our job was to put together a proposal that made sense for both the client and Tractian.&#10;&#10;How we approached it:&#10;🔹 Start with the money, not the technology&#10;🔹 Prioritize where it hurts most instead of covering everything&#10;🔹 Propose the smallest step that already pays for itself, then grow with the results&#10;🔹 Speak the language of whoever controls the budget, not just whoever runs the machines&#10;&#10;What I took away: the client rarely needs the most complete solution. They need the most convincing one, and that takes the courage to turn down the full scope."
-              data-i18n-attr="data-description:proj.tractian.desc;data-details:proj.tractian.details">
-              <a href="#" data-project-trigger>
+            <li class="project-item active" data-filter-item data-category="pessoal" data-tags="hackathon">
+              <a role="button" tabindex="0" data-project-trigger>
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
@@ -548,6 +539,10 @@
                 <h3 class="project-title">Hackathon Tractian</h3>
                 <p class="project-category" data-i18n="cat.personal">Personal</p>
               </a>
+              <div class="project-text">
+                <p class="project-description" data-project-description data-i18n="proj.tractian.desc">Hackathon by Tractian, the Brazilian industrial AI unicorn (US$ 1.4 billion valuation and more than 2,000 customers). The challenge: put together a sales proposal for a beverage plant that was losing millions to machine downtime, but whose budget covered only a fraction of the scope it wanted.</p>
+                <p class="project-details" data-project-details data-i18n="proj.tractian.details">Tractian was founded in 2019 and is now worth US$ 1.4 billion. It's the most valuable AI startup in Latin America, with more than 2,000 customers worldwide, including Coca-Cola and Embraer. It teaches machines to warn before they break, and few Brazilian companies export technology at that level.<br><br>The challenge: a beverage plant was losing millions a year to machine downtime. It wanted to solve everything at once, but the budget covered a fraction of what it asked for. Our job was to put together a proposal that made sense for both the client and Tractian.<br><br>How we approached it:<br>🔹 Start with the money, not the technology<br>🔹 Prioritize where it hurts most instead of covering everything<br>🔹 Propose the smallest step that already pays for itself, then grow with the results<br>🔹 Speak the language of whoever controls the budget, not just whoever runs the machines<br><br>What I took away: the client rarely needs the most complete solution. They need the most convincing one, and that takes the courage to turn down the full scope.</p>
+              </div>
             </li>
           </ul>
           <p class="projects-empty" data-projects-empty hidden data-i18n="projects.empty">No project matches this combination of filters. Not even deep digging found this fossil 🦴</p>
@@ -599,11 +594,11 @@
       </button>
       <h3 id="modal-title">Project title</h3>
       <div class="modal-links">
-      <a class="modal-repo-link" data-modal-site href="#" target="_blank" rel="noopener" hidden>
+      <a class="modal-repo-link" data-modal-site target="_blank" rel="noopener" hidden>
         <ion-icon name="globe-outline"></ion-icon>
         <span data-i18n="modal.site">Visit the site</span>
       </a>
-      <a class="modal-repo-link" data-modal-repo href="#" target="_blank" rel="noopener" hidden>
+      <a class="modal-repo-link" data-modal-repo target="_blank" rel="noopener" hidden>
         <ion-icon name="logo-github"></ion-icon>
         <span data-i18n="modal.repo">View repository on GitHub</span>
       </a>

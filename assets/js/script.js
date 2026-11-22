@@ -655,27 +655,16 @@ const setupTodoDemo = function (container) {
 };
 
 // ---- Mini web projects: one card, tabs switch between the three demos ----
+// Each tab's description lives in index.html (<p data-mini-details="key">), so it is in the static HTML.
 const MINI_PROJECTS = [
   {
-    key: "pokedex", icon: "search-outline", label: ["Pokédex", "Pokédex"], setup: setupPokeDemo,
-    details: [
-      "Pokédex: built with plain HTML, CSS and JavaScript. When the search is submitted, JavaScript builds the PokeAPI URL with the typed name or ID and makes an asynchronous request with fetch. The API returns JSON, from which I extract the name, ID, weight, height, sprite, types and the six base stats. The data is converted into readable units (kg and meters) and rendered dynamically in the DOM: each type becomes a colored label and each stat a bar proportional to its value. If the Pokémon doesn't exist or the API fails, the interface shows an error message instead of breaking.",
-      "Pokédex: feita com HTML, CSS e JavaScript puros. Ao enviar a busca, o JavaScript monta a URL da PokeAPI com o nome ou ID digitado e faz uma requisição assíncrona com fetch. A API devolve um JSON, do qual extraio nome, ID, peso, altura, sprite, tipos e os seis atributos base. Os dados são convertidos para unidades legíveis (kg e metros) e renderizados dinamicamente no DOM: cada tipo vira uma etiqueta colorida e cada atributo, uma barra proporcional ao valor. Se o Pokémon não existir ou a API falhar, a interface mostra uma mensagem de erro em vez de quebrar."
-    ]
+    key: "pokedex", icon: "search-outline", label: ["Pokédex", "Pokédex"], setup: setupPokeDemo
   },
   {
-    key: "calc", icon: "calculator-outline", label: ["Calculator", "Calculadora"], setup: setupCalcDemo,
-    details: [
-      "Calculator: my \"hello world 2.0\". I made one in Python with tkinter to get out of the terminal, and this one in JavaScript to get a better grip on the language, challenging myself to copy the iOS calculator's design and behavior from before its 2024 redesign: AC/C, +/−, percentage, the highlighted operator and repeating the last operation when pressing = again. The best lesson was fixing the classic floating point rounding problem (0.1 + 0.2), which isn't as simple as just calling round.",
-      "Calculadora: meu \"hello world 2.0\". Fiz uma em Python com tkinter para sair do terminal, e esta em JavaScript para dominar melhor a linguagem, me desafiando a copiar o design e o comportamento da calculadora do iOS de antes da mudança de 2024: AC/C, +/−, porcentagem, o operador destacado e repetir a última operação ao apertar = de novo. A melhor lição foi resolver o problema clássico de arredondamento do float (0,1 + 0,2), que não é tão simples quanto usar round."
-    ]
+    key: "calc", icon: "calculator-outline", label: ["Calculator", "Calculadora"], setup: setupCalcDemo
   },
   {
-    key: "todo", icon: "checkbox-outline", label: ["To-do", "To-do"], setup: setupTodoDemo,
-    details: [
-      "To-do: my \"hello world 3.0\", a task list in plain JavaScript that saves everything in the browser's localStorage, so your tasks are still here when you come back. Beyond the tutorial basics (add, complete, delete) I added inline editing of a task's text and a button to clear completed tasks.",
-      "To-do: meu \"hello world 3.0\", uma lista de tarefas em JavaScript puro que salva tudo no localStorage do navegador, então suas tarefas continuam aqui quando você voltar. Além do básico dos tutoriais (adicionar, concluir, excluir), adicionei edição do texto da tarefa e um botão para limpar as concluídas."
-    ]
+    key: "todo", icon: "checkbox-outline", label: ["To-do", "To-do"], setup: setupTodoDemo
   }
 ];
 
@@ -693,7 +682,8 @@ const setupMiniProjects = function () {
     const project = MINI_PROJECTS.find(function (p) { return p.key === key; });
     tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.dataset.miniTab === key)); });
     project.setup(panel);
-    modalDetails.innerText = L.apply(null, project.details);
+    const details = document.querySelector(`[data-mini-details="${key}"]`);
+    modalDetails.innerHTML = details ? details.innerHTML : "";
   };
 
   tabs.forEach(function (t) { t.addEventListener("click", function () { show(t.dataset.miniTab); }); });
@@ -725,6 +715,8 @@ const toggleProjectModal = function (isOpen) {
 
 for (let i = 0; i < projectTriggers.length; i++) {
   projectTriggers[i].addEventListener("click", function (event) {
+    // Cards with a real URL (repo/site) still open it on ctrl/cmd/shift-click.
+    if (this.hasAttribute("href") && (event.ctrlKey || event.metaKey || event.shiftKey)) return;
     event.preventDefault();
 
     const projectItem = this.closest("[data-filter-item]");
@@ -732,11 +724,23 @@ for (let i = 0; i < projectTriggers.length; i++) {
 
     modalTitle.innerText = title;
     renderModalMedia(this);
-    modalDescription.innerText = projectItem.dataset.description;
-    modalDetails.innerText = projectItem.dataset.details;
+    // The text is already in the card's HTML (hidden by CSS), in the current language.
+    const description = projectItem.querySelector("[data-project-description]");
+    const details = projectItem.querySelector("[data-project-details]");
+    modalDescription.innerHTML = description ? description.innerHTML : "";
+    modalDetails.innerHTML = details ? details.innerHTML : "";
     renderModalTags(projectItem);
     openProjectDemo(projectItem.dataset.demo);
     toggleProjectModal(true);
+  });
+
+  // Cards without a URL are role="button" anchors: make Enter/Space open them too.
+  projectTriggers[i].addEventListener("keydown", function (event) {
+    if (this.hasAttribute("href")) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      this.click();
+    }
   });
 }
 
