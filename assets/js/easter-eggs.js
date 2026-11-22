@@ -1575,8 +1575,8 @@
     "readme.md": function () {
       return [
         '<b class="t-muted"># João Pedro · Developer</b>',
-        L("Computer Science at UFABC (expected 2027), from Patos de Minas (MG) to Santo André (SP).",
-          "Ciência da Computação na UFABC (previsão 2027), de Patos de Minas (MG) a Santo André (SP)."),
+        L("Science and Technology (Computer Science focus) at UFABC, from Patos de Minas (MG) to Santo André (SP).",
+          "Ciência e Tecnologia (foco em Ciência da Computação) na UFABC, de Patos de Minas (MG) a Santo André (SP)."),
         L("Cloud, systems, Linux and low-level code. Curious about everything, from computing to paleontology.",
           "Cloud, sistemas, Linux e código de baixo nível. Curioso por tudo, da computação à paleontologia.")
       ].join("\n");
@@ -1665,7 +1665,7 @@
       termPrint(
         visitor() + " 👋 (uid=1000)\n" +
         L("but this terminal belongs to <strong>João Pedro</strong>", "mas este terminal é de <strong>João Pedro</strong>") + "\n" +
-        '<b class="t-muted">' + L("Computer Science", "Ciência da Computação") + " @ UFABC · Santo André, SP</b>"
+        '<b class="t-muted">' + L("Science and Technology (CS focus)", "Ciência e Tecnologia (foco em Computação)") + " @ UFABC · Santo André, SP</b>"
       );
     },
 

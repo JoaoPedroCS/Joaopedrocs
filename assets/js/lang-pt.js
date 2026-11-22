@@ -30,7 +30,7 @@ window.LANG_PT = {
   "svc.cloud.title": "Cloud &amp; Certificações",
   "svc.cloud.text": "Aprofundando meus conhecimentos em infraestrutura em nuvem, com foco na emissão de novas certificações na área.",
   "svc.cs.title": "Ciência da Computação",
-  "svc.cs.text": "Na reta final para concluir meu bacharelado, com foco intensivo em ciência da computação e tecnologia.",
+  "svc.cs.text": "Cursando o Bacharelado em Ciência e Tecnologia na UFABC, com foco em Ciência da Computação.",
   "svc.zh.title": "Estudando Mandarim",
   "svc.zh.text": "Buscando expandir minhas fronteiras e habilidades de comunicação global. Meu objetivo é, até o final de 2027, ser capaz de manter uma conversa no idioma.",
   "svc.zh.hanzi": "xué wú zhǐ jìng · o aprendizado não tem fim",
@@ -45,9 +45,9 @@ window.LANG_PT = {
   "resume.title": "Currículo",
   "resume.edu": "Educação",
   "resume.edu.school": "Universidade Federal do ABC (UFABC)",
-  "resume.edu.date": "Jun 2023 — 1.2027 (previsão)",
+  "resume.edu.date": "Jun 2023 — Atual",
   "resume.edu.text":
-    "<strong>Bacharelado em Ciência e Tecnologia</strong><br><br>" +
+    "<strong>Bacharelado em Ciência e Tecnologia, com foco em Ciência da Computação</strong><br><br>" +
     "• <strong>Computação:</strong> Domínio em algoritmos avançados, estruturas de dados e programação paralela de alto desempenho (OpenMP, Pthreads e CUDA), aliando experiência no desenvolvimento de shaders para computação gráfica a fundamentos sólidos em segurança da informação, criptografia e proteção de sistemas.<br>" +
     "• <strong>Interdisciplinaridade:</strong> Sólido desenvolvimento analítico e intelectual, com aplicação integrada de conceitos avançados de Matemática, Física (Mecânica, Elétrica, Quântica), Química e Engenharias na resolução de problemas complexos, aliados a princípios de Economia e Ciências Sociais para garantir soluções que sejam técnica, econômica e socialmente viáveis.",
   "resume.exp": "Experiência",

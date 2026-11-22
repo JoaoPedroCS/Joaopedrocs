@@ -10,7 +10,7 @@ I like combining the logic of high-performance computing (C/C++, CUDA, OpenMP) w
 
 ### 🚀 About me
 
-- 🎓 Undergraduate in **Computer Science** and **Science and Technology** at UFABC (expected graduation: 2027).
+- 🎓 Undergraduate in **Science and Technology** at UFABC, with a focus on **Computer Science**.
 - 💼 Previously an **Operational Efficiency Intern at Shopper**, where I built a simulation engine (*Warehouse Slotting*) that delivered a **projected 20% efficiency gain** at the Brasília warehouse.
 - 🌐 Languages: Portuguese (native), English (fluent - C1), Spanish (intermediate), and currently studying Mandarin and French.
 
