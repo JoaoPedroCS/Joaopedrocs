@@ -438,7 +438,7 @@
 
     const panels = function () {
       return Array.prototype.filter.call(
-        document.querySelectorAll(".sidebar, .navbar, main article.active"),
+        document.querySelectorAll(".sidebar, .navbar, .page article.active"),
         function (el) { return el.getClientRects().length > 0; }
       );
     };
@@ -615,7 +615,7 @@
     const navbar = document.querySelector(".navbar");
     const navFixed = navbar && getComputedStyle(navbar).position === "fixed";
     const spot =
-      fits(document.querySelector("main article.active")) ||
+      fits(document.querySelector(".page article.active")) ||
       fits(document.querySelector(".sidebar")) ||
       (navFixed ? { edge: navbar.getBoundingClientRect().top, x: vw * rand(0.55, 0.75) - size / 2 } : null) ||
       { edge: vh, x: vw * 0.7 - size / 2 };

@@ -6,7 +6,7 @@
   --egg-lilac: #c4a7ff;
 }
 
-main { position: relative; z-index: 1; }
+.page { position: relative; z-index: 1; }
 
 .egg-toasts {
   position: fixed;
@@ -176,7 +176,7 @@ body.egg-hyper-busy .egg-starwars { pointer-events: none; }
 .egg-tie[hidden] { display: none; }
 .egg-tie svg { display: block; width: 100%; height: auto; }
 
-body.egg-hyper-busy main { pointer-events: none; }
+body.egg-hyper-busy .page { pointer-events: none; }
 .egg-hyper {
   position: fixed;
   inset: 0;

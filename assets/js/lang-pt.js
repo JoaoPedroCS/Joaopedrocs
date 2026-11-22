@@ -37,9 +37,10 @@ window.LANG_PT = {
   "svc.fin.title": "Mercado Financeiro &amp; Análise Quantitativa",
   "svc.fin.text": "Estudo o mercado de capitais com uma abordagem analítica: séries históricas, risco e retorno, e como construir carteiras diversificadas de longo prazo.",
   "about.certs": "Certificações",
-  "about.cert1": "Certificado 1",
-  "about.cert2": "Certificado 2",
-  "about.cert3": "Certificado 3",
+  "side.photo": "Foto de perfil de João Pedro",
+  "about.cert1": "Selo AWS Educate Cloud Computing 101",
+  "about.cert2": "Certificado freeCodeCamp JavaScript Algorithms and Data Structures",
+  "about.cert3": "Certificado do curso de PHP e Laravel da Rocketseat",
   "about.tech": "Tecnologias",
 
   "resume.title": "Currículo",
