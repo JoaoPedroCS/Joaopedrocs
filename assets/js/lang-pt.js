@@ -59,7 +59,8 @@ window.LANG_PT = {
     "• <strong>Análise de Dados, Simulação e Otimização de Layout:</strong> Desenvolvi um simulador algorítmico (pipeline de ponta a ponta) para Warehouse Slotting, mapeando rotas de picking e avaliando lógicas de endereçamento. A adaptação resultou na otimização do layout do novo Fulfillment Center em Brasília, projetando um ganho de cerca de 20% em eficiência.<br>" +
     "• <strong>Engenharia e Otimização de Dados:</strong> Estruturei, tratei e otimizei bases de dados complexas de crescimento diário. Arquitetei pipelines automatizados (Google Sheets, Google Apps Script, GitHub Actions, Metabase e Google Web App) para assegurar a integração, o tratamento e a visualização escalável dos dados.<br>" +
     "• <strong>Business Intelligence (BI) e Ferramentas Operacionais (PCP):</strong> Criei sistemas intuitivos para operadores de ponta em múltiplos galpões. Desenvolvi ferramentas de PCP para alocação de equipes via previsão de demanda, dimensionamento de headcount, sistemas de keeping (estoque) e robustos painéis de KPIs.<br>" +
-    "• <strong>Cultura de Inovação e Otimização com IA:</strong> Integrei ativamente ferramentas de IA generativa (Codex e Claude) ao fluxo de trabalho, acelerando a escrita de código, potencializando o desenvolvimento de ferramentas internas e aprimorando mapeamentos da operação.",
+    "• <strong>Cultura de Inovação e Otimização com IA:</strong> Integrei ativamente ferramentas de IA generativa (Codex e Claude) ao fluxo de trabalho, acelerando a escrita de código, potencializando o desenvolvimento de ferramentas internas e aprimorando mapeamentos da operação.<br>" +
+    "• <strong>Melhoria Contínua:</strong> Apliquei metodologias ágeis, principalmente o PDCA, nos projetos acima.",
   "resume.langs": "Idiomas",
   "resume.langs.text":
     "🇧🇷 <strong>Português</strong> - Nativo <br>" +
